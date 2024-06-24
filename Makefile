@@ -9,7 +9,7 @@ CFLAGS  =  -Wall -Wextra -Werror
 HEADERS =  -Iinclude
 
 VPATH   := src
-SRC     := main.c
+SRC     := main.c debug-tools.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
@@ -45,7 +45,15 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re
+debug: CFLAGS += -g
+debug: CFLAGS += -fsanitize=address -fsanitize=undefined \
+				 -fno-sanitize-recover=all -fsanitize=float-divide-by-zero \
+				 -fsanitize=float-cast-overflow -fno-sanitize=null \
+				 -fno-sanitize=alignment
+debug: CFLAGS += -DDEBUG=1
+debug: clean all
+
+.PHONY: all clean fclean re debug
 
 ################################################################################
 ################################################################################

@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   debug-tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/24 15:39:38 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/06/24 15:34:14 by dkaiser           #+#    #+#             */
+/*   Updated: 2024/06/24 15:45:19 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
-
-#endif
+void	dbg(char *msg)
+{
+	if (DEBUG)
+	{
+		ft_putstr_fd(msg, 0);
+	}
+}
