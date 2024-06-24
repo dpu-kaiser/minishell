@@ -6,7 +6,9 @@ NAME    := minishell
 
 CC      =  cc
 CFLAGS  =  -Wall -Wextra -Werror
-HEADERS =  -Iinclude
+LIB_DIR = lib
+LIBS    =  -L $(LIB_DIR)/libft -lft
+HEADERS =  -I include -I $(LIB_DIR)/libft
 
 VPATH   := src
 SRC     := main.c debug-tools.c
@@ -18,11 +20,14 @@ OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 #################################### RULES #####################################
 ################################################################################
 
-all: $(NAME)
+all: libs $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(HEADERS) $^ -o $@
+	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $^ -o $@
 	@echo "[$(NAME)] Created binary."
+
+libs:
+	@make -C $(LIB_DIR)/libft
 
 $(OBJ_DIR)/%.o: %.c
 	@if [ ! -d "$(dir $@)" ]; then \
@@ -36,6 +41,7 @@ clean:
 		rm -rf $(OBJ_DIR); \
 		echo "[$(NAME)] Removed object files."; \
 	fi
+	@make fclean -C $(LIB_DIR)/libft
 
 fclean: clean
 	@if [ -f "$(NAME)" ]; then \
@@ -53,7 +59,7 @@ debug: CFLAGS += -fsanitize=address -fsanitize=undefined \
 debug: CFLAGS += -DDEBUG=1
 debug: clean all
 
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re libs debug
 
 ################################################################################
 ################################################################################
