@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/24 15:26:15 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/24 16:13:41 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 int	main(void)
 {
-    init();
+	init();
+	repl("Minishell $ ");
 }

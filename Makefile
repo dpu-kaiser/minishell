@@ -10,7 +10,7 @@ HEADERS =  -Iinclude
 LIBS    =  -lreadline
 
 VPATH   := src
-SRC     := main.c init.c signal_handling.c
+SRC     := main.c init.c signal_handling.c repl.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
