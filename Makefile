@@ -7,8 +7,8 @@ NAME    := minishell
 CC      =  cc
 CFLAGS  =  -Wall -Wextra -Werror
 LIB_DIR = lib
-LIBS    =  -L$(LIB_DIR)/libft -lft
-HEADERS =  -Iinclude -I$(LIB_DIR)/libft
+LIBS    =  -L $(LIB_DIR)/libft -lft
+HEADERS =  -I include -I $(LIB_DIR)/libft
 
 VPATH   := src
 SRC     := main.c
