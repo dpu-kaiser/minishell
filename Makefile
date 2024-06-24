@@ -7,9 +7,10 @@ NAME    := minishell
 CC      =  cc
 CFLAGS  =  -Wall -Wextra -Werror
 HEADERS =  -Iinclude
+LIBS    =  -lreadline
 
 VPATH   := src
-SRC     := main.c
+SRC     := main.c init.c signal_handling.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
@@ -21,7 +22,7 @@ OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(HEADERS) $^ -o $@
+	@$(CC) $(CFLAGS) $(LIBS) $(HEADERS) $^ -o $@
 	@echo "[$(NAME)] Created binary."
 
 $(OBJ_DIR)/%.o: %.c
