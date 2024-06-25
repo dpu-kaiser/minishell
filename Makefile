@@ -11,7 +11,7 @@ LIBS    =  -L $(LIB_DIR)/libft -lft
 HEADERS =  -I include -I $(LIB_DIR)/libft
 
 VPATH   := src
-SRC     := main.c
+SRC     := main.c debug_tools.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
@@ -51,7 +51,15 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re libs
+debug: CFLAGS += -g
+debug: CFLAGS += -fsanitize=address -fsanitize=undefined \
+				 -fno-sanitize-recover=all -fsanitize=float-divide-by-zero \
+				 -fsanitize=float-cast-overflow -fno-sanitize=null \
+				 -fno-sanitize=alignment
+debug: CFLAGS += -DDEBUG=1
+debug: clean all
+
+.PHONY: all clean fclean re libs debug
 
 ################################################################################
 ################################################################################
