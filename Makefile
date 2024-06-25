@@ -11,7 +11,7 @@ LIBS    =  -L $(LIB_DIR)/libft -lft
 HEADERS =  -I include -I $(LIB_DIR)/libft
 
 VPATH   := src
-SRC     := main.c debug-tools.c
+SRC     := main.c debug_tools.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
