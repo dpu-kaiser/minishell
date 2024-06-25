@@ -7,11 +7,11 @@ NAME    := minishell
 CC      =  cc
 CFLAGS  =  -Wall -Wextra -Werror
 LIB_DIR = lib
-LIBS    =  -L $(LIB_DIR)/libft -lft
+LIBS    =  -L $(LIB_DIR)/libft -lft -lreadline
 HEADERS =  -I include -I $(LIB_DIR)/libft
 
 VPATH   := src
-SRC     := main.c debug_tools.c
+SRC     := main.c debug_tools.c init.c signal_handling.c repl.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))

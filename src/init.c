@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/25 13:58:24 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/06/24 15:02:24 by dkaiser           #+#    #+#             */
+/*   Updated: 2024/06/24 15:25:57 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+static void	init_terminal(void);
+
+int	init(void)
 {
-	if (init())
-		return (1);
-	repl("Minishell $ ");
+	int	result;
+
+	init_terminal();
+	result = init_signal_handling();
+	return (result);
+}
+
+static void	init_terminal(void)
+{
+	struct termios	term;
+
+	tcgetattr(0, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &term);
 }
