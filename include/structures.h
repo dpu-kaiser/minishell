@@ -6,12 +6,14 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:26:40 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/25 17:34:51 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/25 17:49:43 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
+# include <stdlib.h>
 
 enum							e_token_type
 {
@@ -62,5 +64,8 @@ typedef struct s_fstring
 	char						*fmt;
 	char						**vars;
 }								t_fstring;
+
+t_token							*new_token(int type, char *content);
+void							delete_token(t_token *token);
 
 #endif
