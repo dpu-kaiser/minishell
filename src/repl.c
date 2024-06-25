@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/24 16:50:39 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/25 13:50:19 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	repl(const char *prompt)
 		input = readline(prompt);
 		if (input == NULL)
 			return ;
+		free(input);
 	}
 }
