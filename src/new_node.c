@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 15:00:26 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:04:15 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2])
 	if (node == NULL)
 		return (NULL);
 	node->content.cmd.args = args;
-	node->content.cmd.redirs = redirs;
+	node->content.cmd.redirs[0] = redirs[0];
+	node->content.cmd.redirs[1] = redirs[1];
 	return (node);
 }
 
@@ -65,6 +66,7 @@ t_node	*new_string_node(char *string)
 
 	node = new_node(STRING_NODE);
 	if (node == NULL)
-		return ((NULL)node->content.string = string);
+		return (NULL);
+	node->content.string = string;
 	return (node);
 }
