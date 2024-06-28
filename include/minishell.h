@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/25 15:02:38 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/27 18:47:31 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "debug_tools.h"
+# include "ast.h"
+# include "token.h"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_tools.h                                      :+:      :+:    :+:   */
+/*   free_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 18:34:37 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 15:05:12 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/06/27 14:38:57 by dkaiser           #+#    #+#             */
+/*   Updated: 2024/06/28 14:55:12 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEBUG_TOOLS_H
-# define DEBUG_TOOLS_H
+#include "token.h"
 
-# include "libft.h"
-
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
-# define UNREACHABLE "Unreachable."
-
-void	dbg(char *str);
-void	panic(char *msg);
-#endif
+void	free_token(t_token *token)
+{
+	if (token->type == STRING_TOKEN)
+		free(token->content.string);
+	if (token->previous != NULL)
+		token->previous->next = NULL;
+	if (token->next != NULL)
+		token->next->previous = NULL;
+	free(token);
+}
