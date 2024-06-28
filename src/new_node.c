@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 14:49:40 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:00:26 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_node	*new_assign_node(char *var, char *value)
 {
 	t_node	*node;
 
-	node = new_node(ASSIGN);
+	node = new_node(ASSIGN_NODE);
 	if (node == NULL)
 		return (NULL);
 	node->content.assign.var = var;
@@ -39,7 +39,7 @@ t_node	*new_pipe_node(t_node *left, t_node *right)
 {
 	t_node	*node;
 
-	node = new_node(PIPE);
+	node = new_node(PIPE_NODE);
 	if (node == NULL)
 		return (NULL);
 	node->content.pipe.left = left;
@@ -51,7 +51,7 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2])
 {
 	t_node	*node;
 
-	node = new_node(CMD);
+	node = new_node(CMD_NODE);
 	if (node == NULL)
 		return (NULL);
 	node->content.cmd.args = args;
@@ -63,7 +63,7 @@ t_node	*new_string_node(char *string)
 {
 	t_node	*node;
 
-	node = new_node(STRING);
+	node = new_node(STRING_NODE);
 	if (node == NULL)
 		return ((NULL)node->content.string = string);
 	return (node);
