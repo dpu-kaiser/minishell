@@ -6,17 +6,12 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:48:27 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 14:56:55 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/01 11:43:59 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stdlib.h"
 #include "debug_tools.h"
-
-typedef struct s_sequence
-{
-	struct s_node			**nodes;
-}							t_sequence;
 
 enum						e_node_type
 {
