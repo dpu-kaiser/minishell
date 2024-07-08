@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:48:27 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/01 11:43:59 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:09:32 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 enum						e_node_type
 {
-	ASSIGN_NODE,
 	PIPE_NODE,
 	CMD_NODE,
 	STRING_NODE
@@ -50,12 +49,12 @@ typedef struct s_redirection
 typedef struct s_cmd
 {
 	char					**args;
+	struct s_assign			**assigns;
 	struct s_redirection	redirs[2];
 }							t_cmd;
 
 union						u_node_content
 {
-	struct s_assign			assign;
 	struct s_pipe			pipe;
 	struct s_cmd			cmd;
 	char					*string;
@@ -68,7 +67,6 @@ typedef struct s_node
 }							t_node;
 
 t_node						*new_node(int type);
-t_node						*new_assign_node(char *var, char *value);
 t_node						*new_pipe_node(t_node *left, t_node *right);
-t_node						*new_cmd_node(char **args, t_redirection redirs[2]);
+t_node						*new_cmd_node(char **args, t_assign  **assigns, t_redirection redirs[2]);
 t_node						*new_string_node(char *string);

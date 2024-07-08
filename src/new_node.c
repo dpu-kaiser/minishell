@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 15:04:15 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/08 16:10:44 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ t_node	*new_node(int type)
 	return (node);
 }
 
-t_node	*new_assign_node(char *var, char *value)
-{
-	t_node	*node;
-
-	node = new_node(ASSIGN_NODE);
-	if (node == NULL)
-		return (NULL);
-	node->content.assign.var = var;
-	node->content.assign.value = value;
-	return (node);
-}
-
 t_node	*new_pipe_node(t_node *left, t_node *right)
 {
 	t_node	*node;
@@ -47,7 +35,7 @@ t_node	*new_pipe_node(t_node *left, t_node *right)
 	return (node);
 }
 
-t_node	*new_cmd_node(char **args, t_redirection redirs[2])
+t_node	*new_cmd_node(char **args, t_assign **assigns, t_redirection redirs[2])
 {
 	t_node	*node;
 
@@ -55,6 +43,7 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2])
 	if (node == NULL)
 		return (NULL);
 	node->content.cmd.args = args;
+	node->content.cmd.assigns = assigns;
 	node->content.cmd.redirs[0] = redirs[0];
 	node->content.cmd.redirs[1] = redirs[1];
 	return (node);
