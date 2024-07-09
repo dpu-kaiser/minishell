@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/08 16:11:07 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/09 11:38:12 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
 
 static t_node	*parse_statement(t_token *tokens);
-static t_node	*parse_cmd(t_token *tokens);
 
 t_list	*parse(t_token *tokens)
 {
@@ -62,18 +61,6 @@ static t_node	*parse_statement(t_token *tokens)
 	{
 		return (parse_cmd(left_side_tokens));
 	}
-}
-
-static t_node	*parse_cmd(t_token *tokens)
-{
-	char			**args;
-	t_assign		**assigns;
-	t_redirection	**redirs;
-
-	redirs = collect_redirs(&tokens);
-	assigns = collect_assigns(&tokens);
-	args = collect_args(&tokens);
-	return (new_cmd_node(args, assigns, redirs));
 }
 
 t_token	*split_at_first(t_token **tokens, int type)

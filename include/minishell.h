@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/27 18:47:31 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/09 11:36:09 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,9 @@ int		init(void);
 int		init_signal_handling(void);
 
 void	repl(const char *prompt);
+
+
+t_list	*parse(t_token *tokens);
+t_node	*parse_cmd(t_token *tokens);
 
 #endif

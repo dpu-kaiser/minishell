@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:41:46 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/08 16:15:21 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/09 11:37:11 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ void	free_node(t_node *node)
 	else
 		panic(UNREACHABLE);
 	free(node);
-}
-
-static void	free_assign_node(t_node *node)
-{
-	free(node->content.assign.var);
-	free(node->content.assign.value);
 }
 
 static void	free_pipe_node(t_node *node)
