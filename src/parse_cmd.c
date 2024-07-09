@@ -64,33 +64,6 @@ static t_assign	**collect_assigns(t_token **tokens)
 	return (result);
 }
 
-static char	**collect_args(t_token **tokens)
-{
-	int		i;
-	char	**result;
-
-	i = 0;
-	while (tokens[i] != NULL)
-	{
-		i++;
-	}
-	result = malloc(sizeof(char *) * (i + 1));
-	if (result == NULL)
-	{
-		// free everything in the token
-		return (NULL);
-	}
-	i = 0;
-	while (tokens[i] != NULL)
-	{
-		result[i] = tokens[i]->content.string;
-		free_token(tokens[i]);
-		i++;
-	}
-	result[i] = NULL;
-	return (result);
-}
-
 static t_assign	*to_assign(char *str)
 {
 	t_assign	*result;
@@ -105,5 +78,35 @@ static t_assign	*to_assign(char *str)
 	*split = '\0';
 	result->var = str;
 	result->value = split + 1;
+	return (result);
+}
+
+static char	**collect_args(t_token **tokens)
+{
+	t_token *cur;
+	char **result;
+	int i;
+
+	cur = *tokens;
+	i = 0;
+	while (cur != NULL) {
+		i++;
+		cur = cur->next;
+	}
+	result = malloc(sizeof(char*) * (i + 1));
+	if (!result)
+	{
+		//free all tokens;
+		return (NULL);
+	}
+	cur = *tokens;
+	i = 0;
+	while(cur != NULL)
+	{
+		result[i] = cur->content.string;
+		// free token
+		i++;
+		cur = cur->next;
+	}
 	return (result);
 }
