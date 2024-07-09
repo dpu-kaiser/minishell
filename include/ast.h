@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:48:27 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/08 16:09:32 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/09 16:54:29 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef struct s_pipe
 
 enum						e_redirection_type
 {
-	INPUT_FILE,
-	INPUT_LIMITER,
-	OUTPUT_OVERRIDE,
-	OUTPUT_APPEND
+	INPUT_FILE = 1,
+	INPUT_LIMITER = 2,
+	OUTPUT_OVERRIDE = 4,
+	OUTPUT_APPEND = 8
 };
 
 typedef struct s_redirection
