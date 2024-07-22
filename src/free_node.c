@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:41:46 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/09 11:37:11 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/22 14:30:14 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ static void	free_cmd_node(t_node *node)
 	int	i;
 
 	i = 0;
-	while (node->content.cmd.args[i] != NULL)
+	while (node->content.cmd.args != NULL && node->content.cmd.args[i] != NULL)
 	{
 		free(node->content.cmd.args[i]);
 		i++;
 	}
 	free(node->content.cmd.args);
 	free_assigns(node->content.cmd.assigns);
-	free(node->content.cmd.redirs[0].specifier);
-	free(node->content.cmd.redirs[1].specifier);
+	if (node->content.cmd.redirs[0].type != 0 && node->content.cmd.redirs[0].specifier != NULL)
+		free(node->content.cmd.redirs[0].specifier);
+	if (node->content.cmd.redirs[1].type != 0 && node->content.cmd.redirs[0].specifier != NULL)
+		free(node->content.cmd.redirs[1].specifier);
 }
 
 static void	free_assigns(t_assign **assigns)
@@ -56,10 +58,11 @@ static void	free_assigns(t_assign **assigns)
 	int	i;
 
 	i = 0;
+	if (assigns == 0)
+		return ;
 	while (assigns[i] != NULL)
 	{
 		free(assigns[i]->var);
-		free(assigns[i]->value);
 		free(assigns[i]);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/09 19:22:51 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/10 13:26:17 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static t_redirection	*collect_redirs(t_token **tokens);
 static t_assign			**collect_assigns(t_token **tokens);
 static char				**collect_args(t_token **tokens);
 static t_assign			*to_assign(char *str);
+static void				set_redir(t_redirection *redir, int type,
+							char *specifier);
 
 t_node	*parse_cmd(t_token *tokens)
 {
@@ -33,6 +35,7 @@ static t_redirection	*collect_redirs(t_token **tokens)
 {
 	t_redirection	*result;
 	t_token			*cur;
+	int				idx;
 
 	cur = *tokens;
 	result = malloc(sizeof(t_redirection) * 2);
@@ -41,24 +44,18 @@ static t_redirection	*collect_redirs(t_token **tokens)
 		// free all tokens
 		return (NULL);
 	}
-	result[0].specifier = NULL;
-	result[0].type = 0;
-	result[1].specifier = NULL;
-	result[1].type = 0;
+	set_redir(&result[0], 0, NULL);
+	set_redir(&result[1], 0, NULL);
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
 		{
 			if (cur->content.redir_type & (INPUT_FILE | INPUT_LIMITER))
-			{
-				result[0].type = cur->content.redir_type;
-				result[0].specifier = cur->next->content.string;
-			}
+				idx = 0;
 			else if (cur->content.redir_type & (OUTPUT_APPEND | OUTPUT_OVERRIDE))
-			{
-				result[1].type = cur->content.redir_type;
-				result[1].specifier = cur->next->content.string;
-			}
+				idx = 1;
+			set_redir(&result[idx], cur->content.redir_type,
+				cur->next->content.string);
 			cur = cur->next;
 			free_token_and_connect(cur->previous);
 			if (cur->next != NULL)
@@ -169,4 +166,10 @@ static char	**collect_args(t_token **tokens)
 	}
 	result[i] = NULL;
 	return (result);
+}
+
+static void	set_redir(t_redirection *redir, int type, char *specifier)
+{
+	redir->type = type;
+	redir->specifier = specifier;
 }

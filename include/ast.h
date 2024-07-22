@@ -6,12 +6,12 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:48:27 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/09 16:54:29 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/10 12:31:39 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdlib.h"
 #include "debug_tools.h"
+#include "stdlib.h"
 
 enum						e_node_type
 {
@@ -68,5 +68,8 @@ typedef struct s_node
 
 t_node						*new_node(int type);
 t_node						*new_pipe_node(t_node *left, t_node *right);
-t_node						*new_cmd_node(char **args, t_assign  **assigns, t_redirection redirs[2]);
+t_node						*new_cmd_node(char **args, t_assign **assigns,
+								t_redirection redirs[2]);
 t_node						*new_string_node(char *string);
+
+void						free_node(t_node *node);
