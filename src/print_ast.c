@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:16:53 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/22 16:32:49 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/22 17:32:17 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	print_ast_rec(t_node *ast, int indent)
 		print_cmd_node(ast, indent);
 	else if (ast->type == PIPE_NODE)
 	{
-		printf("%*s%s", indent, "", "* PIPE");
+		printf("\n%*s%s", indent, "", "* PIPE");
 		print_ast_rec(ast->content.pipe.left, indent + 2);
 		print_ast_rec(ast->content.pipe.right, indent + 2);
 	}
