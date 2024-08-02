@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/09 11:38:12 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/02 13:48:09 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
-
 static t_node	*parse_statement(t_token *tokens);
+static void		free_node_wrapper(void *node);
 
 t_list	*parse(t_token *tokens)
 {
@@ -38,10 +38,7 @@ t_list	*parse(t_token *tokens)
 			current = current->next;
 		}
 		if (current == NULL)
-		{
-			// Free: ft_lstclear(&result, free_node);
-			return (NULL);
-		}
+			return (ft_lstclear(&result, free_node_wrapper), NULL);
 		current_tokens = split_at_first(&tokens, NEWLINE_TOKEN);
 	}
 	return (result);
@@ -90,4 +87,9 @@ static t_token	*find_token_by_type(t_token *tokens, int type)
 		tokens = tokens->next;
 	}
 	return (NULL);
+}
+
+static void	free_node_wrapper(void *node)
+{
+	free_node((t_node *)node);
 }
