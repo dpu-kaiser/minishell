@@ -6,11 +6,13 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/10 13:26:17 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/02 12:54:45 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug_tools.h"
 #include "minishell.h"
+#include "token.h"
 
 static t_redirection	*collect_redirs(t_token **tokens);
 static t_assign			**collect_assigns(t_token **tokens);
@@ -25,9 +27,21 @@ t_node	*parse_cmd(t_token *tokens)
 	t_assign		**assigns;
 	t_redirection	*redirs;
 
+	dbg("parse_cmd");
 	redirs = collect_redirs(&tokens);
+	t_token *cur;
+	cur = tokens;
+	while (cur != NULL && cur->type != 0) {
+		print_token(cur);
+		cur = cur->next;
+	}
+
+
 	assigns = collect_assigns(&tokens);
+
+
 	args = collect_args(&tokens);
+	dbg("ret parse_cmd");
 	return (new_cmd_node(args, assigns, redirs));
 }
 
@@ -37,6 +51,7 @@ static t_redirection	*collect_redirs(t_token **tokens)
 	t_token			*cur;
 	int				idx;
 
+	dbg("collect_redirs");
 	cur = *tokens;
 	result = malloc(sizeof(t_redirection) * 2);
 	if (result == NULL)
@@ -60,6 +75,8 @@ static t_redirection	*collect_redirs(t_token **tokens)
 			free_token_and_connect(cur->previous);
 			if (cur->next != NULL)
 			{
+				if (cur->previous == NULL)
+					*tokens = cur->next;
 				cur = cur->next;
 				free_token_and_connect(cur->previous);
 			}
@@ -88,6 +105,7 @@ static t_assign	**collect_assigns(t_token **tokens)
 	t_assign	**result;
 	int			i;
 
+	dbg("collect_assigns");
 	cur = *tokens;
 	i = 0;
 	while (cur != NULL && cur->type == STRING_TOKEN
@@ -111,8 +129,14 @@ static t_assign	**collect_assigns(t_token **tokens)
 	{
 		result[i] = to_assign(cur->content.string);
 		i++;
-		cur = cur->next;
-		free_token(cur->previous);
+		if (cur->next != NULL) {
+			cur = cur->next;
+			free_token(cur->previous);
+		}
+		else
+		{
+			free_token(cur);
+		}
 	}
 	*tokens = cur;
 	result[i] = NULL;
@@ -142,12 +166,15 @@ static char	**collect_args(t_token **tokens)
 	char	**result;
 	int		i;
 
+	dbg("collect_args");
 	cur = *tokens;
 	i = 0;
-	while (cur != NULL)
+	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
 		i++;
+		printf("%d\n", cur->type);
 		cur = cur->next;
+		dbg("end of loop");
 	}
 	result = malloc(sizeof(char *) * (i + 1));
 	if (!result)
@@ -155,9 +182,10 @@ static char	**collect_args(t_token **tokens)
 		// free all tokens;
 		return (NULL);
 	}
+	dbg("after malloc");
 	cur = *tokens;
 	i = 0;
-	while (cur != NULL)
+	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
 		result[i] = cur->content.string;
 		// free token
@@ -165,6 +193,7 @@ static char	**collect_args(t_token **tokens)
 		cur = cur->next;
 	}
 	result[i] = NULL;
+	dbg("ret collect_args");
 	return (result);
 }
 

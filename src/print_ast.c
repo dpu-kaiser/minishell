@@ -6,10 +6,11 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:16:53 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/22 17:32:17 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/01 12:19:34 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug_tools.h"
 #include "minishell.h"
 
 static void	print_ast_rec(t_node *ast, int indent);
@@ -44,9 +45,9 @@ static void	print_cmd_node(t_node *ast, int indent)
 	printf("\n%*s%s", indent, "", "* CMD");
 	i = 0;
 	printf("\n%*sARGS:", indent + 2, "");
-	while (ast->content.cmd.args[i] != NULL)
+	while (ast->content.cmd.args != NULL && ast->content.cmd.args[i] != NULL)
 	{
-		printf(" %s", ast->content.cmd.args[i]);
+		printf(" '%s'", ast->content.cmd.args[i]);
 		i++;
 	}
 	i = 0;
