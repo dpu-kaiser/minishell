@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:38:57 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/09 14:30:02 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/02 14:14:30 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,14 @@ void	free_token_and_connect(t_token *token)
 	if (token->next != NULL)
 		token->next->previous = token->previous;
 	free(token);
+}
+
+void free_tokens(t_token *tokens)
+{
+	while (tokens->next != NULL)
+	{
+		tokens = tokens->next;
+		free_token(tokens->previous);
+	}
+	free_token(tokens);
 }
