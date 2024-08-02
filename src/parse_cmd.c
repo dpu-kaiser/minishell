@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/10 13:26:17 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/02 13:22:18 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static t_redirection	*collect_redirs(t_token **tokens)
 			free_token_and_connect(cur->previous);
 			if (cur->next != NULL)
 			{
+				if (cur->previous == NULL)
+					*tokens = cur->next;
 				cur = cur->next;
 				free_token_and_connect(cur->previous);
 			}
@@ -111,8 +113,15 @@ static t_assign	**collect_assigns(t_token **tokens)
 	{
 		result[i] = to_assign(cur->content.string);
 		i++;
-		cur = cur->next;
-		free_token(cur->previous);
+		if (cur->next != NULL)
+		{
+			cur = cur->next;
+			free_token(cur->previous);
+		}
+		else
+		{
+			free_token(cur);
+		}
 	}
 	*tokens = cur;
 	result[i] = NULL;
@@ -157,7 +166,7 @@ static char	**collect_args(t_token **tokens)
 	}
 	cur = *tokens;
 	i = 0;
-	while (cur != NULL)
+	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
 		result[i] = cur->content.string;
 		// free token
