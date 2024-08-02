@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:41:46 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/22 14:30:14 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/02 13:28:47 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ static void	free_cmd_node(t_node *node)
 	}
 	free(node->content.cmd.args);
 	free_assigns(node->content.cmd.assigns);
-	if (node->content.cmd.redirs[0].type != 0 && node->content.cmd.redirs[0].specifier != NULL)
+	if (node->content.cmd.redirs[0].type != 0
+		&& node->content.cmd.redirs[0].specifier != NULL)
 		free(node->content.cmd.redirs[0].specifier);
-	if (node->content.cmd.redirs[1].type != 0 && node->content.cmd.redirs[0].specifier != NULL)
+	if (node->content.cmd.redirs[1].type != 0
+		&& node->content.cmd.redirs[0].specifier != NULL)
 		free(node->content.cmd.redirs[1].specifier);
 }
 
