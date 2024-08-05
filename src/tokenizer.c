@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 13:45:55 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/05 13:46:42 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	print_token(t_token *token)
 		}
 	}
 }
+
 
 void	conditional_print(char *string, int start_of_string, int i,
 	t_token **token_list)
