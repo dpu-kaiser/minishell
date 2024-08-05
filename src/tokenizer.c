@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 13:43:39 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/05 13:45:55 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,24 @@
 
 void	print_token(t_token *token)
 {
-	if (token->type == STRING_TOKEN)
+	if (DEBUG)
 	{
-		printf("STRING_TOKEN: %s\n", token->content.string);
-	}
-	else if (token->type == REDIR_TOKEN)
-	{
-		printf("REDIR_TOKEN: %d\n", token->content.redir_type);
-	}
-	else if (token->type == PIPE_TOKEN)
-	{
-		printf("PIPE_TOKEN\n");
-	}
-	else if (token->type == NEWLINE_TOKEN)
-	{
-		printf("NEWLINE_TOKEN\n");
+		if (token->type == STRING_TOKEN)
+		{
+			printf("STRING_TOKEN: %s\n", token->content.string);
+		}
+		else if (token->type == REDIR_TOKEN)
+		{
+			printf("REDIR_TOKEN: %d\n", token->content.redir_type);
+		}
+		else if (token->type == PIPE_TOKEN)
+		{
+			printf("PIPE_TOKEN\n");
+		}
+		else if (token->type == NEWLINE_TOKEN)
+		{
+			printf("NEWLINE_TOKEN\n");
+		}
 	}
 }
 
