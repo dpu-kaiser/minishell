@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 13:41:54 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/05 13:43:39 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	conditional_print(char *string, int start_of_string, int i,
 			exit(EXIT_FAILURE);
 		}
 		ft_strncpy(line, string + start_of_string, len);
-		line[len] = '\0';
+		line[len - 1] = '\0';
 		while (*line == ' ' || *line == '\t')
 			line++;
 		if (*line != '\0')
