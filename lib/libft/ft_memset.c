@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 09:58:19 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/03/10 13:13:09 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/07/11 23:52:13 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,3 +35,13 @@ void	*ft_memset(void *b, int c, size_t len)
 /* 	printf("ft_memset: %s\n", ft_memset((char *)str, 'A' + 255, 5)); */
 /* 	printf("memset: %s\n", memset((char *)str, 'A' + 255, 5)); */
 /* } */
+
+// void	*ft_memset(void *b, int c, size_t len)
+// {
+// 	void	*savearg;
+
+// 	savearg = b;
+// 	while (len--)
+// 		*(unsigned char *)b++ = (unsigned char)c;
+// 	return (savearg);
+// }
