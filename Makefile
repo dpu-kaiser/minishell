@@ -5,7 +5,7 @@
 NAME    := minishell
 
 CC      =  cc
-CFLAGS  =  -Wall -Wextra -Werror -g
+CFLAGS  =  -Wall -Wextra -Werror
 LIB_DIR = lib
 LIBS    =  -L $(LIB_DIR)/libft -lft -lreadline
 HEADERS =  -I include -I $(LIB_DIR)/libft
