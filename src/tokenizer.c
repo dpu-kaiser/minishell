@@ -6,22 +6,12 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 13:24:59 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/05 13:41:54 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "token.h"
-
-char	*ft_strncpy(char *s1, char *s2, int n)
-{
-	int	i;
-
-	i = -1;
-	while (++i < n && s2[i])
-		s1[i] = s2[i];
-	return (s1);
-}
 
 void	print_token(t_token *token)
 {
