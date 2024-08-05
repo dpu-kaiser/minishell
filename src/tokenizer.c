@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 13:46:42 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/05 21:45:55 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	conditional_print(char *string, int start_of_string, int i,
 	len = i - start_of_string + 1;
 	if (len > 0)
 	{
-		line = (char *)malloc(len);
+		line = (char *)malloc(len + 1);
 		if (!line)
 		{
 			exit(EXIT_FAILURE);
 		}
 		ft_strncpy(line, string + start_of_string, len);
-		line[len - 1] = '\0';
+		line[len] = '\0';
 		while (*line == ' ' || *line == '\t')
 			line++;
 		if (*line != '\0')
@@ -91,12 +91,13 @@ int	symbol_checker(char *s, int i, t_token **token_list)
 
 int	check_for_string(char *s, int i, int *start_of_string, t_token **token_list)
 {
-	char	quote_check;
-	int		ignore_space;
+	static char		quote_check;
+	static int		ignore_space;
 
-	ignore_space = 0;
-	quote_check = '\0';
-	if (ignore_space && s[i] == quote_check)
+	// ignore_space = 0;
+	// quote_check = '\0';
+	if (ignore_space && (s[i] == '\0' || s[i] == '|' || s[i] == '\n'
+				|| s[i] == '<' || s[i] == '>'))
 	{
 		quote_check = '\0';
 		ignore_space = 0;
@@ -107,11 +108,10 @@ int	check_for_string(char *s, int i, int *start_of_string, t_token **token_list)
 		ignore_space = 1;
 	}
 	if ((!ignore_space && (s[i] == '\0' || s[i] == ' '
-				|| s[i] == '\t')) || i == ft_strlen(s) - 1)
+				|| s[i] == '\t' || s[i + 1] == '|' || s[i + 1] == '\n'
+				|| s[i + 1] == '<' || s[i + 1] == '>')) || i == ft_strlen(s) - 1)
 	{
-		if (s[i + 1] == '\0')
-			i++;
-		conditional_print(s, *start_of_string, i - 1, token_list);
+		conditional_print(s, *start_of_string, i, token_list);
 		*start_of_string = i + 1;
 	}
 	return (i);
@@ -120,19 +120,17 @@ int	check_for_string(char *s, int i, int *start_of_string, t_token **token_list)
 void	tokenizer(char *s, t_token **token_list)
 {
 	int		start_of_string;
-	int		ignore_space;
+	int		f;
 	int		i;
-	char	quote_check;
 
-	quote_check = '\0';
 	start_of_string = 0;
-	ignore_space = 0;
+	f = 0;
 	i = 0;
 	if (!s || !*s)
 		return ;
 	while (s && s[i])
 	{
-		if (!ignore_space && (s[i] == '|' || s[i] == '\n'
+		if (!f && (s[i] == '|' || s[i] == '\n'
 				|| s[i] == '<' || s[i] == '>'))
 		{
 			i = symbol_checker(s, i, token_list);
@@ -140,8 +138,28 @@ void	tokenizer(char *s, t_token **token_list)
 		}
 		else
 		{
+			f = start_of_string;
 			i = check_for_string(s, i, &start_of_string, token_list);
+			if (f != start_of_string)
+				f = 0;
+			else
+				f = 1;
 		}
 		i++;
 	}
 }
+
+// Minishell $ |abc|cba
+// PIPE_TOKEN
+// STRING_TOKEN: abc
+// PIPE_TOKEN
+// STRING_TOKEN: cba
+// Minishell $   ||abc  a||cba
+// PIPE_TOKEN
+// PIPE_TOKEN
+// STRING_TOKEN: abc 
+// STRING_TOKEN: a
+// PIPE_TOKEN
+// PIPE_TOKEN
+// STRING_TOKEN: cba
+// Minishell $ 
