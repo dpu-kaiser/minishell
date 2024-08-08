@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/05 21:45:55 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/08 18:50:53 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,91 +63,67 @@ void	conditional_print(char *string, int start_of_string, int i,
 	}
 }
 
-int	symbol_checker(char *s, int i, t_token **token_list)
-{
-	if ((s[i] == '<' || s[i] == '>') && s[i + 1] == s[i])
-	{
-		if (s[i] == '<')
-			*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
-		else
-			*token_list = new_redir_token(OUTPUT_APPEND, *token_list, NULL);
-		print_token(*token_list);
-		i++;
-	}
-	else
-	{
-		if (s[i] == '<')
-			*token_list = new_redir_token(INPUT_FILE, *token_list, NULL);
-		else if (s[i] == '|')
-			*token_list = new_token(PIPE_TOKEN, *token_list, NULL);
-		else if (s[i] == '\n')
-			*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
-		else
-			*token_list = new_redir_token(OUTPUT_OVERRIDE, *token_list, NULL);
-		print_token(*token_list);
-	}
-	return (i);
-}
-
-int	check_for_string(char *s, int i, int *start_of_string, t_token **token_list)
-{
-	static char		quote_check;
-	static int		ignore_space;
-
-	// ignore_space = 0;
-	// quote_check = '\0';
-	if (ignore_space && (s[i] == '\0' || s[i] == '|' || s[i] == '\n'
-				|| s[i] == '<' || s[i] == '>'))
-	{
-		quote_check = '\0';
-		ignore_space = 0;
-	}
-	else if (!ignore_space && ft_strchr("\"\'", s[i]))
-	{
-		quote_check = s[i];
-		ignore_space = 1;
-	}
-	if ((!ignore_space && (s[i] == '\0' || s[i] == ' '
-				|| s[i] == '\t' || s[i + 1] == '|' || s[i + 1] == '\n'
-				|| s[i + 1] == '<' || s[i + 1] == '>')) || i == ft_strlen(s) - 1)
-	{
-		conditional_print(s, *start_of_string, i, token_list);
-		*start_of_string = i + 1;
-	}
-	return (i);
-}
-
 void	tokenizer(char *s, t_token **token_list)
 {
+	char	*quotes;
+	char	quote_check;
 	int		start_of_string;
-	int		f;
+	int		ignore_space;
 	int		i;
 
+	quotes = "\"\'";
+	quote_check = '\0';
 	start_of_string = 0;
-	f = 0;
+	ignore_space = 0;
 	i = 0;
 	if (!s || !*s)
 		return ;
-	while (s && s[i])
+	while (s[i])
 	{
-		if (!f && (s[i] == '|' || s[i] == '\n'
-				|| s[i] == '<' || s[i] == '>'))
+		if (!ignore_space && (s[i] == '|' || s[i] == '\n' || s[i] == '<' || s[i] == '>'))
 		{
-			i = symbol_checker(s, i, token_list);
+			conditional_print(s, start_of_string, i - 1, token_list);
+			if ((s[i] == '<' || s[i] == '>') && s[i + 1] == s[i])
+			{
+				if (s[i] == '<')
+					*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
+				else
+					*token_list = new_redir_token(OUTPUT_APPEND, *token_list, NULL);
+				i++;
+			}
+			else
+			{
+				if (s[i] == '<')
+					*token_list = new_redir_token(INPUT_FILE, *token_list, NULL);
+				else if (s[i] == '|')
+					*token_list = new_token(PIPE_TOKEN, *token_list, NULL);
+				else if (s[i] == '\n')
+					*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
+				else
+					*token_list = new_redir_token(OUTPUT_OVERRIDE, *token_list, NULL);
+			}
+			print_token(*token_list);
 			start_of_string = i + 1;
 		}
-		else
+		else if (ignore_space && s[i] == quote_check)
 		{
-			f = start_of_string;
-			i = check_for_string(s, i, &start_of_string, token_list);
-			if (f != start_of_string)
-				f = 0;
-			else
-				f = 1;
+			quote_check = '\0';
+			ignore_space = 0;
+		}
+		else if (!ignore_space && ft_strchr(quotes, s[i]))
+		{
+			quote_check = s[i];
+			ignore_space = 1;
+		}
+		else if ((!ignore_space && (s[i] == ' ' || s[i] == '\t')) || i == ft_strlen(s) - 1)
+		{
+			conditional_print(s, start_of_string, i, token_list);
+			start_of_string = i + 1;
 		}
 		i++;
 	}
 }
+
 
 // Minishell $ |abc|cba
 // PIPE_TOKEN
