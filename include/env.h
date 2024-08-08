@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/08 17:10:12 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/08/08 16:53:39 by dkaiser           #+#    #+#             */
+/*   Updated: 2024/08/08 17:05:11 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+typedef struct s_env {
+    char *name;
+    char *value;
+    struct s_env *next;
+} t_env;
 
-# include "debug_tools.h"
-# include "ast.h"
-# include "token.h"
-# include "env.h"
-# include "libft.h"
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-# include <stdlib.h>
-# include <termios.h>
-# include <unistd.h>
-
-int		init(void);
-int		init_signal_handling(void);
-
-void	repl(const char *prompt);
-
-#endif
+char *env_get(t_env *env, char *name);
+void env_export(t_env *env, char *name, char *value);
+void env_unset(t_env *env, char *name);
+char **env_to_strlst(t_env *env);
+t_env **env_from_strlst(char **lst);
