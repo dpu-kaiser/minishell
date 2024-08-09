@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/09 12:37:08 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/09 12:59:03 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 	else if (s[*i] == '\n')
 		*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
 	print_token(*token_list);
-	if (s[*i] == '<' || s[*i] == '>')
+	if (s[*i + 1] == '<' || s[*i + 1] == '>')
 		(*i)++;
 	*start = *i + 1;
 }
@@ -95,7 +95,7 @@ void	tokenizer(char *s, t_token **token_list)
 	f = 0;
 	while (s[++i])
 	{
-		if (!f && ft_strchr("|<>\\n", s[i]))
+		if (!f && ft_strchr("|<>\n", s[i]))
 			handle_special_chars(s, &i, &pos, token_list);
 		else if (f && s[i] == quote_check)
 			f = 0;
