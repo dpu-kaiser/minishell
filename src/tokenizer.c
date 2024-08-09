@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/09 11:43:51 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/09 12:37:08 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,34 @@
 
 void	print_token(t_token *token)
 {
-	if (token->type == STRING_TOKEN)
+	if (DEBUG)
 	{
-		printf("STRING_TOKEN: %s\n", token->content.string);
-	}
-	else if (token->type == REDIR_TOKEN)
-	{
-		printf("REDIR_TOKEN: %d\n", token->content.redir_type);
-	}
-	else if (token->type == PIPE_TOKEN)
-	{
-		printf("PIPE_TOKEN\n");
-	}
-	else if (token->type == NEWLINE_TOKEN)
-	{
-		printf("NEWLINE_TOKEN\n");
+		if (token->type == STRING_TOKEN)
+		{
+			printf("STRING_TOKEN: %s\n", token->content.string);
+		}
+		else if (token->type == REDIR_TOKEN)
+		{
+			printf("REDIR_TOKEN: %d\n", token->content.redir_type);
+		}
+		else if (token->type == PIPE_TOKEN)
+		{
+			printf("PIPE_TOKEN\n");
+		}
+		else if (token->type == NEWLINE_TOKEN)
+		{
+			printf("NEWLINE_TOKEN\n");
+		}
 	}
 }
 
-void	conditional_print(char *string, int start_of_string, int i, t_token **token_list)
+void	conditional_print(char *string, int start_of_string, int i,
+	t_token **token_list)
 {
 	char	*line;
 	int		len;
 
-	len = i - start_of_string;
+	len = i - start_of_string + 1;
 	if (len > 0)
 	{
 		line = (char *)malloc(len + 1);
@@ -60,7 +64,7 @@ void	conditional_print(char *string, int start_of_string, int i, t_token **token
 
 void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 {
-	conditional_print(s, *start, *i, token_list);  // Pass correct boundaries
+	conditional_print(s, *start, *i - 1, token_list);
 	if (s[*i] == '<' && s[*i + 1] == '<')
 		*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
 	else if (s[*i] == '>' && s[*i + 1] == '>')
@@ -86,9 +90,9 @@ void	tokenizer(char *s, t_token **token_list)
 	int		i;
 	int		f;
 
-	f = 0;
-	i = -1;
 	pos = 0;
+	i = -1;
+	f = 0;
 	while (s[++i])
 	{
 		if (!f && ft_strchr("|<>\\n", s[i]))
@@ -100,13 +104,14 @@ void	tokenizer(char *s, t_token **token_list)
 			f = 1;
 			quote_check = s[i];
 		}
-		if ((!f && (s[i] == ' ' || s[i] == '\t')) || s[i + 1] == '\0')
+		if ((!f && (s[i] == ' ' || s[i] == '\t')) || i == ft_strlen(s) - 1)
 		{
 			conditional_print(s, pos, i, token_list);
 			pos = i + 1;
 		}
 	}
 }
+
 
 // Minishell $ echo "Hello World"|grep 'Hello|cat -e
 // STRING_TOKEN: echo 
