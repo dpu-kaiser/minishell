@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 14:59:19 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/05 13:23:27 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ t_token						*new_redir_token(int type, t_token *previous,
 								t_token *next);
 
 void						free_token(t_token *token);
+void						tokenizer(char *s, t_token **token_list);
 
 #endif
