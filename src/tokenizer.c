@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/09 12:59:03 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/09 15:27:31 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,69 +111,3 @@ void	tokenizer(char *s, t_token **token_list)
 		}
 	}
 }
-
-
-// Minishell $ echo "Hello World"|grep 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// Minishell $ 
-
-// Minishell $ Minishell $ echo "Hello World"|grep 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// Minishell $ 
-// STRING_TOKEN: Mi
-// STRING_TOKEN: Mi
-// STRING_TOKEN: ishell 
-// STRING_TOKEN: $ 
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello
-// PIPE_TOKEN
-// STRING_TOKEN: cat 
-// STRING_TOKEN: -e
-// Mi
-// STRING_TOKEN: -e
-// Mi
-// STRING_TOKEN: ishell 
-// STRING_TOKEN: $ 
-// Minishell $ echo "Hello World"|grep 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// Minishell $ echo "Hello World"|grep 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// Minishell $ echo "Hello World"|grep 'Hello|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello|cat -e
-// Minishell $ echo "Hello World"|grep 'Hello'|cat -e
-// STRING_TOKEN: echo 
-// STRING_TOKEN: "Hello World"
-// PIPE_TOKEN
-// STRING_TOKEN: grep 
-// STRING_TOKEN: 'Hello'
-// PIPE_TOKEN
-// STRING_TOKEN: cat 
-// STRING_TOKEN: -e
