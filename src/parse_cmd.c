@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 14:22:32 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 12:14:11 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,8 @@ static char	**collect_args(t_token **tokens)
 
 	cur = *tokens;
 	i = 0;
-	while (cur != NULL)
-	{
-		i++;
+	while (cur != NULL && ++i)
 		cur = cur->next;
-	}
 	result = malloc(sizeof(char *) * (i + 1));
 	if (result == NULL)
 		return (free_tokens(*tokens), NULL);
@@ -46,10 +43,11 @@ static char	**collect_args(t_token **tokens)
 	i = 0;
 	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
+		if (cur->previous)
+			free_token(cur->previous);
 		result[i] = cur->content.string;
 		i++;
 		cur = cur->next;
-		free_token(cur->previous);
 	}
 	result[i] = NULL;
 	return (result);

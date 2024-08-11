@@ -6,13 +6,13 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 15:21:04 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 12:12:16 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		collect_redir(t_token **tokens, t_redirection *result,
+static t_token	*collect_redir(t_token **tokens, t_redirection *result,
 					t_token *cur);
 static void		set_redir(t_redirection *redir, int type, char *specifier);
 static int		is_output_redir(int i);
@@ -31,7 +31,7 @@ t_redirection	*collect_redirs(t_token **tokens)
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-			collect_redir(tokens, result, cur);
+			cur = collect_redir(tokens, result, cur);
 		else if (cur->type == REDIR_TOKEN)
 		{
 			dbg("TODO: Add parsing errmsg");
@@ -43,7 +43,8 @@ t_redirection	*collect_redirs(t_token **tokens)
 	return (result);
 }
 
-static void	collect_redir(t_token **tokens, t_redirection *result, t_token *cur)
+static t_token	*collect_redir(t_token **tokens, t_redirection *result,
+		t_token *cur)
 {
 	set_redir(&result[is_output_redir(cur->content.redir_type)],
 		cur->content.redir_type, cur->next->content.string);
@@ -57,7 +58,11 @@ static void	collect_redir(t_token **tokens, t_redirection *result, t_token *cur)
 		free_token_and_connect(cur->previous);
 	}
 	else
+	{
 		free_token(cur);
+		return (NULL);
+	}
+	return (cur);
 }
 
 static void	set_redir(t_redirection *redir, int type, char *specifier)
