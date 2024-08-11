@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 10:59:16 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 12:22:07 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void			repl(const char *prompt);
 t_list			*parse(t_token *tokens);
 t_node			*parse_cmd(t_token *tokens);
 t_redirection	*collect_redirs(t_token **tokens);
-t_assign	**collect_assigns(t_token **tokens);
 
 void			print_ast(t_node *ast);
 #endif

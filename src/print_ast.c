@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:16:53 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 13:18:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 12:26:00 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ static void	print_cmd_node(t_node *ast, int indent)
 	while (ast->content.cmd.args != NULL && ast->content.cmd.args[i] != NULL)
 	{
 		printf(" '%s'", ast->content.cmd.args[i]);
-		i++;
-	}
-	i = 0;
-	printf("\n%*sASSIGNS:", indent + 2, "");
-	while (ast->content.cmd.assigns[i] != NULL)
-	{
-		printf(" %s=%s", ast->content.cmd.assigns[i]->var,
-			ast->content.cmd.assigns[i]->value);
 		i++;
 	}
 	printf("\n%*sREDIRS:", indent + 2, "");

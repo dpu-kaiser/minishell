@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:14:11 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 12:20:06 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@ static char	**collect_args(t_token **tokens);
 t_node	*parse_cmd(t_token *tokens)
 {
 	char			**args;
-	t_assign		**assigns;
 	t_redirection	*redirs;
 
 	redirs = collect_redirs(&tokens);
-	assigns = collect_assigns(&tokens);
 	args = collect_args(&tokens);
-	return (new_cmd_node(args, assigns, redirs));
+	return (new_cmd_node(args, redirs));
 }
 
 static char	**collect_args(t_token **tokens)
