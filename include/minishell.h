@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 13:55:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:59:16 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "debug_tools.h"
 # include "ast.h"
 # include "token.h"
+# include "env.h"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
