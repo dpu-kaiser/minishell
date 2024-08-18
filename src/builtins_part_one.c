@@ -6,9 +6,11 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/09 19:07:31 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/18 04:28:56 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "env.h"
 
 int	echo(char **av)
 {
@@ -16,6 +18,7 @@ int	echo(char **av)
 	int	f;
 
 	i = 1;
+	f = 1;
 	if (av[1][0] == '\0')
 	{
 		write(1, "\n", 1);
@@ -24,7 +27,7 @@ int	echo(char **av)
 	if (ft_strcmp(av[1], "-n"))
 	{
 		i++;
-		f = 1;
+		f = 0;
 	}
 	while (av[i])
 	{
@@ -35,139 +38,139 @@ int	echo(char **av)
 		write(1, "\n", 1);
 	return (0);
 }
-// Und args wären bei
-// echo Hello World
-// dann
-// echo, Hello und World 
 
-
-// Die Builtins haben bitte int als return type. 0 = Success, 1 = Error usw.
-// Als Parameter kann ich dir die das hier geben:
-// char **args
-// Aufpassen: args[0] ist der Name des Commands.
-// t_env *env
-// Hier hast du alle Variablen drin.
-// Schau dir dafür am besten env.h an.
-
-
-
-// 2-G-4:~ chuhlig$ echo -n hello
-// hello2-G-4:~ chuhlig$ echo test -n hello
-// test -n hello
-   
-
-
-// minishell % echo -n "Das ist"
-// echo -n " ein Beispiel"
-// echo " für echo -n."
-
-// 2-G-4:~ chuhlig$ echo 'hello world'
-// hello world
-// 2-G-4:~ chuhlig$ echo hello'world'
-// helloworld
-// 2-G-4:~ chuhlig$ echo hello""world
-// helloworld
-// 2-G-4:~ chuhlig$ echo ''
-
-// 2-G-4:~ chuhlig$ echo "$PWD"
-// /Users/chuhlig
-// 2-G-4:~ chuhlig$ echo '$PWD'
-// $PWD
-// 2-G-4:~ chuhlig$ echo "aspas ->'"
-// aspas ->'
-// 2-G-4:~ chuhlig$ echo "aspas -> ' "
-// aspas -> ' 
-// 2-G-4:~ chuhlig$ echo 'aspas ->"'
-// aspas ->"
-// 2-G-4:~ chuhlig$ echo 'aspas -> " '
-// aspas -> " 
-// 2-G-4:~ chuhlig$ echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"
-// > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
-// 2-G-4:~ chuhlig$ echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
-// > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
-// 2-G-4:~ chuhlig$ echo "exit_code ->$? user ->$USER home -> $HOME"
-// exit_code ->0 user ->chuhlig home -> /Users/chuhlig
-// 2-G-4:~ chuhlig$ echo 'exit_code ->$? user ->$USER home -> $HOME'
-// exit_code ->$? user ->$USER home -> $HOME
-// 2-G-4:~ chuhlig$ echo "$"
-// $
-// 2-G-4:~ chuhlig$ echo '$'
-// $
-// 2-G-4:~ chuhlig$ echo $
-// $
-
-// 2-G-4:~ chuhlig$ echo "test" -n hello
-// test -n hello
-// 2-G-4:~ chuhlig$ echo -n "test" -n hello
-// test -n hello2-G-4:~ chuhlig$ echo -n "test" echo -n hello
-// test echo -n hello2-G-4:~ chuhlig$ 
-
-
-
-// 2-G-4:~ chuhlig$ echo -n "test1 test2" test3
-// test1 test2 test32-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n " test1 test2 " 'test3 '
-//  test1 test2  test3 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n test1test2
-// test1test22-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo test1 -n
-// test1 -n
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo "test1 -n"
-// test1 -n
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -n test1
-// test12-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -n -n -n -n test1
-// test12-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -
-// -
-// 2-G-4:~ chuhlig$ echo --
-// --
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo "  -nn "
-//   -nn 
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo "-n test1 -n test2"
-// -n test1 -n test2
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo "test1 -n test2"
-// test1 -n test2
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo ~42
-// ~42
-// 2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -n -nasd
-// -nasd2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -n -n-nnnnn
-// -n-nnnnn2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -nnnnnnn -n -nnn -nnnnn -n-n
-// -n-n2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
-// feel my pain2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo -n -n -n-n
-// -n-n2-G-4:~ chuhlig$ 
-// 2-G-4:~ chuhlig$ echo "'totally logical'"
-// 'totally logical'
-// 2-G-4:~ chuhlig$ echo 'totally logical'
-// totally logical
-// 2-G-4:~ chuhlig$ echo ''totally logical''
-// totally logical
-// 2-G-4:~ chuhlig$ echo ""'totally logical'""
-// totally logical
-
-// 2-G-4:~ chuhlig$ eCho
-
-// 2-G-4:~ chuhlig$ eChO
-
-// 2-G-4:~ chuhlig$ eCHO
-
-// 2-G-4:~ chuhlig$ ECHO
-int	pwd_builtin(void)
+int	pwd(void)
 {
 	char	cwd[1028];
 
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
+	return (0);
+}
+
+int	env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i] != NULL)
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+	return (0);
+}
+
+int	cd(char **av)
+{
+
+	if(av[1] == NULL)
+	{
+	while (env[i] != NULL) // home command
+	{
+		if (ft_strncmp(env[i], "HOME=", 5) == 0)
+			break ;
+		i++;
+	}
+	// before chdir we need to update old pwd
+	// getcwd(cwd, sizeof(cwd));
+	// str = ft_strjoin("PWD= or old pwd=", cwd);
+	// env[i] = str;
+	if(chdir(env[i] + 5) == -1)
+			return;
+	}
+	else
+		//update old pwd
+		//
+		while (env[i] != NULL) // home command
+		{
+		if (ft_strncmp(env[i], "old PWD=", 5) == 0)
+			break ;
+		i++;
+		}
+		str = ft_strjoin("old pwd=", cwd);
+		env[i] = str;
+		//
+		chdir(av[1] ==  -1);
+			return ;
+	// udpate pwd
+	while (env[i] != NULL) // home command
+	{
+		if (ft_strncmp(env[i], "PWD=", 5) == 0)
+			break ;
+		i++;
+	}
+	str = ft_strjoin("PWD=", cwd);
+	env[i] = str;
+}
+
+// exit
+
+
+int	exit(char *av)
+{
+	freenode free toke free sequence stop repl free env
+	clear history
+}
+//joar
+
+//export
+
+int	export(char **av, t_env **env)
+{
+	char	*tmp;
+	if(tmp = ft_strchr(av[1]))
+	{
+		tmp = '\0';
+		t_env *current;
+		current = *env;
+		while(current)
+		{
+			if (strcmp(current->name, av[1]) == 0)
+			{
+                free(current->value);
+                current->value = ft_strdup(tmp + 1);
+                break;
+            }
+            current = current->next;
+		}
+		if (!current)
+		{
+            current = malloc(sizeof(t_env));
+            current->name = ft_strdup(av[1]);
+            current->value = ft_strdup(tmp + 1);
+            current->next = *env;
+            *env = current;
+        }
+		return (0);
+	}
+	else
+		syntax return 1;
+}
+
+//unset
+
+int	unset(char **av, t_env **env)
+{
+	t_env	*current;
+	t_env	*prev;
+	
+	current = env;
+	prev = NULL;
+	while (current)
+	{
+		if(ft_strcmp(current->name, av[1] == 0))
+			break ;
+		prev = current;
+		current = current->next;
+	}
+	if(current)
+	{
+		if(prev)
+			prev->next = current->next;
+		else
+			*env = current->next
+		free(t_env);
+	}
 	return (0);
 }
