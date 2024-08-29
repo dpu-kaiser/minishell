@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:37:54 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/05 13:55:13 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/11 14:01:57 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isprint(int c);
+int					ft_isspace(char c);
 int					ft_isascii(int c);
 int					ft_strlen(const char *str);
 void				*ft_memset(void *b, int c, size_t len);

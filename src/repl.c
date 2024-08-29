@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/09 15:27:11 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/11 14:41:29 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	repl(const char *prompt)
 			return ;
 		add_history(input);
 		token_list = NULL;
-		tokenizer(input, &token_list);
 		current = token_list;
+		tokenizer(input, &token_list, '\0');
 		while (current != NULL)
 		{
 			next = current->next;
