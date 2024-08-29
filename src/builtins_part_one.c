@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/18 04:28:56 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/29 14:24:13 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,11 @@ int	exit(char *av)
 
 //export
 
+// add a part to append it to list and maybe also check bc export pwd or home stuf 
 int	export(char **av, t_env **env)
 {
 	char	*tmp;
-	if(tmp = ft_strchr(av[1]))
+	if(tmp = ft_strchr(av[1], '='))
 	{
 		tmp = '\0';
 		t_env *current;
@@ -149,14 +150,17 @@ int	export(char **av, t_env **env)
 }
 
 //unset
-
+//for unset as well check and for name part
 int	unset(char **av, t_env **env)
 {
 	t_env	*current;
 	t_env	*prev;
-	
+	char	*tmp;
+
 	current = env;
 	prev = NULL;
+	tmp = ft_strchr(av[1], '=');
+	tmp = '\0';
 	while (current)
 	{
 		if(ft_strcmp(current->name, av[1] == 0))
@@ -171,6 +175,30 @@ int	unset(char **av, t_env **env)
 		else
 			*env = current->next
 		free(t_env);
+	}
+	return (0);
+}
+
+void	getenvlst(t_env **env, char **en)
+{
+	char	*tmp;
+	int		i;
+	int		t;
+	t_env 	*current;
+
+	t = 0;
+	i = 0;
+	while (en[i] != NULL)
+	{
+		tmp = ft_strchr(en[i], '=');
+		tmp = '\0';
+		current = *env;
+        current = malloc(sizeof(t_env));
+        current->name = ft_strdup(en[i]);
+        current->value = ft_strdup(tmp + 1);
+        current->next = *env;
+        *env = current;
+		i++;
 	}
 	return (0);
 }
