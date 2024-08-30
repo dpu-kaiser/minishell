@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/29 15:01:48 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/30 18:48:24 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,32 @@ void	print_token(t_token *token)
 	}
 }
 
+// void	conditional_print(char *string, int start_of_string, int i,
+// 	t_token **token_list)
+// {
+// 	char	*line;
+// 	int		len;
+
+// 	len = i - start_of_string + 1;
+// 	if (len > 0)
+// 	{
+// 		line = (char *)malloc(len + 1);
+// 		if (!line)
+// 		{
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		ft_strncpy(line, string + start_of_string, len);
+// 		line[len] = '\0';
+// 		while (*line == ' ' || *line == '\t')
+// 			line++;
+// 		if (*line != '\0')
+// 		{
+// 			*token_list = new_str_token(line, *token_list, NULL);
+// 			print_token(*token_list);
+// 		}
+// 	}
+// }
+
 void	conditional_print(char *string, int start_of_string, int i,
 	t_token **token_list)
 {
@@ -56,27 +82,48 @@ void	conditional_print(char *string, int start_of_string, int i,
 			line++;
 		if (*line != '\0')
 		{
-			*token_list = new_str_token(line, *token_list, NULL);
+			*token_list = new_str_token(line, token_list);
 			print_token(*token_list);
 		}
 	}
 }
 
+// void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
+// {
+// 	conditional_print(s, *start, *i - 1, token_list);
+// 	if (s[*i] == '<' && s[*i + 1] == '<')
+// 		*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
+// 	else if (s[*i] == '>' && s[*i + 1] == '>')
+// 		*token_list = new_redir_token(OUTPUT_APPEND, *token_list, NULL);
+// 	else if (s[*i] == '<')
+// 		*token_list = new_redir_token(INPUT_FILE, *token_list, NULL);
+// 	else if (s[*i] == '>')
+// 		*token_list = new_redir_token(OUTPUT_OVERRIDE, *token_list, NULL);
+// 	else if (s[*i] == '|')
+// 		*token_list = new_token(PIPE_TOKEN, *token_list, NULL);
+// 	else if (s[*i] == '\n')
+// 		*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
+// 	print_token(*token_list);
+// 	if (s[*i + 1] == '<' || s[*i + 1] == '>')
+// 		(*i)++;
+// 	*start = *i + 1;
+// }
+
 void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 {
 	conditional_print(s, *start, *i - 1, token_list);
 	if (s[*i] == '<' && s[*i + 1] == '<')
-		*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
+		*token_list = new_redir_token(INPUT_LIMITER, token_list);
 	else if (s[*i] == '>' && s[*i + 1] == '>')
-		*token_list = new_redir_token(OUTPUT_APPEND, *token_list, NULL);
+		*token_list = new_redir_token(OUTPUT_APPEND, token_list);
 	else if (s[*i] == '<')
-		*token_list = new_redir_token(INPUT_FILE, *token_list, NULL);
+		*token_list = new_redir_token(INPUT_FILE, token_list);
 	else if (s[*i] == '>')
-		*token_list = new_redir_token(OUTPUT_OVERRIDE, *token_list, NULL);
+		*token_list = new_redir_token(OUTPUT_OVERRIDE, token_list);
 	else if (s[*i] == '|')
-		*token_list = new_token(PIPE_TOKEN, *token_list, NULL);
+		*token_list = append_token(PIPE_TOKEN, token_list);
 	else if (s[*i] == '\n')
-		*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
+		*token_list = append_token(NEWLINE_TOKEN, token_list);
 	print_token(*token_list);
 	if (s[*i + 1] == '<' || s[*i + 1] == '>')
 		(*i)++;

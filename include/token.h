@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/05 13:23:27 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/30 17:01:27 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,20 @@ typedef struct s_token
 	struct s_token			*next;
 }							t_token;
 
-t_token						*new_token(int type, t_token *previous,
-								t_token *next);
-t_token						*new_str_token(char *str, t_token *previous,
-								t_token *next);
-t_token						*new_redir_token(int type, t_token *previous,
-								t_token *next);
+// t_token						*new_token(int type, t_token *previous,
+// 								t_token *next);
+// t_token						*new_str_token(char *str, t_token *previous,
+// 								t_token *next);
+// t_token						*new_redir_token(int type, t_token *previous,
+// 								t_token *next);
 
-void						free_token(t_token *token);
+// void						free_token(t_token *token);
 void						tokenizer(char *s, t_token **token_list);
+
+//
+t_token	*append_token(int type, t_token **list);
+t_token	*new_str_token(char *str, t_token **list);
+t_token	*new_redir_token(int type, t_token **list);
+void	free_token_list(t_token **t_list);
 
 #endif
