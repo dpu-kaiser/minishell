@@ -6,13 +6,13 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/29 14:24:13 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/09/04 17:52:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-int	echo(char **av)
+int	echo(char **av)//more or less done
 {
 	int	i;
 	int	f;
@@ -39,29 +39,44 @@ int	echo(char **av)
 	return (0);
 }
 
-int	pwd(void)
-{
-	char	cwd[1028];
 
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+int	pwd(t_env **env, char *av) //done
+{
+	t_env	*current;
+	t_env	*prev;
+	char	*tmp;
+
+	current = env;
+	prev = NULL;
+	while (current)
+	{
+		if(ft_strcmp(current->name, av == 0))
+			break ;
+		prev = current;
+		current = current->next;
+	}
+	ft_printf("%s\n", current->value);
 	return (0);
 }
 
-int	env(char **env)
+int	env(t_env **env)// here i need str env oder ich print es alles zusammen xD
 {
-	int	i;
+	t_env	*current;
+	t_env	*prev;
+	char	*tmp;
 
-	i = 0;
-	while (env[i] != NULL)
+	current = env;
+	prev = NULL;
+	while (current)
 	{
-		printf("%s\n", env[i]);
-		i++;
+		ft_printf("%s\n", current->name);
+		prev = current;
+		current = current->next;
 	}
 	return (0);
 }
 
-int	cd(char **av)
+int	cd(t_env **env,char **av) // here also need to do the same again for envstrarr. dont like it
 {
 
 	if(av[1] == NULL)
@@ -116,8 +131,7 @@ int	exit(char *av)
 
 //export
 
-// add a part to append it to list and maybe also check bc export pwd or home stuf 
-int	export(char **av, t_env **env)
+int	export(char **av, t_env **env) // here also need to do the same again for envstrarr. dont like it
 {
 	char	*tmp;
 	if(tmp = ft_strchr(av[1], '='))
@@ -151,7 +165,7 @@ int	export(char **av, t_env **env)
 
 //unset
 //for unset as well check and for name part
-int	unset(char **av, t_env **env)
+int	unset(char **av, t_env **env) // here also need to do the same again for envstrarr. dont like it
 {
 	t_env	*current;
 	t_env	*prev;
@@ -174,19 +188,17 @@ int	unset(char **av, t_env **env)
 			prev->next = current->next;
 		else
 			*env = current->next
-		free(t_env);
+		free(t_env);//need function for this
 	}
 	return (0);
 }
 
-void	getenvlst(t_env **env, char **en)
+void	getenvlst(t_env **env, char **en)// seperated name and value
 {
 	char	*tmp;
 	int		i;
-	int		t;
 	t_env 	*current;
 
-	t = 0;
 	i = 0;
 	while (en[i] != NULL)
 	{
@@ -202,3 +214,28 @@ void	getenvlst(t_env **env, char **en)
 	}
 	return (0);
 }
+
+void	getenvlststr(t_env **env, char **en)//without serparation
+{
+	int			i;
+	size_t		t;
+	t_env 	*current;
+
+	t = 0;
+	i = 0;
+	while (en[i] != NULL)
+	{
+		current = *env;
+        current = malloc(sizeof(t_env));
+		while(en[t] != '=')
+			t++;
+        current->name = ft_substr(en[i], 0, t);
+        current->value = ft_strdup(en[i]);
+        current->next = *env;
+        *env = current;
+		i++;
+	}
+	return (0);
+}
+
+//should name the list different
