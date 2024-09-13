@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/29 15:37:27 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:26:35 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	repl(const char *prompt)
 {
 	char	*input;
 	t_token	*token_list;
-	t_list *lines;
+	t_list	*lines;
 
 	while (1)
 	{
