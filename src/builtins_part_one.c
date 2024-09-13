@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/09/13 21:20:17 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/09/13 21:46:08 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	cd(t_env **env,char **av)
 	current = env;
 	if(av[1] == NULL)
 	{
+		update_oldpwd(&env);
 		while (current) // home command
 		{
 			if (ft_strncmp(current->name, "HOME", 4) == 0)
@@ -157,33 +158,39 @@ int	exit(char *av)
 int	export(char **av, t_env **env) // here also need to do the same again for envstrarr. dont like it
 {
 	char	*tmp;
-	if(tmp = ft_strchr(av[1], '='))
+	t_env	*current;
+	int		i;
+
+	i = i;
+	while(av[i])
 	{
-		tmp = '\0';
-		t_env *current;
-		current = *env;
-		while(current)
+		if(tmp = ft_strchr(av[i], '='))
 		{
-			if (strcmp(current->name, av[1]) == 0)
+			tmp = '\0';
+			current = *env;
+			while(current)
 			{
-                free(current->value);
-                current->value = ft_strdup(tmp + 1);
-                break;
-            }
-            current = current->next;
+				if (strcmp(current->name, av[i]) == 0)
+				{
+    	            free(current->value);
+    	            current->value = ft_strdup(tmp + 1);
+    	            break;
+    	        }
+    	        current = current->next;
+			}
+			if (!current)
+			{
+    	        current = malloc(sizeof(t_env));
+    	        current->name = ft_strdup(av[i]);
+    	        current->value = ft_strdup(tmp + 1);
+    	        current->next = *env;
+    	        *env = current;
+    	    }
+			return (0);
 		}
-		if (!current)
-		{
-            current = malloc(sizeof(t_env));
-            current->name = ft_strdup(av[1]);
-            current->value = ft_strdup(tmp + 1);
-            current->next = *env;
-            *env = current;
-        }
-		return (0);
+		i++;
 	}
-	else
-		syntax return 1;
+	return 1;
 }
 
 //unset
@@ -192,12 +199,9 @@ int	unset(char **av, t_env **env) // here also need to do the same again for env
 {
 	t_env	*current;
 	t_env	*prev;
-	char	*tmp;
 
 	current = env;
 	prev = NULL;
-	tmp = ft_strchr(av[1], '=');
-	tmp = '\0';
 	while (current)
 	{
 		if(ft_strcmp(current->name, av[1] == 0))
@@ -210,8 +214,9 @@ int	unset(char **av, t_env **env) // here also need to do the same again for env
 		if(prev)
 			prev->next = current->next;
 		else
-			*env = current->next
-		free(t_env);//need function for this
+			*env = current->next;
+		free(current->value);
+		free(current);
 	}
 	return (0);
 }
