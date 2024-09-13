@@ -6,13 +6,13 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/09/04 17:52:49 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/09/13 21:20:17 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-int	echo(char **av)//more or less done
+int	echo(char **av)
 {
 	int	i;
 	int	f;
@@ -40,7 +40,7 @@ int	echo(char **av)//more or less done
 }
 
 
-int	pwd(t_env **env, char *av) //done
+int	pwd(t_env **env, char *av)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -59,75 +59,98 @@ int	pwd(t_env **env, char *av) //done
 	return (0);
 }
 
-int	env(t_env **env)// here i need str env oder ich print es alles zusammen xD
+int	env(t_env **env)
 {
 	t_env	*current;
 	t_env	*prev;
-	char	*tmp;
 
 	current = env;
 	prev = NULL;
 	while (current)
 	{
-		ft_printf("%s\n", current->name);
+		ft_printf("%s", current->name);
+		ft_printf("=%s\n", current->value);
 		prev = current;
 		current = current->next;
 	}
 	return (0);
 }
 
-int	cd(t_env **env,char **av) // here also need to do the same again for envstrarr. dont like it
+void	update_oldpwd(t_env **env)
 {
+	t_env	*current;
+	t_env	*prev;
+	char	cwd[1028];
+	char	*tmp;
 
+	while (current) // home command
+	{
+		if (ft_strncmp(current->name, "OLDPWD", 6) == 0)
+			break ;
+		prev = current;
+		current = current->next;
+	}
+	getcwd(cwd, sizeof(cwd));
+	tmp = ft_strdup(cwd);
+	free(current->value);
+	current->value = tmp; 
+}
+
+void	update_pwd(t_env **env)
+{
+	t_env	*current;
+	t_env	*prev;
+	char	cwd[1028];
+	char	*tmp;
+
+	while (current)
+	{
+		if (ft_strncmp(current->name, "PWD", 3) == 0)
+			break ;
+		prev = current;
+		current = current->next;
+	}
+	getcwd(cwd, sizeof(cwd));
+	tmp = ft_strdup(cwd);
+	free(current->value);
+	current->value = tmp;
+}
+
+int	cd(t_env **env,char **av)
+{
+	t_env	*current;
+	t_env	*prev;
+	t_env	*pwd;
+
+	current = env;
 	if(av[1] == NULL)
 	{
-	while (env[i] != NULL) // home command
-	{
-		if (ft_strncmp(env[i], "HOME=", 5) == 0)
-			break ;
-		i++;
-	}
-	// before chdir we need to update old pwd
-	// getcwd(cwd, sizeof(cwd));
-	// str = ft_strjoin("PWD= or old pwd=", cwd);
-	// env[i] = str;
-	if(chdir(env[i] + 5) == -1)
-			return;
+		while (current) // home command
+		{
+			if (ft_strncmp(current->name, "HOME", 4) == 0)
+				break ;
+			prev = current;
+			current = current->next;
+		}
+		if(chdir(current->value) == -1)
+			return ;
 	}
 	else
-		//update old pwd
-		//
-		while (env[i] != NULL) // home command
-		{
-		if (ft_strncmp(env[i], "old PWD=", 5) == 0)
-			break ;
-		i++;
-		}
-		str = ft_strjoin("old pwd=", cwd);
-		env[i] = str;
-		//
-		chdir(av[1] ==  -1);
-			return ;
-	// udpate pwd
-	while (env[i] != NULL) // home command
 	{
-		if (ft_strncmp(env[i], "PWD=", 5) == 0)
-			break ;
-		i++;
+		update_oldpwd(&env);
+		if(chdir(av[1]) ==  -1)
+			return ;
+		update_pwd(&env);
 	}
-	str = ft_strjoin("PWD=", cwd);
-	env[i] = str;
 }
 
 // exit
-
 
 int	exit(char *av)
 {
 	freenode free toke free sequence stop repl free env
 	clear history
 }
-//joar
 
 //export
 
@@ -215,27 +238,27 @@ void	getenvlst(t_env **env, char **en)// seperated name and value
 	return (0);
 }
 
-void	getenvlststr(t_env **env, char **en)//without serparation
-{
-	int			i;
-	size_t		t;
-	t_env 	*current;
+// void	getenvlststr(t_env **env, char **en)//without serparation
+// {
+// 	int			i;
+// 	size_t		t;
+// 	t_env 	*current;
 
-	t = 0;
-	i = 0;
-	while (en[i] != NULL)
-	{
-		current = *env;
-        current = malloc(sizeof(t_env));
-		while(en[t] != '=')
-			t++;
-        current->name = ft_substr(en[i], 0, t);
-        current->value = ft_strdup(en[i]);
-        current->next = *env;
-        *env = current;
-		i++;
-	}
-	return (0);
-}
+// 	t = 0;
+// 	i = 0;
+// 	while (en[i] != NULL)
+// 	{
+// 		current = *env;
+//         current = malloc(sizeof(t_env));
+// 		while(en[t] != '=')
+// 			t++;
+//         current->name = ft_substr(en[i], 0, t);
+//         current->value = ft_strdup(en[i]);
+//         current->next = *env;
+//         *env = current;
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 //should name the list different
