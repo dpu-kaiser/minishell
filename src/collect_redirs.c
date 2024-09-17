@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 19:24:55 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 19:26:55 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_redirection	*collect_redirs(t_token **tokens)
 {
 	t_redirection	*result;
 	t_token			*cur;
-	int				is_redir_only;
 
 	cur = *tokens;
 	result = malloc(sizeof(t_redirection) * 2);
@@ -33,12 +32,9 @@ t_redirection	*collect_redirs(t_token **tokens)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
 		{
-			is_redir_only = 0;
-			if (cur->previous == NULL && cur->next->next == NULL)
-				is_redir_only = 1;
 			cur = collect_redir(tokens, result, cur);
-			if (is_redir_only)
-				*tokens = NULL;
+			*tokens = (t_token *)(((unsigned long)*tokens) & (~0
+						* (!cur->previous && !cur->next->next)));
 		}
 		else if (cur->type == REDIR_TOKEN)
 			return (free(result), NULL);
