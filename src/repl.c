@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 14:41:29 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:26:35 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,21 @@ void	repl(const char *prompt)
 {
 	char	*input;
 	t_token	*token_list;
-	t_token	*current;
-	t_token	*next;
+	t_list	*lines;
 
 	while (1)
 	{
 		input = readline(prompt);
 		if (input == NULL)
 			return ;
+		if (input[0] == '\0')
+			continue ;
 		add_history(input);
 		token_list = NULL;
-		current = token_list;
 		tokenizer(input, &token_list, '\0');
-		while (current != NULL)
-		{
-			next = current->next;
-			free_token(current);
-			current = next;
-		}
+		lines = parse(token_list);
+		if (lines)
+			print_ast(lines->content);
 		free(input);
 	}
 }
