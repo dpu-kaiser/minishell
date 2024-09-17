@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/09/13 21:46:08 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:23:15 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	exit(char *av)
 
 //export
 
-int	export(char **av, t_env **env) // here also need to do the same again for envstrarr. dont like it
+int	export(char **av, t_env **env)
 {
 	char	*tmp;
 	t_env	*current;
@@ -195,7 +195,7 @@ int	export(char **av, t_env **env) // here also need to do the same again for en
 
 //unset
 //for unset as well check and for name part
-int	unset(char **av, t_env **env) // here also need to do the same again for envstrarr. dont like it
+int	unset(char **av, t_env **env)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -241,6 +241,24 @@ void	getenvlst(t_env **env, char **en)// seperated name and value
 		i++;
 	}
 	return (0);
+}
+
+
+void	free_envlst(t_env **env)
+{
+	t_env	*cur;
+	t_env 	*new;
+
+	cur = *env;
+	while (cur)
+	{
+		new = cur->next;
+		free(cur->name);
+		free(cur->value);
+		free(cur);
+		cur = new;
+	}
+	
 }
 
 // void	getenvlststr(t_env **env, char **en)//without serparation
