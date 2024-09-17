@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 15:07:37 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 17:24:35 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ t_redirection	*collect_redirs(t_token **tokens)
 		}
 		else
 			cur = cur->next;
+	}
+	if (cur && cur->type == REDIR_TOKEN)
+	{
+		printf("Parsing error.\n");
+		return (free(result), NULL);
 	}
 	return (result);
 }
