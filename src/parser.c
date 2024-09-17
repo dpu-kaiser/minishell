@@ -6,11 +6,12 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 13:48:09 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 14:35:13 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "token.h"
 
 static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
@@ -49,7 +50,12 @@ static t_node	*parse_statement(t_token *tokens)
 	t_token	*left_side_tokens;
 
 	left_side_tokens = split_at_first(&tokens, PIPE_TOKEN);
-	if (tokens != NULL)
+	if (left_side_tokens == NULL)
+	{
+		free_tokens(tokens);
+		return (NULL);
+	}
+	else if (tokens != NULL)
 	{
 		return (new_pipe_node(parse_cmd(left_side_tokens),
 				parse_statement(tokens)));
@@ -74,6 +80,8 @@ t_token	*split_at_first(t_token **tokens, int type)
 	}
 	result = *tokens;
 	*tokens = split->next;
+	if (result == split)
+		result = NULL;
 	free_token(split);
 	return (result);
 }
