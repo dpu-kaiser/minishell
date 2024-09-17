@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 17:24:35 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 19:24:55 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_redirection	*collect_redirs(t_token **tokens)
 {
 	t_redirection	*result;
 	t_token			*cur;
+	int				is_redir_only;
 
 	cur = *tokens;
 	result = malloc(sizeof(t_redirection) * 2);
@@ -31,20 +32,21 @@ t_redirection	*collect_redirs(t_token **tokens)
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-			cur = collect_redir(tokens, result, cur);
-		else if (cur->type == REDIR_TOKEN)
 		{
-			printf("Parsing error.\n");
-			return (free(result), NULL);
+			is_redir_only = 0;
+			if (cur->previous == NULL && cur->next->next == NULL)
+				is_redir_only = 1;
+			cur = collect_redir(tokens, result, cur);
+			if (is_redir_only)
+				*tokens = NULL;
 		}
+		else if (cur->type == REDIR_TOKEN)
+			return (free(result), NULL);
 		else
 			cur = cur->next;
 	}
 	if (cur && cur->type == REDIR_TOKEN)
-	{
-		printf("Parsing error.\n");
 		return (free(result), NULL);
-	}
 	return (result);
 }
 

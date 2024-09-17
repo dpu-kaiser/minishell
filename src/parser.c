@@ -6,43 +6,29 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 15:06:55 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 19:03:48 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include "token.h"
 
 static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
 static t_node	*parse_statement(t_token *tokens);
-static void		free_node_wrapper(void *node);
 
 t_list	*parse(t_token *tokens)
 {
-	t_list	*result;
-	t_list	*current;
-	t_token	*current_tokens;
+	t_node	*result;
 
-	result = NULL;
-	current_tokens = split_at_first(&tokens, NEWLINE_TOKEN);
-	while (current_tokens != NULL)
-	{
-		if (result == NULL)
-		{
-			current = ft_lstnew(parse_statement(current_tokens));
-			result = current;
-		}
-		else
-		{
-			current->next = ft_lstnew(parse_statement(current_tokens));
-			current = current->next;
-		}
-		if (current == NULL)
-			return (ft_lstclear(&result, free_node_wrapper), NULL);
-		current_tokens = split_at_first(&tokens, NEWLINE_TOKEN);
-	}
-	return (result);
+	if ((*tokens).type == PIPE_TOKEN)
+		result = NULL;
+	else
+		result = parse_statement(tokens);
+	if (result == NULL)
+		printf("Parsing error.\n");
+	return (ft_lstnew(result));
 }
 
 static t_node	*parse_statement(t_token *tokens)
@@ -53,7 +39,6 @@ static t_node	*parse_statement(t_token *tokens)
 	if (left_side_tokens == NULL)
 	{
 		free_tokens(tokens);
-		printf("Parsing error.\n");
 		return (NULL);
 	}
 	else if (tokens != NULL)
@@ -96,9 +81,4 @@ static t_token	*find_token_by_type(t_token *tokens, int type)
 		tokens = tokens->next;
 	}
 	return (NULL);
-}
-
-static void	free_node_wrapper(void *node)
-{
-	free_node((t_node *)node);
 }

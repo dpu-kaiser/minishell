@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/13 16:18:29 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 18:46:35 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_node	*new_pipe_node(t_node *left, t_node *right)
 {
 	t_node	*node;
 
+	if (left == NULL || right == NULL)
+		return (NULL);
 	node = new_node(PIPE_NODE);
 	if (node == NULL)
 		return (NULL);
