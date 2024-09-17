@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 19:26:55 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 19:48:48 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static t_token	*collect_redir(t_token **tokens, t_redirection *result,
 					t_token *cur);
+static void		collect_and_check_redir(t_token **tokens, t_redirection *result,
+					t_token **cur);
 static void		set_redir(t_redirection *redir, int type, char *specifier);
 static int		is_output_redir(int i);
 
@@ -31,11 +33,7 @@ t_redirection	*collect_redirs(t_token **tokens)
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-		{
-			cur = collect_redir(tokens, result, cur);
-			*tokens = (t_token *)(((unsigned long)*tokens) & (~0
-						* (!cur->previous && !cur->next->next)));
-		}
+			collect_and_check_redir(tokens, result, &cur);
 		else if (cur->type == REDIR_TOKEN)
 			return (free(result), NULL);
 		else
@@ -44,6 +42,19 @@ t_redirection	*collect_redirs(t_token **tokens)
 	if (cur && cur->type == REDIR_TOKEN)
 		return (free(result), NULL);
 	return (result);
+}
+
+static void	collect_and_check_redir(t_token **tokens, t_redirection *result,
+		t_token **cur)
+{
+	int	is_redir_only;
+
+	is_redir_only = 0;
+	if ((*cur)->previous == NULL && (*cur)->next->next == NULL)
+		is_redir_only = 1;
+	*cur = collect_redir(tokens, result, *cur);
+	if (is_redir_only)
+		*tokens = NULL;
 }
 
 static t_token	*collect_redir(t_token **tokens, t_redirection *result,
