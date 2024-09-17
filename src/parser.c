@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 14:35:13 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 15:06:55 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static t_node	*parse_statement(t_token *tokens)
 	if (left_side_tokens == NULL)
 	{
 		free_tokens(tokens);
+		printf("Parsing error.\n");
 		return (NULL);
 	}
 	else if (tokens != NULL)

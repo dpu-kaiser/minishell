@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:12:16 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 15:07:37 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_redirection	*collect_redirs(t_token **tokens)
 			cur = collect_redir(tokens, result, cur);
 		else if (cur->type == REDIR_TOKEN)
 		{
-			dbg("TODO: Add parsing errmsg");
+			printf("Parsing error.\n");
 			return (free(result), NULL);
 		}
 		else

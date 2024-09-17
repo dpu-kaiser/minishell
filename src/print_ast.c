@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 15:16:53 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/13 16:21:32 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/09/17 15:09:04 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_ast(t_node *ast)
 static void	print_ast_rec(t_node *ast, int indent)
 {
 	if (!ast)
-		panic("Parsing error");
+		panic("Can't print AST!");
 	else if (ast->type == CMD_NODE)
 		print_cmd_node(ast, indent);
 	else if (ast->type == PIPE_NODE)
