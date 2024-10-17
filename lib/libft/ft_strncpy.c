@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/18 16:44:14 by chuhlig          ###   ########.fr       */
+/*   Created: 2024/08/05 13:41:47 by chuhlig           #+#    #+#             */
+/*   Updated: 2024/08/09 15:26:40 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-
-int	main(void)
+char	*ft_strncpy(char *s1, char *s2, int n)
 {
-	if (init())
-		return (1);
-	repl("Minishell $ ");
+	int	i;
+
+	i = -1;
+	while (++i < n && s2[i])
+		s1[i] = s2[i];
+	return (s1);
 }

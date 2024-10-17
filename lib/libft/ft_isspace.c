@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/07/18 16:44:14 by chuhlig          ###   ########.fr       */
+/*   Created: 2024/08/11 13:59:45 by chuhlig           #+#    #+#             */
+/*   Updated: 2024/08/11 14:04:23 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_isspace(char c)
 {
-	if (init())
+	if (c == ' ' || c == '\t')
 		return (1);
-	repl("Minishell $ ");
+	return (0);
 }
