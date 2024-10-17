@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:53:39 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/13 16:26:16 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:37:32 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-char				*env_get(t_env *env, char *name);
-void				env_export(t_env *env, char *name, char *value);
-void				env_unset(t_env *env, char *name);
-char				**env_to_strlst(t_env *env);
-t_env				**env_from_strlst(char **lst);
+void	getenvlst(t_env **env, char **en);
+void	free_envlst(t_env **env);
+
