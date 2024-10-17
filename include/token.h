@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/05 13:23:27 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:26:23 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 enum						e_token_type
 {
-	STRING_TOKEN,
-	PIPE_TOKEN,
-	REDIR_TOKEN,
-	NEWLINE_TOKEN
+	STRING_TOKEN = 1,
+	PIPE_TOKEN = 2,
+	REDIR_TOKEN = 4,
+	NEWLINE_TOKEN = 8
 };
 
 union						u_token_content
@@ -45,6 +45,9 @@ t_token						*new_redir_token(int type, t_token *previous,
 								t_token *next);
 
 void						free_token(t_token *token);
-void						tokenizer(char *s, t_token **token_list);
+void						free_token_and_connect(t_token *token);
+void						free_tokens(t_token *tokens);
+void						tokenizer(char *s, t_token **token_list,
+								char quote_check);
 
 #endif

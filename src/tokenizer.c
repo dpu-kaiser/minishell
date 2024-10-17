@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/29 15:01:48 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/17 14:21:26 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_token(t_token *token)
 	}
 }
 
-void	conditional_print(char *string, int start_of_string, int i,
+void	snap_string_token(char *string, int start_of_string, int i,
 	t_token **token_list)
 {
 	char	*line;
@@ -64,7 +64,7 @@ void	conditional_print(char *string, int start_of_string, int i,
 
 void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 {
-	conditional_print(s, *start, *i - 1, token_list);
+	snap_string_token(s, *start, *i - 1, token_list);
 	if (s[*i] == '<' && s[*i + 1] == '<')
 		*token_list = new_redir_token(INPUT_LIMITER, *token_list, NULL);
 	else if (s[*i] == '>' && s[*i + 1] == '>')
@@ -78,14 +78,15 @@ void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 	else if (s[*i] == '\n')
 		*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
 	print_token(*token_list);
-	if (s[*i + 1] == '<' || s[*i + 1] == '>')
+	if (s[*i] == '<' && s[*i + 1] == '<')
+		(*i)++;
+	if (s[*i] == '>' && s[*i + 1] == '>')
 		(*i)++;
 	*start = *i + 1;
 }
 
-void	tokenizer(char *s, t_token **token_list)
+void	tokenizer(char *s, t_token **token_list, char quote_check)
 {
-	char	quote_check;
 	int		pos;
 	int		i;
 	int		f;
@@ -104,10 +105,12 @@ void	tokenizer(char *s, t_token **token_list)
 			f = 1;
 			quote_check = s[i];
 		}
-		if ((!f && (s[i] == ' ' || s[i] == '\t')) || i == ft_strlen(s) - 1)
+		if ((!f && (ft_isspace(s[i + 1]))) || i == ft_strlen(s) - 1)
 		{
-			conditional_print(s, pos, i, token_list);
+			snap_string_token(s, pos, i, token_list);
 			pos = i + 1;
 		}
 	}
+	while ((*token_list)->previous)
+		*token_list = (*token_list)->previous;
 }
