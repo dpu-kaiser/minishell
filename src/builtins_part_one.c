@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/09/17 16:23:15 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/17 14:29:40 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,45 +221,6 @@ int	unset(char **av, t_env **env)
 	return (0);
 }
 
-void	getenvlst(t_env **env, char **en)// seperated name and value
-{
-	char	*tmp;
-	int		i;
-	t_env 	*current;
-
-	i = 0;
-	while (en[i] != NULL)
-	{
-		tmp = ft_strchr(en[i], '=');
-		tmp = '\0';
-		current = *env;
-        current = malloc(sizeof(t_env));
-        current->name = ft_strdup(en[i]);
-        current->value = ft_strdup(tmp + 1);
-        current->next = *env;
-        *env = current;
-		i++;
-	}
-	return (0);
-}
-
-
-void	free_envlst(t_env **env)
-{
-	t_env	*cur;
-	t_env 	*new;
-
-	cur = *env;
-	while (cur)
-	{
-		new = cur->next;
-		free(cur->name);
-		free(cur->value);
-		free(cur);
-		cur = new;
-	}
-	
-}
 
 // void	getenvlststr(t_env **env, char **en)//without serparation
 // {
