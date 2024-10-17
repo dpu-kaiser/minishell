@@ -6,17 +6,17 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:31:07 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/10/17 14:31:50 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:18:44 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-void	getenvlst(t_env **env, char **en)// seperated name and value
+void	getenvlst(t_env **env, char **en)
 {
 	char	*tmp;
 	int		i;
-	t_env 	*current;
+	t_env	*current;
 
 	i = 0;
 	while (en[i] != NULL)
@@ -24,21 +24,19 @@ void	getenvlst(t_env **env, char **en)// seperated name and value
 		tmp = ft_strchr(en[i], '=');
 		tmp = '\0';
 		current = *env;
-        current = malloc(sizeof(t_env));
-        current->name = ft_strdup(en[i]);
-        current->value = ft_strdup(tmp + 1);
-        current->next = *env;
-        *env = current;
+		current = malloc(sizeof(t_env));
+		current->name = ft_strdup(en[i]);
+		current->value = ft_strdup(tmp + 1);
+		current->next = *env;
+		*env = current;
 		i++;
 	}
-	return (0);
 }
-
 
 void	free_envlst(t_env **env)
 {
 	t_env	*cur;
-	t_env 	*new;
+	t_env	*new;
 
 	cur = *env;
 	while (cur)
@@ -49,5 +47,4 @@ void	free_envlst(t_env **env)
 		free(cur);
 		cur = new;
 	}
-	
 }
