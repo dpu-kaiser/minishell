@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/17 15:25:58 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:09:25 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ t_redirection	*collect_redirs(t_token **tokens);
 
 void			print_ast(t_node *ast);
 
-int	eval(t_node *node, t_env *env);
+int				eval(t_node *node, t_env *env);
+char			*get_cmd_path(char *cmd, t_env *env);
 #endif
