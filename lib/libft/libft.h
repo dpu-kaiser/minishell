@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:37:54 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/24 16:44:44 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/08/11 14:01:57 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isprint(int c);
+int					ft_isspace(char c);
 int					ft_isascii(int c);
 int					ft_strlen(const char *str);
 void				*ft_memset(void *b, int c, size_t len);
@@ -57,6 +58,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+char				*ft_strncpy(char *s1, char *s2, int n);
 
 typedef struct s_list
 {
