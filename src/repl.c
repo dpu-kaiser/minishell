@@ -6,14 +6,14 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/13 16:26:35 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:25:48 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include "token.h"
 
-void	repl(const char *prompt)
+void	repl(const char *prompt, t_env *env)
 {
 	char	*input;
 	t_token	*token_list;
@@ -31,7 +31,10 @@ void	repl(const char *prompt)
 		tokenizer(input, &token_list, '\0');
 		lines = parse(token_list);
 		if (lines)
+		{
 			print_ast(lines->content);
+			eval(lines->content, env);
+		}
 		free(input);
 	}
 }

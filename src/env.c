@@ -6,11 +6,13 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:31:07 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/10/17 15:18:44 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:58:28 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "get_next_line.h"
+#include "libft.h"
 
 void	getenvlst(t_env **env, char **en)
 {
@@ -22,7 +24,7 @@ void	getenvlst(t_env **env, char **en)
 	while (en[i] != NULL)
 	{
 		tmp = ft_strchr(en[i], '=');
-		tmp = '\0';
+		*tmp = '\0';
 		current = *env;
 		current = malloc(sizeof(t_env));
 		current->name = ft_strdup(en[i]);
@@ -47,4 +49,15 @@ void	free_envlst(t_env **env)
 		free(cur);
 		cur = new;
 	}
+}
+
+char *env_get(t_env *env, char *name)
+{
+	while (env != NULL)
+	{
+		if (!ft_strncmp(env->name, name, ft_strlen(name)))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }

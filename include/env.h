@@ -6,9 +6,11 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:53:39 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/17 15:37:32 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:59:59 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 typedef struct s_env
 {
@@ -19,4 +21,4 @@ typedef struct s_env
 
 void	getenvlst(t_env **env, char **en);
 void	free_envlst(t_env **env);
-
+char *env_get(t_env *env, char *name);
