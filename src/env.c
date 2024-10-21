@@ -6,13 +6,14 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:31:07 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/10/17 15:58:28 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/21 15:07:51 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include <stdlib.h>
 
 void	getenvlst(t_env **env, char **en)
 {
@@ -51,7 +52,7 @@ void	free_envlst(t_env **env)
 	}
 }
 
-char *env_get(t_env *env, char *name)
+char	*env_get(t_env *env, char *name)
 {
 	while (env != NULL)
 	{
