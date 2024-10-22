@@ -6,46 +6,73 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:15:24 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/21 15:07:27 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/22 15:42:07 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug_tools.h"
 #include "minishell.h"
+#include <stdlib.h>
+#include <sys/_types/_pid_t.h>
+#include <sys/cdefs.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
-static int	eval_pipe(t_pipe *pipe, t_env *env);
-static int	eval_cmd(t_cmd *cmd, t_env *env);
+int	eval_rec(t_node *node, t_env *env);
 
 int	eval(t_node *node, t_env *env)
 {
+	pid_t	pid;
+	int		result;
+
+	result = 0;
+	pid = fork();
+	if (pid < 0)
+	{
+		return (EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		result = eval_rec(node, env);
+		exit(result);
+	}
+	else
+	{
+		waitpid(pid, &result, 0);
+	}
+	return (result);
+}
+
+int	eval_rec(t_node *node, t_env *env)
+{
+	pid_t	pid;
+	int		result;
+
 	if (node->type == PIPE_NODE)
-		return (eval_pipe(&node->content.pipe, env));
+	{
+		pid = fork();
+		if (pid < 0)
+		{
+			return (EXIT_FAILURE);
+		}
+		if (pid == 0)
+		{
+			result = execute_cmd(&node->content.pipe.left->content.cmd, env);
+			exit(result);
+		}
+		else
+		{
+			result = eval(node->content.pipe.right, env);
+		}
+	}
 	else if (node->type == CMD_NODE)
-		return (eval_cmd(&node->content.cmd, env));
+	{
+		result = execute_cmd(&node->content.cmd, env);
+	}
 	else
 	{
 		panic(UNREACHABLE);
-		return (-1);
+		return (EXIT_FAILURE);
 	}
-}
-
-static int	eval_pipe(t_pipe *pipe, t_env *env)
-{
-	dbg("TODO: PIPE");
-	eval_cmd(&pipe->left->content.cmd, env);
-	eval_cmd(&pipe->right->content.cmd, env);
-	return (0);
-}
-
-static int	eval_cmd(t_cmd *cmd, t_env *env)
-{
-	char	*cmd_path;
-
-	cmd_path = get_cmd_path(cmd->args[0], env);
-	if (cmd_path == NULL)
-		return (1);
-	free(cmd->args[0]);
-	cmd->args[0] = cmd_path;
-	execute_cmd(cmd, env);
-	return (0);
+	return (result);
 }
