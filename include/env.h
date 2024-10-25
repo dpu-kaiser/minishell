@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:53:39 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/17 17:08:01 by chuhlig          ###   ########.fr       */
+/*   Updated: 2024/10/25 19:53:38 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-void	getenvlst(t_env **env, char **en);
-void	free_envlst(t_env **env);
-char	*env_get(t_env *env, char *name);
+void				getenvlst(t_env **env, char **en);
+void				free_envlst(t_env **env);
+char				*env_get(t_env *env, char *name);
+char				**env_to_strlst(t_env *env);
