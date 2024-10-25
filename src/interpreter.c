@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:15:24 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/25 12:47:15 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 13:25:33 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	eval(t_node *node, t_env *env)
 	pid_t	pid;
 	int		result;
 
+	if (node == NULL)
+		return (EXIT_FAILURE);
 	result = 0;
 	pid = fork();
 	if (pid < 0)
