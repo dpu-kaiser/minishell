@@ -6,28 +6,29 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:58:56 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/25 15:34:24 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:54:09 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
 #include <stdlib.h>
 #include <sys/_types/_pid_t.h>
 #include <sys/_types/_s_ifmt.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
-#include <fcntl.h>
+
+static void	format_args(char **args, t_env *env);
 
 int	execute_cmd(t_cmd *cmd, t_env *env)
 {
 	int		result;
 	char	*cmd_path;
-	int fd;
+	int		fd;
 
+	format_args(cmd->args, env);
 	cmd_path = get_cmd_path(cmd->args[0], env);
 	cmd->args[0] = cmd_path;
-
-	printf("STR: %s\n", format_string(cmd->args[1], env));
 	if (cmd->redirs[0].type == INPUT_FILE)
 	{
 		fd = open(cmd->redirs[0].specifier, O_RDONLY);
@@ -57,4 +58,17 @@ int	execute_cmd(t_cmd *cmd, t_env *env)
 	}
 	result = execve(cmd->args[0], cmd->args, env_to_strlst(env));
 	return (result);
+}
+
+static void	format_args(char **args, t_env *env)
+{
+	char	*formatted;
+
+	while (*args != NULL)
+	{
+		formatted = format_string(*args, env);
+		/* free(*args); */
+		*args = formatted;
+		args++;
+	}
 }

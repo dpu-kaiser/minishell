@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:46:10 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/25 16:37:15 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 18:54:03 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "minishell.h"
 
 static void	append_slice(char **dst, char *src, int start, int end);
+static void	append_var(char **dst, char *src, int *pos, t_env *env);
 
 enum		e_format_mode
 {
@@ -29,22 +30,35 @@ char	*format_string(char *str, t_env *env)
 	int		start;
 	int		mode;
 
-	*env = *env;
 	pos = 0;
 	start = 0;
 	mode = 0;
 	result = NULL;
+	if (str == NULL)
+		return (NULL);
 	while (str[pos] != '\0')
 	{
 		if (str[pos] == '\'')
 		{
-            append_slice(&result, str, start, pos);
+			append_slice(&result, str, start, pos);
 			start = pos + 1;
 			mode ^= LITERAL;
 		}
+		if (str[pos] == '"' && !(mode & LITERAL))
+		{
+			append_slice(&result, str, start, pos);
+			start = pos + 1;
+		}
+		if (str[pos] == '$' && !(mode & LITERAL))
+		{
+			append_slice(&result, str, start, pos);
+			append_var(&result, str, &pos, env);
+			start = pos;
+			continue ;
+		}
 		pos++;
 	}
-    append_slice(&result, str, start, pos);
+	append_slice(&result, str, start, pos);
 	return (result);
 }
 
@@ -63,7 +77,7 @@ static void	append_slice(char **dst, char *src, int start, int end)
 	result = malloc(len + (end - start) + 1);
 	if (!result)
 		return ;
-	ft_strncpy(result, src, len);
+	ft_strncpy(result, *dst, len);
 	i = 0;
 	while (start + i < end)
 	{
@@ -74,4 +88,38 @@ static void	append_slice(char **dst, char *src, int start, int end)
 	if (*dst != NULL)
 		free(*dst);
 	*dst = result;
+}
+
+static void	append_var(char **dst, char *src, int *pos, t_env *env)
+{
+	int		i;
+	char	*var;
+	char	*value;
+	char	*result;
+
+	i = 0;
+	*pos += 1;
+	while (src[*pos + i] != '\0' && src[*pos + i] != '\'' && src[*pos
+		+ i] != '"' && src[*pos + i] != '$')
+	{
+		i++;
+	}
+	var = malloc(i + 1);
+	if (var == NULL)
+		return ;
+	var[i] = '\0';
+	i--;
+	while (i >= 0)
+	{
+		var[i] = src[*pos + i];
+		i--;
+	}
+	value = env_get(env, var);
+	if (value != NULL)
+	{
+		result = ft_strjoin(*dst, value);
+		free(*dst);
+		*dst = result;
+	}
+	*pos += ft_strlen(var);
 }
