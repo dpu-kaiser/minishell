@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:58:56 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/25 13:31:16 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:34:24 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	execute_cmd(t_cmd *cmd, t_env *env)
 	cmd_path = get_cmd_path(cmd->args[0], env);
 	cmd->args[0] = cmd_path;
 
+	printf("STR: %s\n", format_string(cmd->args[1], env));
 	if (cmd->redirs[0].type == INPUT_FILE)
 	{
 		fd = open(cmd->redirs[0].specifier, O_RDONLY);
@@ -41,14 +42,14 @@ int	execute_cmd(t_cmd *cmd, t_env *env)
 	if (cmd->redirs[1].type == OUTPUT_APPEND)
 	{
 		dbg("OUTPUT_APPEND");
-		fd = open(cmd->redirs[1].specifier, O_WRONLY | O_CREAT | O_APPEND);
+		fd = open(cmd->redirs[1].specifier, O_WRONLY | O_CREAT | O_APPEND, 644);
 		if (fd < 0)
 			return (EXIT_FAILURE);
 		dup2(fd, STDOUT_FILENO);
 	}
 	else if (cmd->redirs[1].type == OUTPUT_OVERRIDE)
 	{
-		fd = open(cmd->redirs[1].specifier, O_WRONLY | O_CREAT | O_TRUNC);
+		fd = open(cmd->redirs[1].specifier, O_WRONLY | O_CREAT | O_TRUNC, 644);
 		if (fd < 0)
 			return (EXIT_FAILURE);
 		dup2(fd, STDOUT_FILENO);
