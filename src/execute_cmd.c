@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:58:56 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/25 13:31:16 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 20:59:22 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,21 @@ int	execute_cmd(t_cmd *cmd, t_env *env)
 	}
 	result = execve(cmd->args[0], cmd->args, env_to_strlst(env));
 	return (result);
+}
+
+static int	eval_cmd(t_cmd *cmd, t_env **env)
+{
+	if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
+		pwd(*env);
+	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
+		echo(cmd->args);
+	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
+		ft_env(*env);
+	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
+		cd(env, cmd->args);
+	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
+		unset(cmd->args, env);
+	else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
+		export(cmd->args, env);
+	return (0);
 }
