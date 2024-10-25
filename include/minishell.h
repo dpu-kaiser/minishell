@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/21 15:00:05 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:35:09 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void			print_ast(t_node *ast);
 
 int				eval(t_node *node, t_env *env);
 char			*get_cmd_path(char *cmd, t_env *env);
+char			*format_string(char *str, t_env *env);
 int				execute_cmd(t_cmd *cmd, t_env *env);
 #endif
