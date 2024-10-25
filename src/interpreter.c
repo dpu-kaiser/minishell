@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:15:24 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/22 15:42:07 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 12:47:15 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	eval_rec(t_node *node, t_env *env);
+static int	eval_rec(t_node *node, t_env *env, int in_fd);
 
 int	eval(t_node *node, t_env *env)
 {
@@ -33,7 +33,7 @@ int	eval(t_node *node, t_env *env)
 	}
 	if (pid == 0)
 	{
-		result = eval_rec(node, env);
+		result = eval_rec(node, env, STDIN_FILENO);
 		exit(result);
 	}
 	else
@@ -43,11 +43,15 @@ int	eval(t_node *node, t_env *env)
 	return (result);
 }
 
-int	eval_rec(t_node *node, t_env *env)
+static int	eval_rec(t_node *node, t_env *env, int in_fd)
 {
 	pid_t	pid;
 	int		result;
+	int		p[2];
 
+	result = pipe(p);
+	if (result == -1)
+		return (EXIT_FAILURE);
 	if (node->type == PIPE_NODE)
 	{
 		pid = fork();
@@ -57,12 +61,17 @@ int	eval_rec(t_node *node, t_env *env)
 		}
 		if (pid == 0)
 		{
+			close(p[0]);
+			dup2(in_fd, STDIN_FILENO);
+			dup2(p[1], STDOUT_FILENO);
 			result = execute_cmd(&node->content.pipe.left->content.cmd, env);
 			exit(result);
 		}
 		else
 		{
-			result = eval(node->content.pipe.right, env);
+			close(p[1]);
+			dup2(p[0], STDIN_FILENO);
+			result = eval_rec(node->content.pipe.right, env, p[0]);
 		}
 	}
 	else if (node->type == CMD_NODE)
