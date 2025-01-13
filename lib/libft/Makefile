@@ -26,6 +26,8 @@ SRC =		ft_atoi.c \
 			ft_strdup.c \
 			ft_striteri.c \
 			ft_strjoin.c \
+			ft_strcat.c \
+			ft_strcpy.c \
 			ft_strlcat.c \
 			ft_strlcpy.c \
 			ft_strlen.c \
@@ -45,6 +47,7 @@ SRC =		ft_atoi.c \
 			get_next_line.c \
 			get_next_line_utils.c \
 			ft_atol.c \
+			ft_strcmp.c \
 			ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \
 			ft_lstsize_bonus.c \

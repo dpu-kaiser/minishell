@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/08/29 15:26:55 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/11 15:22:07 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,4 @@ void	tokenizer(char *s, t_token **token_list, char quote_check)
 			pos = i + 1;
 		}
 	}
-	while ((*token_list)->previous)
-		*token_list = (*token_list)->previous;
 }

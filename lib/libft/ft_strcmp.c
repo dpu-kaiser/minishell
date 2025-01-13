@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/12/17 19:26:42 by chuhlig          ###   ########.fr       */
+/*   Created: 2024/12/18 19:03:14 by chuhlig           #+#    #+#             */
+/*   Updated: 2024/12/18 19:05:01 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	ft_strcmp(char *s1, char *s2)
 {
-	t_env	*env;
+	int	i;
 
-	env = NULL;
-	if (!argc && !argv)
-		return (1);
-	if (init())
-		return (1);
-	getenvlst(&env, envp);
-	repl("Minishell $ ", &env);
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

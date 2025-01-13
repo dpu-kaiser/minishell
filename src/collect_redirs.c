@@ -3,21 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   collect_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 19:48:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/13 09:52:00 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*collect_redir(t_token **tokens, t_redirection *result,
-					t_token *cur);
-static void		collect_and_check_redir(t_token **tokens, t_redirection *result,
-					t_token **cur);
+static void		collect_and_check_redir(t_redirection *result, t_token **cur);
 static void		set_redir(t_redirection *redir, int type, char *specifier);
-static int		is_output_redir(int i);
+
+static char	*read_heredoc(char *delimiter)
+{
+	char	*line;
+	char	*result;
+	char	*temp;
+	size_t	total_length;
+	size_t	line_length;
+
+	total_length = 0;
+	result = NULL;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		line_length = ft_strlen(line) + 1;
+		temp = malloc(total_length + line_length + 1);
+		if (!temp)
+		{
+			perror("malloc");
+			free(result);
+			return (NULL);
+		}
+		if (result)
+		{
+			ft_strcpy(temp, result);
+			free(result);
+		}
+		else
+		{
+			temp[0] = '\0';
+		}
+		ft_strcat(temp, line);
+		ft_strcat(temp, "\n");
+		result = temp;
+		total_length += line_length;
+		free(line);
+	}
+	return (result);
+}
 
 t_redirection	*collect_redirs(t_token **tokens)
 {
@@ -33,7 +73,7 @@ t_redirection	*collect_redirs(t_token **tokens)
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-			collect_and_check_redir(tokens, result, &cur);
+			collect_and_check_redir(result, &cur);
 		else if (cur->type == REDIR_TOKEN)
 			return (free(result), NULL);
 		else
@@ -44,56 +84,43 @@ t_redirection	*collect_redirs(t_token **tokens)
 	return (result);
 }
 
-static void	collect_and_check_redir(t_token **tokens, t_redirection *result,
-		t_token **cur)
-{
-	int	is_redir_only;
-
-	is_redir_only = 0;
-	if ((*cur)->previous == NULL && (*cur)->next->next == NULL)
-		is_redir_only = 1;
-	*cur = collect_redir(tokens, result, *cur);
-	if (is_redir_only)
-		*tokens = NULL;
-}
-
-static t_token	*collect_redir(t_token **tokens, t_redirection *result,
-		t_token *cur)
-{
-	set_redir(&result[is_output_redir(cur->content.redir_type)],
-		cur->content.redir_type, cur->next->content.string);
-	cur = cur->next;
-	free_token_and_connect(cur->previous);
-	if (cur->next != NULL)
-	{
-		if (cur->previous == NULL)
-			*tokens = cur->next;
-		cur = cur->next;
-		free_token_and_connect(cur->previous);
-	}
-	else
-	{
-		free_token(cur);
-		return (NULL);
-	}
-	return (cur);
-}
-
 static void	set_redir(t_redirection *redir, int type, char *specifier)
 {
 	redir->type = type;
 	redir->specifier = specifier;
 }
 
-static int	is_output_redir(int i)
+static void	collect_and_check_redir(t_redirection *result, t_token **cur)
 {
-	if (i & (INPUT_FILE | INPUT_LIMITER))
-		return (0);
-	else if (i & (OUTPUT_APPEND | OUTPUT_OVERRIDE))
-		return (1);
-	else
+	char	*heredoc_data;
+	t_token	*next_token;
+
+	heredoc_data = NULL;
+	if ((*cur)->content.redir_type == INPUT_LIMITER)
 	{
-		panic(UNREACHABLE);
-		return (-1);
+		heredoc_data = read_heredoc((*cur)->next->content.string);
+		if (!heredoc_data)
+		{
+			perror("Heredoc allocation failed");
+			return ;
+		}
+		set_redir(&result[0], INPUT_LIMITER, heredoc_data);
 	}
+	else if ((*cur)->content.redir_type == INPUT_FILE)
+		set_redir(&result[0], INPUT_FILE, ft_strdup((*cur)->next->content.string));
+	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
+		set_redir(&result[1], OUTPUT_OVERRIDE, ft_strdup((*cur)->next->content.string));
+	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
+		set_redir(&result[1], OUTPUT_APPEND, ft_strdup((*cur)->next->content.string));
+	else
+		printf("Unknown redirection type encountered\n");
+	next_token = (*cur)->next;
+	free_token_and_connect(*cur);
+	if (next_token)
+	{
+		*cur = next_token->next;
+		free_token_and_connect(next_token);
+	}
+	else
+		*cur = NULL;
 }

@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/12/17 19:26:42 by chuhlig          ###   ########.fr       */
+/*   Created: 2025/01/09 14:38:30 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/09 14:38:53 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-
-int	main(int argc, char *argv[], char *envp[])
+char	*ft_strcpy(char *dest, char *src)
 {
-	t_env	*env;
+	int	i;
 
-	env = NULL;
-	if (!argc && !argv)
-		return (1);
-	if (init())
-		return (1);
-	getenvlst(&env, envp);
-	repl("Minishell $ ", &env);
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

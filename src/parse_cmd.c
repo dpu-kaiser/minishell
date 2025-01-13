@@ -3,28 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:20:06 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/11 16:04:50 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**collect_args(t_token **tokens);
+static char	**collect_args(t_token **tokens, t_env **env);
 
-t_node	*parse_cmd(t_token *tokens)
+t_node	*parse_cmd(t_token *tokens, t_env **env)
 {
 	char			**args;
 	t_redirection	*redirs;
 
 	redirs = collect_redirs(&tokens);
-	args = collect_args(&tokens);
+	if (redirs == NULL)
+		return (NULL);
+	args = collect_args(&tokens, env);
+	if (args == NULL)
+	{
+		free(redirs);
+		return (NULL);
+	}
 	return (new_cmd_node(args, redirs));
 }
 
-static char	**collect_args(t_token **tokens)
+static char	**collect_args(t_token **tokens, t_env **env)
 {
 	t_token	*cur;
 	char	**result;
@@ -43,7 +50,7 @@ static char	**collect_args(t_token **tokens)
 	{
 		if (cur->previous)
 			free_token(cur->previous);
-		result[i] = cur->content.string;
+		result[i] = format_string(cur->content.string, *env);
 		i++;
 		cur = cur->next;
 	}

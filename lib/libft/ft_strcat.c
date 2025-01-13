@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/12/17 19:26:42 by chuhlig          ###   ########.fr       */
+/*   Created: 2025/01/09 13:06:44 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/09 13:07:15 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-
-int	main(int argc, char *argv[], char *envp[])
+char	*ft_strcat(char *dest, char *src)
 {
-	t_env	*env;
+	int		i;
+	int		j;
 
-	env = NULL;
-	if (!argc && !argv)
-		return (1);
-	if (init())
-		return (1);
-	getenvlst(&env, envp);
-	repl("Minishell $ ", &env);
+	j = 0;
+	i = 0;
+	while (dest[i])
+		i++;
+	while (src[j])
+	{
+		dest[i + j] = src[j];
+		j++;
+	}
+	dest[i + j] = '\0';
+	return (dest);
 }
