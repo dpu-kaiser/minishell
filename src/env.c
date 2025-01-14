@@ -6,11 +6,12 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:31:07 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/12/17 19:36:14 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:44:34 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "minishell.h"
 #include <stdlib.h>
 
 void	getenvlst(t_env **env, char **en)
@@ -59,4 +60,22 @@ char	*env_get(t_env *env, char *name)
 		env = env->next;
 	}
 	return (NULL);
+}
+
+t_env	*env_new(char *name)
+{
+	t_env	*result;
+
+	result = malloc(sizeof(t_env));
+	if (!result)
+		return (NULL);
+	result->name = name;
+	return (result);
+}
+
+void	free_env_node(t_env *node)
+{
+	free(node->name);
+	free(node->value);
+	free(node);
 }

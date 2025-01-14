@@ -94,7 +94,7 @@ static void	append_var(char **dst, char *src, int *pos, t_env *env)
 	i = 0;
 	*pos += 1;
 	while (src[*pos + i] != '\0' && src[*pos + i] != '\'' && src[*pos
-		+ i] != '"' && src[*pos + i] != '$')
+			+ i] != '"' && src[*pos + i] != '$')
 	{
 		i++;
 	}
