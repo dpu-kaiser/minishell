@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/11 16:01:44 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:53:29 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	repl(const char *prompt, t_env **env)
 		if (lines)
 		{
 			print_ast(lines->content);
-			eval(lines->content, env);
+			set_return_code(eval(lines->content, env), env);
 		}
 		free(input);
 	}

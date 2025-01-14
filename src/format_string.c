@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:30:11 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/12/17 19:31:54 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 18:06:17 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,16 @@
 static void	append_slice(char **dst, char *src, int start, int end);
 static void	append_var(char **dst, char *src, int *pos, t_env *env);
 
-enum		e_format_mode
-{
-	LITERAL = 1,
-	VARIABLE = 2,
-};
-
 char	*format_string(char *str, t_env *env)
 {
 	char	*result;
 	int		pos;
 	int		start;
-	int		mode;
+	int		is_literal;
 
 	pos = 0;
 	start = 0;
-	mode = 0;
+	is_literal = 0;
 	result = NULL;
 	if (str == NULL)
 		return (NULL);
@@ -42,14 +36,14 @@ char	*format_string(char *str, t_env *env)
 		{
 			append_slice(&result, str, start, pos);
 			start = pos + 1;
-			mode ^= LITERAL;
+			is_literal = !is_literal;
 		}
-		if (str[pos] == '"' && !(mode & LITERAL))
+		if (str[pos] == '"' && !is_literal)
 		{
 			append_slice(&result, str, start, pos);
 			start = pos + 1;
 		}
-		if (str[pos] == '$' && !(mode & LITERAL))
+		if (str[pos] == '$' && !is_literal)
 		{
 			append_slice(&result, str, start, pos);
 			append_var(&result, str, &pos, env);

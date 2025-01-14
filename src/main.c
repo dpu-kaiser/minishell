@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/12/17 19:26:42 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:22:40 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int	main(int argc, char *argv[], char *envp[])
 	if (init())
 		return (1);
 	getenvlst(&env, envp);
+	set_return_code(0, &env);
 	repl("Minishell $ ", &env);
 }

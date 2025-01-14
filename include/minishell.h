@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/11 16:05:11 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:52:29 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int				eval(t_node *node, t_env **env);
 char			*get_cmd_path(char *cmd, t_env *env);
 int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env);
-
+int set_return_code(int return_code, t_env **env);
 
 #endif
