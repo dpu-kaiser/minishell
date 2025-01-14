@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/10 14:36:55 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 16:51:05 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,43 +41,22 @@ int	echo(char **av)
 	return (0);
 }
 
-int	pwd(t_env *env)
+void	exit_shell(t_env **env, int exit_status)
 {
-	while (env)
-	{
-		if (ft_strncmp(env->name, "PWD", 4) == 0)
-		{
-			ft_printf("%s\n", env->value);
-			break ;
-		}
-		env = env->next;
-	}
-	return (0);
+	free_envlst(env);
+	exit(exit_status);
 }
 
-int	ft_env(t_env *env)
+int	builtin_exit(char **args, t_env **env)
 {
-	while (env != NULL)
-	{
-		printf("%s", env->name);
-		printf("=%s\n", env->value);
-		env = env->next;
-	}
-	return (0);
-}
+	int	exit_status;
 
-// int	exit(char *av)
-// {
-// 	freenode free toke free sequence stop repl free env;
-// 	clear history;
-// }
-////
-
-void	free_env_node(t_env *node)
-{
-	free(node->name);
-	free(node->value);
-	free(node);
+	if (args[1])
+		exit_status = ft_atoi(args[1]);
+	else
+		exit_status = 0;
+	exit_shell(env, exit_status);
+	return (exit_status);
 }
 
 int	unset(char **av, t_env **env)
@@ -107,17 +86,6 @@ int	unset(char **av, t_env **env)
 		}
 	}
 	return (0);
-}
-
-t_env	*env_new(char *name)
-{
-	t_env	*result;
-
-	result = malloc(sizeof(t_env));
-	if (!result)
-		return (NULL);
-	result->name = name;
-	return (result);
 }
 
 t_env	*check_existing(t_env *env, char *av)

@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/11 16:05:11 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:29:46 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@
 # include <stdlib.h>
 # include <termios.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
 int				init(void);
 int				init_signal_handling(void);
 
-void			repl(const char *prompt, t_env **env);
+void			repl(const char *prompt, t_env **env, int *promptflag);
 
 t_list			*parse(t_token *tokens, t_env **env);
 t_node			*parse_cmd(t_token *tokens, t_env **env);
@@ -40,6 +42,6 @@ int				eval(t_node *node, t_env **env);
 char			*get_cmd_path(char *cmd, t_env *env);
 int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env);
-
+int				handle_redirections(t_redirection *redirs);
 
 #endif

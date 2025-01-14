@@ -6,12 +6,32 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/11 15:22:07 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:58:41 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "token.h"
+
+t_token	*reverse_token_list(t_token *head)
+{
+	t_token	*prev;
+	t_token	*current;
+	t_token	*next;
+
+	prev = NULL;
+	current = head;
+	next = NULL;
+	while (current != NULL)
+	{
+		next = current->previous;
+		current->next = prev;
+		current->previous = next;
+		prev = current;
+		current = next;
+	}
+	return (prev);
+}
 
 void	print_token(t_token *token)
 {
@@ -77,7 +97,6 @@ void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 		*token_list = new_token(PIPE_TOKEN, *token_list, NULL);
 	else if (s[*i] == '\n')
 		*token_list = new_token(NEWLINE_TOKEN, *token_list, NULL);
-	print_token(*token_list);
 	if (s[*i] == '<' && s[*i + 1] == '<')
 		(*i)++;
 	if (s[*i] == '>' && s[*i + 1] == '>')
@@ -111,4 +130,5 @@ void	tokenizer(char *s, t_token **token_list, char quote_check)
 			pos = i + 1;
 		}
 	}
+	*token_list = reverse_token_list(*token_list);
 }

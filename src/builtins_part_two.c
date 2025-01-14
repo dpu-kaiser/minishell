@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:52:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/12/20 18:53:03 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:26:39 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,31 @@ int	cd(t_env **env, char **av)
 		if (chdir(av[1]) == -1)
 			return (1);
 		update_pwd(env);
+	}
+	return (0);
+}
+
+int	pwd(t_env *env)
+{
+	while (env)
+	{
+		if (ft_strncmp(env->name, "PWD", 4) == 0)
+		{
+			ft_printf("%s\n", env->value);
+			break ;
+		}
+		env = env->next;
+	}
+	return (0);
+}
+
+int	ft_env(t_env *env)
+{
+	while (env != NULL)
+	{
+		printf("%s", env->name);
+		printf("=%s\n", env->value);
+		env = env->next;
 	}
 	return (0);
 }
