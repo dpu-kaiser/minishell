@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:22:07 by dkaiser          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:10:21 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,15 @@
 int				init(void);
 int				init_signal_handling(void);
 
-void			repl(const char *prompt);
+void			repl(const char *prompt, t_env **env);
 
 t_list			*parse(t_token *tokens);
 t_node			*parse_cmd(t_token *tokens);
 t_redirection	*collect_redirs(t_token **tokens);
 
 void			print_ast(t_node *ast);
+
+int				eval(t_node *node, t_env **env);
+char			*get_cmd_path(char *cmd, t_env *env);
+int				execute_cmd(t_cmd *cmd, t_env *env);
 #endif
