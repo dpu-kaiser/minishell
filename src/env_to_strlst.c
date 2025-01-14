@@ -26,6 +26,11 @@ char	**env_to_strlst(t_env *env)
 	cur = env;
 	while (cur != NULL)
 	{
+		if (ft_strchr(cur->name, '?'))
+		{
+			cur = cur->next;
+			continue;
+		}
 		size++;
 		cur = cur->next;
 	}
@@ -36,6 +41,8 @@ char	**env_to_strlst(t_env *env)
 	cur = env;
 	while (i < size)
 	{
+		if (ft_strchr(cur->name, '?'))
+		 cur = cur->next;
 		result[i] = get_var_assign(cur);
 		cur = cur->next;
 		i++;

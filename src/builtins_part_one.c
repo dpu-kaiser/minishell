@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include <stdio.h>
 
 int	echo(char **av)
 {
@@ -22,7 +23,7 @@ int	echo(char **av)
 	if (av[1] == NULL || av[1][0] == '\0')
 	{
 		write(1, "\n", 1);
-		return (1);
+		return (0);
 	}
 	if (ft_strncmp(av[1], "-n", 3) == 0)
 	{
@@ -68,6 +69,8 @@ int	unset(char **av, t_env **env)
 	i = 0;
 	while (av[++i])
 	{
+		if (ft_strchr(av[i], '?'))
+			return (1);
 		current = *env;
 		prev = NULL;
 		while (current)
@@ -113,6 +116,8 @@ int	export(char **av, t_env **env)
 		{
 			tmp = ft_strchr(av[i], '=');
 			*tmp = '\0';
+			if (ft_strchr(av[i], '?'))
+				return (1);
 			current = check_existing(*env, av[i]);
 			if (current)
 				free(current->value);
@@ -126,4 +131,20 @@ int	export(char **av, t_env **env)
 		}
 	}
 	return (0);
+}
+
+void set_return_code(int return_code, t_env **env)
+{
+	t_env *cur;
+
+	cur = check_existing(*env, "?");
+	if (cur)
+		free(cur->value);
+	else
+	{
+		cur = env_new(ft_strdup("?"));
+		cur->next = *env;
+		*env = cur;
+	}
+	cur->value = ft_itoa(return_code);
 }

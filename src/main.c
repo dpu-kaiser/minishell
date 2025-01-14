@@ -24,6 +24,8 @@ int	main(int argc, char *argv[], char *envp[])
 	if (init())
 		return (1);
 	getenvlst(&env, envp);
+
+  set_return_code(0, &env);
 	repl("Minishell $ ", &env, &promptflag);
 	free_envlst(&env);
 	return (0);

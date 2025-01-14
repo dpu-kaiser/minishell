@@ -37,7 +37,7 @@ void	repl(const char *prompt, t_env **env, int *promptflag)
 		tokenizer(input, &token_list, '\0');
 		lines = parse(token_list, env);
 		if (lines)
-			eval(lines->content, env);
+			set_return_code(eval(lines->content, env), env);
 		free(input);
 	}
 }
