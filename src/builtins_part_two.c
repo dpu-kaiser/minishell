@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:52:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 14:26:39 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:31:17 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ int	ft_env(t_env *env)
 {
 	while (env != NULL)
 	{
+		if (strchr(env->name, '?'))
+		{
+			env = env->next;
+			continue ;
+		}
 		printf("%s", env->name);
 		printf("=%s\n", env->value);
 		env = env->next;

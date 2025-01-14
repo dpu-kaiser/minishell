@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 16:51:05 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:51:59 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,15 @@ int	export(char **av, t_env **env)
 			}
 			current->value = ft_strdup(tmp + 1);
 		}
+		else
+			return (1);
 	}
 	return (0);
 }
 
 void set_return_code(int return_code, t_env **env)
 {
-	t_env *cur;
+	t_env	*cur;
 
 	cur = check_existing(*env, "?");
 	if (cur)

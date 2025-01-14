@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 16:59:45 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:52:27 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	handle_redirections(t_redirection *redirs)
 		fd = open(redirs[0].specifier, O_RDONLY);
 		if (fd < 0)
 		{
-			perror(redirs[0].specifier);
+			perror("open");
 			return (-1);
 		}
 		dup2(fd, STDIN_FILENO);

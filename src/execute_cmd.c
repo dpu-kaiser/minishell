@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 16:56:24 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:55:18 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 		cmd_path = get_cmd_path(cmd->args[0], *env);
 		if (!cmd_path)
 		{
-			printf("command not found\n");
+			perror("command not found");
 			exit(EXIT_FAILURE);
 		}
 		execve(cmd_path, cmd->args, env_to_strlst(*env));

@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:22:28 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 14:10:49 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/14 19:34:10 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**env_to_strlst(t_env *env)
 		if (ft_strchr(cur->name, '?'))
 		{
 			cur = cur->next;
-			continue;
+			continue ;
 		}
 		size++;
 		cur = cur->next;
@@ -42,7 +42,7 @@ char	**env_to_strlst(t_env *env)
 	while (i < size)
 	{
 		if (ft_strchr(cur->name, '?'))
-		 cur = cur->next;
+			cur = cur->next;
 		result[i] = get_var_assign(cur);
 		cur = cur->next;
 		i++;
