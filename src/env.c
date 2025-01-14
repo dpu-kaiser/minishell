@@ -22,7 +22,7 @@ void	getenvlst(t_env **env, char **en)
 	while (en[i] != NULL)
 	{
 		tmp = ft_strchr(en[i], '=');
-		tmp = '\0';
+		*tmp = '\0';
 		current = *env;
 		current = malloc(sizeof(t_env));
 		current->name = ft_strdup(en[i]);
