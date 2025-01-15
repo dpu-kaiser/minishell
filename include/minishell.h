@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/15 14:04:19 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:35:40 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env);
 int set_return_code(int return_code, t_env **env);
 int				handle_redirections(t_redirection *redirs);
+void	*error(int err_code, char *err_text, int exit_code, int *ret_code);
 
 #endif
