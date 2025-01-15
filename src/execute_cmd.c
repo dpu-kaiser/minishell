@@ -6,20 +6,18 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 19:55:18 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:42:00 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 int	is_builtin(char *cmd)
 {
-	return ((ft_strcmp(cmd, "export") == 0)
-		|| (ft_strcmp(cmd, "unset") == 0)
-		|| (ft_strcmp(cmd, "cd") == 0)
-		|| (ft_strcmp(cmd, "exit") == 0)
-		|| (ft_strcmp(cmd, "echo") == 0)
-		|| (ft_strcmp(cmd, "pwd") == 0)
+	return ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
+		|| (ft_strcmp(cmd, "cd") == 0) || (ft_strcmp(cmd, "exit") == 0)
+		|| (ft_strcmp(cmd, "echo") == 0) || (ft_strcmp(cmd, "pwd") == 0)
 		|| (ft_strcmp(cmd, "env") == 0));
 }
 
@@ -50,6 +48,7 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 	int		original_stdout;
 	int		original_stdin;
 	int		result;
+	int		i;
 
 	original_stdout = dup(STDOUT_FILENO);
 	original_stdin = dup(STDIN_FILENO);
@@ -82,15 +81,14 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 	}
 	if (pid == 0)
 	{
-		cmd_path = get_cmd_path(cmd->args[0], *env);
+		i = 0;
+		while (cmd->args[i][0] == '\0')
+			i++;
+		cmd_path = get_cmd_path(cmd->args[i], *env, &result);
 		if (!cmd_path)
-		{
-			perror("command not found");
-			exit(EXIT_FAILURE);
-		}
-		execve(cmd_path, cmd->args, env_to_strlst(*env));
-		perror("execve");
-		exit(EXIT_FAILURE);
+			exit(result);
+		execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
+		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
 	dup2(original_stdout, STDOUT_FILENO);

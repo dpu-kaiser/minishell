@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/14 15:29:46 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:04:19 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_redirection	*collect_redirs(t_token **tokens);
 
 void			print_ast(t_node *ast);
 int				eval(t_node *node, t_env **env);
-char			*get_cmd_path(char *cmd, t_env *env);
+char			*get_cmd_path(char *cmd, t_env *env, int *return_code);
 int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env);
 int set_return_code(int return_code, t_env **env);
