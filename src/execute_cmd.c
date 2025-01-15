@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 15:50:56 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 15:52:08 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	execute_builtin(char **args, t_env **env)
 
 int	execute_cmd(t_cmd *cmd, t_env **env)
 {
-	int		original_std[2];
-	int		result;
+	int	original_std[2];
+	int	result;
 
 	original_std[1] = dup(STDOUT_FILENO);
 	original_std[0] = dup(STDIN_FILENO);
@@ -93,10 +93,9 @@ static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
 		while (cmd->args[i][0] == '\0')
 			i++;
 		cmd_path = get_cmd_path(cmd->args[i], *env, &result);
-		if (!cmd_path)
-			exit(result);
-		execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
-		exit(EXIT_SUCCESS);
+		if (cmd_path != NULL)
+			execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
+		exit(result);
 	}
 	waitpid(pid, &status, 0);
 	establish_pipeline(original_std[0], original_std[1]);
