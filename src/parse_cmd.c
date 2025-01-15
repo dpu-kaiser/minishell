@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/11 16:04:50 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/15 17:22:58 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 	char			**args;
 	t_redirection	*redirs;
 
-	redirs = collect_redirs(&tokens);
+	redirs = collect_redirs(&tokens, *env);
 	if (redirs == NULL)
 		return (NULL);
 	args = collect_args(&tokens, env);

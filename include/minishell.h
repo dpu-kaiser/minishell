@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/15 16:35:40 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 17:20:56 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			repl(const char *prompt, t_env **env, int *promptflag);
 
 t_list			*parse(t_token *tokens, t_env **env);
 t_node			*parse_cmd(t_token *tokens, t_env **env);
-t_redirection	*collect_redirs(t_token **tokens);
+t_redirection	*collect_redirs(t_token **tokens, t_env *env);
 
 void			print_ast(t_node *ast);
 int				eval(t_node *node, t_env **env);

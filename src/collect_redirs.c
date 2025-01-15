@@ -6,14 +6,16 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/14 16:55:20 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/15 18:10:46 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		collect_and_check_redir(t_redirection *result, t_token **cur);
-static void		set_redir(t_redirection *redir, int type, char *specifier);
+static void		collect_and_check_redir(t_redirection *result, t_token **cur,
+					t_env *env);
+static void		set_redir(t_redirection *redir, int type, char *specifier,
+					t_env *env);
 
 static char	*read_heredoc(char *delimiter)
 {
@@ -56,7 +58,7 @@ static char	*read_heredoc(char *delimiter)
 	return (result);
 }
 
-t_redirection	*collect_redirs(t_token **tokens)
+t_redirection	*collect_redirs(t_token **tokens, t_env *env)
 {
 	t_redirection	*result;
 	t_token			*cur;
@@ -65,12 +67,12 @@ t_redirection	*collect_redirs(t_token **tokens)
 	result = malloc(sizeof(t_redirection) * 2);
 	if (result == NULL)
 		return (free_tokens(*tokens), NULL);
-	set_redir(&result[0], 0, NULL);
-	set_redir(&result[1], 0, NULL);
+	set_redir(&result[0], 0, NULL, env);
+	set_redir(&result[1], 0, NULL, env);
 	while (cur != NULL && cur->next != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-			collect_and_check_redir(result, &cur);
+			collect_and_check_redir(result, &cur, env);
 		else if (cur->type == REDIR_TOKEN)
 			return (free(result), NULL);
 		else
@@ -81,13 +83,18 @@ t_redirection	*collect_redirs(t_token **tokens)
 	return (result);
 }
 
-static void	set_redir(t_redirection *redir, int type, char *specifier)
+static void	set_redir(t_redirection *redir, int type, char *specifier,
+		t_env *env)
 {
 	redir->type = type;
-	redir->specifier = specifier;
+	if (specifier != NULL)
+		redir->specifier = format_string(specifier, env);
+	else
+		redir->specifier = specifier;
 }
 
-static void	collect_and_check_redir(t_redirection *result, t_token **cur)
+static void	collect_and_check_redir(t_redirection *result, t_token **cur,
+		t_env *env)
 {
 	char	*heredoc_data;
 	t_token	*next_token;
@@ -101,17 +108,17 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur)
 			perror("Heredoc allocation failed");
 			return ;
 		}
-		set_redir(&result[0], INPUT_LIMITER, heredoc_data);
+		set_redir(&result[0], INPUT_LIMITER, heredoc_data, env);
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
 		set_redir(&result[0], INPUT_FILE,
-			ft_strdup((*cur)->next->content.string));
+			ft_strdup((*cur)->next->content.string), env);
 	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
 		set_redir(&result[1], OUTPUT_OVERRIDE,
-			ft_strdup((*cur)->next->content.string));
+			ft_strdup((*cur)->next->content.string), env);
 	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
 		set_redir(&result[1], OUTPUT_APPEND,
-			ft_strdup((*cur)->next->content.string));
+			ft_strdup((*cur)->next->content.string), env);
 	next_token = (*cur)->next;
 	free_token_and_connect(*cur);
 	if (next_token)

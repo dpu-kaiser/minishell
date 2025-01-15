@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 19:52:27 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/15 18:10:25 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int	eval_rec(t_node *node, t_env **env, int in_fd)
 	pid_t	pid;
 	int		p[2];
 	int		result;
-	int		status;
 	int		original_stdin;
 
 	if (node->type == PIPE_NODE)
@@ -98,7 +97,6 @@ int	eval_rec(t_node *node, t_env **env, int in_fd)
 			original_stdin = dup(STDIN_FILENO);
 			dup2(p[0], STDIN_FILENO);
 			result = eval_rec(node->content.pipe.right, env, p[0]);
-			waitpid(pid, &status, 0);
 			dup2(original_stdin, STDIN_FILENO);
 			close(original_stdin);
 		}
