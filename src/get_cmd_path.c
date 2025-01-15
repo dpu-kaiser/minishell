@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 16:15:32 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:32:30 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 #include <sys/errno.h>
 #include <sys/unistd.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 static char	*get_simple_cmd_path(char *cmd, int *return_code);
 static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code);
 static char	*find_in_path(char *cmd, t_env *env, int *return_code);
 static char	*error(int err_code, char *err_text, int exit_code, int *ret_code);
 char		**get_split_path(t_env *env);
+static int	is_directory(char *path);
 
 char	*get_cmd_path(char *cmd, t_env *env, int *return_code)
 {
@@ -55,6 +57,8 @@ static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code)
 		free(result);
 		return (error(EACCES, cmd, 126, return_code));
 	}
+	if (is_directory(cmd))
+		return (error(EISDIR, cmd, 126, return_code));
 	return (result);
 }
 
@@ -102,6 +106,8 @@ static char	*get_simple_cmd_path(char *cmd, int *return_code)
 		free(result);
 		return (error(EACCES, cmd, 126, return_code));
 	}
+	if (is_directory(cmd))
+		return (error(EISDIR, cmd, 126, return_code));
 	return (result);
 }
 
@@ -112,4 +118,15 @@ static char	*error(int err_code, char *err_text, int exit_code, int *ret_code)
 	if (ret_code != NULL)
 		*ret_code = exit_code;
 	return (NULL);
+}
+
+static int	is_directory(char *path)
+{
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	if ((path_stat.st_mode & S_IFMT) == S_IFDIR)
+		return (1);
+	else
+		return (0);
 }

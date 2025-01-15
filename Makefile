@@ -19,7 +19,7 @@ SRC     := main.c debug_tools.c init.c signal_handling.c repl.c new_token.c \
            free_token.c new_node.c free_node.c tokenizer.c parser.c \
            parse_cmd.c collect_redirs.c print_ast.c interpreter.c env.c \
            get_cmd_path.c env_to_strlst.c execute_cmd.c format_string.c \
-		   builtins_part_one.c builtins_part_two.c \ env_tools.c
+		   builtins_part_one.c builtins_part_two.c env_tools.c \
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
