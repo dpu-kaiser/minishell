@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 16:37:18 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:38:39 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static char	*get_simple_cmd_path(char *cmd, int *return_code)
 	if (access(result, F_OK) == -1)
 	{
 		free(result);
-		return (error(EACCES, cmd, 127, return_code));
+		return (error(ENOENT, cmd, 127, return_code));
 	}
 	else if (access(result, X_OK) == -1)
 	{
