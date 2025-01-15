@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 14:33:58 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:15:32 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,16 @@
 #include <sys/unistd.h>
 #include <unistd.h>
 
+static char	*get_simple_cmd_path(char *cmd, int *return_code);
 static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code);
 static char	*find_in_path(char *cmd, t_env *env, int *return_code);
+static char	*error(int err_code, char *err_text, int exit_code, int *ret_code);
 char		**get_split_path(t_env *env);
 
 char	*get_cmd_path(char *cmd, t_env *env, int *return_code)
 {
-	char *result;
-
 	if (cmd[0] == '/')
-	{
-		result = ft_strdup(cmd);
-		if (access(result, F_OK) == -1)
-		{
-			free(result);
-			errno = ENOENT;
-			perror(cmd);
-			*return_code = 127;
-			return (NULL);
-		}
-		else if (access(result, X_OK) == -1)
-		{
-			free(result);
-			errno = EACCES;
-			perror(cmd);
-			*return_code = 126;
-			return (NULL);
-		}
-		return (result);
-	}
+		return (get_simple_cmd_path(cmd, return_code));
 	else if (ft_strchr(cmd, '/'))
 		return (get_absolute_cmd_path(cmd, env, return_code));
 	else
@@ -63,27 +44,16 @@ static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code)
 	result = ft_strjoin(cur_dir, cmd);
 	free(cur_dir);
 	if (!result)
-	{
-		*return_code = 127;
-		errno = ENOENT;
-		perror(cmd);
-		return (NULL);
-	}
+		return (error(ENOENT, cmd, 127, return_code));
 	if (access(result, F_OK) == -1)
 	{
 		free(result);
-		errno = ENOENT;
-		*return_code = 127;
-		perror(cmd);
-		return (NULL);
+		return (error(ENOENT, cmd, 127, return_code));
 	}
 	if (access(result, X_OK) == -1)
 	{
 		free(result);
-		errno = EACCES;
-		*return_code = 126;
-		perror(cmd);
-		return (NULL);
+		return (error(EACCES, cmd, 126, return_code));
 	}
 	return (result);
 }
@@ -117,10 +87,29 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 	return (NULL);
 }
 
-char	**get_split_path(t_env *env)
+static char	*get_simple_cmd_path(char *cmd, int *return_code)
 {
-	char	*path;
+	char	*result;
 
-	path = env_get(env, "PATH");
-	return (ft_split(path, ':'));
+	result = ft_strdup(cmd);
+	if (access(result, F_OK) == -1)
+	{
+		free(result);
+		return (error(EACCES, cmd, 127, return_code));
+	}
+	else if (access(result, X_OK) == -1)
+	{
+		free(result);
+		return (error(EACCES, cmd, 126, return_code));
+	}
+	return (result);
+}
+
+static char	*error(int err_code, char *err_text, int exit_code, int *ret_code)
+{
+	errno = err_code;
+	perror(err_text);
+	if (ret_code != NULL)
+		*ret_code = exit_code;
+	return (NULL);
 }
