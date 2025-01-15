@@ -6,12 +6,16 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 14:42:00 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 15:50:56 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
+
+static void	establish_pipeline(int original_stdin, int original_stdout);
+static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result);
 
 int	is_builtin(char *cmd)
 {
@@ -42,41 +46,45 @@ int	execute_builtin(char **args, t_env **env)
 
 int	execute_cmd(t_cmd *cmd, t_env **env)
 {
-	char	*cmd_path;
-	pid_t	pid;
-	int		status;
-	int		original_stdout;
-	int		original_stdin;
+	int		original_std[2];
 	int		result;
-	int		i;
 
-	original_stdout = dup(STDOUT_FILENO);
-	original_stdin = dup(STDIN_FILENO);
+	original_std[1] = dup(STDOUT_FILENO);
+	original_std[0] = dup(STDIN_FILENO);
 	if (handle_redirections(cmd->redirs) == -1)
 	{
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
+		establish_pipeline(original_std[0], original_std[1]);
 		return (EXIT_FAILURE);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		result = execute_builtin(cmd->args, env);
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
+		establish_pipeline(original_std[0], original_std[1]);
 		return (result);
 	}
+	return (exec_cmd(cmd, env, original_std, EXIT_SUCCESS));
+}
+
+static void	establish_pipeline(int original_stdin, int original_stdout)
+{
+	dup2(original_stdout, STDOUT_FILENO);
+	dup2(original_stdin, STDIN_FILENO);
+	close(original_stdout);
+	close(original_stdin);
+}
+
+static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
+{
+	int		i;
+	int		status;
+	char	*cmd_path;
+	pid_t	pid;
+
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
+		establish_pipeline(original_std[0], original_std[1]);
 		return (EXIT_FAILURE);
 	}
 	if (pid == 0)
@@ -91,9 +99,6 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
-	dup2(original_stdout, STDOUT_FILENO);
-	dup2(original_stdin, STDIN_FILENO);
-	close(original_stdout);
-	close(original_stdin);
+	establish_pipeline(original_std[0], original_std[1]);
 	return (WEXITSTATUS(status));
 }
