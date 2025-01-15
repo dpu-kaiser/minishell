@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/15 18:33:36 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 18:54:42 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void		collect_and_check_redir(t_redirection *result, t_token **cur,
 					t_env *env);
 static void		set_redir(t_redirection *redir, int type, char *spec,
 					t_env *env);
-static char		*get_heredoc_data(t_token *cur);
+static int		set_heredoc_data(t_token *cur, t_redirection *result,
+					t_env *env);
 
 t_redirection	*collect_redirs(t_token **tokens, t_env *env)
 {
@@ -62,7 +63,8 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		str = ft_strdup((*cur)->next->content.string);
 	if ((*cur)->content.redir_type == INPUT_LIMITER)
 	{
-		set_redir(&result[0], INPUT_LIMITER, get_heredoc_data(*cur), env);
+		if (!set_heredoc_data(*cur, result, env))
+			return ;
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
 		set_redir(&result[0], INPUT_FILE, str, env);
@@ -81,19 +83,21 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		*cur = NULL;
 }
 
-static char	*get_heredoc_data(t_token *cur)
+static int	set_heredoc_data(t_token *cur, t_redirection *result, t_env *env)
 {
 	char	*heredoc_data;
 
+	heredoc_data = NULL;
 	if (cur->content.redir_type == INPUT_LIMITER)
 	{
 		heredoc_data = read_heredoc(cur->next->content.string);
 		if (!heredoc_data)
 		{
 			perror("Heredoc allocation failed");
-			return ;
+			return (0);
 		}
 		set_redir(&result[0], INPUT_LIMITER, heredoc_data, env);
 	}
-	return (heredoc_data);
+	set_redir(&result[0], INPUT_LIMITER, heredoc_data, env);
+	return (1);
 }
