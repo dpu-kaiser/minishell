@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 16:34:56 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:37:18 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 #include "minishell.h"
 #include <errno.h>
 #include <sys/errno.h>
+#include <sys/stat.h>
 #include <sys/unistd.h>
 #include <unistd.h>
-#include <sys/stat.h>
 
 static char	*get_simple_cmd_path(char *cmd, int *return_code);
 static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code);
 static char	*find_in_path(char *cmd, t_env *env, int *return_code);
-static void	*error(int err_code, char *err_text, int exit_code, int *ret_code);
 char		**get_split_path(t_env *env);
 static int	is_directory(char *path);
 
@@ -109,15 +108,6 @@ static char	*get_simple_cmd_path(char *cmd, int *return_code)
 	if (is_directory(cmd))
 		return (error(EISDIR, cmd, 126, return_code));
 	return (result);
-}
-
-static void	*error(int err_code, char *err_text, int exit_code, int *ret_code)
-{
-	errno = err_code;
-	perror(err_text);
-	if (ret_code != NULL)
-		*ret_code = exit_code;
-	return (NULL);
 }
 
 static int	is_directory(char *path)
