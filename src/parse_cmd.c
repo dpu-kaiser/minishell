@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/15 17:22:58 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/16 19:06:03 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 {
 	char			**args;
 	t_redirection	*redirs;
+	t_list *create_files;
 
-	redirs = collect_redirs(&tokens, *env);
+	create_files = NULL;
+	redirs = collect_redirs(&tokens, *env, &create_files);
 	if (redirs == NULL)
 		return (NULL);
 	args = collect_args(&tokens, env);
@@ -28,7 +30,7 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 		free(redirs);
 		return (NULL);
 	}
-	return (new_cmd_node(args, redirs));
+	return (new_cmd_node(args, redirs, create_files));
 }
 
 static char	**collect_args(t_token **tokens, t_env **env)

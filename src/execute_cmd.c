@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 15:52:08 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/16 18:38:00 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 
 	original_std[1] = dup(STDOUT_FILENO);
 	original_std[0] = dup(STDIN_FILENO);
+	create_files(cmd->create_files);
 	if (handle_redirections(cmd->redirs) == -1)
 	{
 		establish_pipeline(original_std[0], original_std[1]);

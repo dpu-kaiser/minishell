@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 15:58:41 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/16 18:57:38 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	handle_special_chars(char *s, int *i, int *start, t_token **token_list)
 		(*i)++;
 	if (s[*i] == '>' && s[*i + 1] == '>')
 		(*i)++;
+	print_token(*token_list);
 	*start = *i + 1;
 }
 

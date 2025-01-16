@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/15 18:10:25 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/16 18:44:39 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_redirections(t_redirection *redirs)
 	}
 	else if (redirs[0].type == INPUT_LIMITER)
 	{
-		fd = open("/tmp/heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open("/tmp/heredoc_tmp", O_WRONLY  | O_TRUNC, 0644);
 		if (fd < 0)
 		{
 			perror("open");
@@ -49,7 +49,7 @@ int	handle_redirections(t_redirection *redirs)
 	}
 	if (redirs[1].type == OUTPUT_OVERRIDE)
 	{
-		fd = open(redirs[1].specifier, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(redirs[1].specifier, O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 		{
 			perror("open");
@@ -60,7 +60,7 @@ int	handle_redirections(t_redirection *redirs)
 	}
 	else if (redirs[1].type == OUTPUT_APPEND)
 	{
-		fd = open(redirs[1].specifier, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open(redirs[1].specifier, O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 		{
 			perror("open");
