@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:53:39 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/14 16:50:55 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:43:07 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int		cd(t_env **env, char **args);
 int		ft_env(t_env *env);
 int		builtin_exit(char **args, t_env **env);
 t_env	*env_new(char *name);
+t_env	*check_existing(t_env *env, char *av);
 
 #endif

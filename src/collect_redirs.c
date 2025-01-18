@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/15 18:54:42 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/18 17:15:47 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	set_redir(t_redirection *redir, int type, char *spec, t_env *env)
 {
 	redir->type = type;
 	if (spec != NULL)
-		redir->specifier = format_string(spec, env);
+		redir->specifier = format_string(spec, env, ft_atoi("0"));
 	else
 		redir->specifier = spec;
 }

@@ -20,7 +20,7 @@ SRC     := main.c debug_tools.c init.c signal_handling.c repl.c new_token.c \
            parse_cmd.c collect_redirs.c print_ast.c interpreter.c env.c \
            get_cmd_path.c env_to_strlst.c execute_cmd.c format_string.c \
 		   builtins_part_one.c builtins_part_two.c env_tools.c error.c \
-		   read_heredoc.c
+		   read_heredoc.c builtins_part_three.c handle_redir.c
 
 OBJ_DIR := _obj
 OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))

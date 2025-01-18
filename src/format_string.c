@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:30:11 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 18:06:17 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/18 17:20:44 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,18 @@
 #include "libft.h"
 #include "minishell.h"
 
-static void	append_slice(char **dst, char *src, int start, int end);
-static void	append_var(char **dst, char *src, int *pos, t_env *env);
-
-char	*format_string(char *str, t_env *env)
+void	append_var_exit_code(char **dst, t_env *env)
 {
+	char	*exit_code;
 	char	*result;
-	int		pos;
-	int		start;
-	int		is_literal;
 
-	pos = 0;
-	start = 0;
-	is_literal = 0;
-	result = NULL;
-	if (str == NULL)
-		return (NULL);
-	while (str[pos] != '\0')
+	exit_code = env_get(env, "?");
+	if (exit_code)
 	{
-		if (str[pos] == '\'')
-		{
-			append_slice(&result, str, start, pos);
-			start = pos + 1;
-			is_literal = !is_literal;
-		}
-		if (str[pos] == '"' && !is_literal)
-		{
-			append_slice(&result, str, start, pos);
-			start = pos + 1;
-		}
-		if (str[pos] == '$' && !is_literal)
-		{
-			append_slice(&result, str, start, pos);
-			append_var(&result, str, &pos, env);
-			start = pos;
-			continue ;
-		}
-		pos++;
+		result = ft_strjoin(*dst, exit_code);
+		free(*dst);
+		*dst = result;
 	}
-	append_slice(&result, str, start, pos);
-	return (result);
 }
 
 static void	append_slice(char **dst, char *src, int start, int end)
@@ -93,27 +65,63 @@ static void	append_var(char **dst, char *src, int *pos, t_env *env)
 
 	i = 0;
 	*pos += 1;
-	while (src[*pos + i] != '\0' && src[*pos + i] != '\'' && src[*pos
-			+ i] != '"' && src[*pos + i] != '$')
-	{
+	while (ft_isalnum(src[*pos + i]) || src[*pos + i] == '_')
 		i++;
-	}
-	var = malloc(i + 1);
-	if (var == NULL)
+	if (i == 0)
 		return ;
-	var[i] = '\0';
-	i--;
-	while (i >= 0)
-	{
-		var[i] = src[*pos + i];
-		i--;
-	}
+	var = ft_substr(src, *pos, i);
 	value = env_get(env, var);
-	if (value != NULL)
+	if (value)
 	{
 		result = ft_strjoin(*dst, value);
 		free(*dst);
 		*dst = result;
 	}
-	*pos += ft_strlen(var);
+	*pos += i;
+	free(var);
+}
+
+static void	handle_dollar_sign(char **result, char *str, int *pos, t_env *env)
+{
+	if (str[*pos + 1] == '?')
+	{
+		append_var_exit_code(result, env);
+		*pos += 2;
+	}
+	else if (ft_isalnum(str[*pos + 1]) || str[*pos + 1] == '_')
+		append_var(result, str, pos, env);
+	else
+	{
+		append_slice(result, str, *pos, *pos + 1);
+		(*pos)++;
+	}
+}
+
+char	*format_string(char *str, t_env *env, int is_literal)
+{
+	char	*result;
+	int		pos;
+	int		start;
+
+	pos = 0;
+	start = 0;
+	result = NULL;
+	if (!str)
+		return (NULL);
+	while (str[pos])
+	{
+		if (str[pos] == '\'' || (str[pos] == '\"' && !is_literal)
+			|| (str[pos] == '$' && !is_literal))
+		{
+			append_slice(&result, str, start, pos);
+			if (str[pos] == '$')
+				handle_dollar_sign(&result, str, &pos, env);
+			else
+				is_literal ^= (str[pos++] == '\'');
+			start = pos;
+			continue ;
+		}
+		pos++;
+	}
+	return (append_slice(&result, str, start, pos), result);
 }

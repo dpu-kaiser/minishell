@@ -59,6 +59,8 @@
 	"files.associations": {
 		"minishell.h": "c",
 		"ast.h": "c",
-		"env.h": "c"
+		"env.h": "c",
+		"sstream": "c",
+		"debug_tools.h": "c"
 	}
   }

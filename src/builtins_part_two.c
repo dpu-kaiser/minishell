@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:52:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 19:31:17 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:57:12 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	cd(t_env **env, char **av)
 		}
 		if (chdir(current->value) == -1)
 			return (1);
+		update_pwd(env);
 	}
 	else
 	{
@@ -101,7 +102,7 @@ int	ft_env(t_env *env)
 {
 	while (env != NULL)
 	{
-		if (strchr(env->name, '?'))
+		if (ft_strchr(env->name, '?'))
 		{
 			env = env->next;
 			continue ;
