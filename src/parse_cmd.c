@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/16 19:06:03 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:44:44 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 {
 	char			**args;
 	t_redirection	*redirs;
-	t_list *create_files;
+	t_list			*create_files;
 
 	create_files = NULL;
 	redirs = collect_redirs(&tokens, *env, &create_files);
@@ -36,6 +36,7 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 static char	**collect_args(t_token **tokens, t_env **env)
 {
 	t_token	*cur;
+	t_token	*next;//2
 	char	**result;
 	int		i;
 
@@ -50,11 +51,13 @@ static char	**collect_args(t_token **tokens, t_env **env)
 	i = 0;
 	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
+		next = cur->next;//2
 		if (cur->previous)
 			free_token(cur->previous);
-		result[i] = format_string(cur->content.string, *env);
+		result[i] = format_string(cur->content.string, *env, ft_atoi("0"));
 		i++;
-		cur = cur->next;
+		// cur = cur->next;
+		cur = next;//2
 	}
 	result[i] = NULL;
 	return (result);
