@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:34:51 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/18 18:47:31 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:24:49 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_input_redirection(t_redirection *redir)
 	}
 	else if (redir->type == INPUT_LIMITER)
 	{
-		fd = open_file("/tmp/heredoc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open_file("/tmp/heredoc_tmp", O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			return (-1);
 		write(fd, redir->specifier, ft_strlen(redir->specifier));
@@ -46,7 +46,7 @@ int	handle_output_redirection(t_redirection *redir)
 
 	if (redir->type == OUTPUT_OVERRIDE)
 	{
-		fd = open_file(redir->specifier, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open_file(redir->specifier, O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			return (-1);
 		dup2(fd, STDOUT_FILENO);
@@ -54,7 +54,7 @@ int	handle_output_redirection(t_redirection *redir)
 	}
 	else if (redir->type == OUTPUT_APPEND)
 	{
-		fd = open_file(redir->specifier, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open_file(redir->specifier, O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 			return (-1);
 		dup2(fd, STDOUT_FILENO);

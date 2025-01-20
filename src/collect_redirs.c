@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 13:17:59 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:12:42 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 		return (free_tokens(*tokens), NULL);
 	set_redir(&result[0], 0, NULL, env);
 	set_redir(&result[1], 0, NULL, env);
-	while (cur != NULL && cur->next != NULL)
+	while (cur != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
 			collect_and_check_redir(result, &cur, env, create_files);
@@ -60,17 +60,18 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 			return ;
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
-		set_redir(&result[0], INPUT_FILE, format_string(str, env), env);
+		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[0], INPUT_FILE, format_string(str, env, 0), env)));
 	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
 		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_OVERRIDE, format_string(str, env), env)));
+					OUTPUT_OVERRIDE, format_string(str, env, 0), env)));
 	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
 		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_APPEND, format_string(str, env), env)));
+					OUTPUT_APPEND, format_string(str, env, 0), env)));
 	next_token = (*cur)->next;
 	// free_token_and_connect(*cur);
 	if (next_token)
 	{
+		free_token_and_connect(*cur);
 		*cur = next_token->next;
 		free_token_and_connect(next_token);
 	}
@@ -88,7 +89,7 @@ static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
 		redir->specifier = format_string(spec, env, ft_atoi("0"));
 	else
 		redir->specifier = spec;
-	if (redir->type == OUTPUT_APPEND || redir->type == OUTPUT_OVERRIDE)
+	if (redir->type != INPUT_LIMITER)
 	{
 		result = malloc(sizeof(t_redirection));
 		if (!result)

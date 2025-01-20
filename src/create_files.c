@@ -6,24 +6,28 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:23:51 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/19 14:36:59 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:54:00 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-void	create_files(t_list *files)
+int	create_files(t_list *files)
 {
 	t_redirection	*file;
 	int				fd;
 
 	while (files)
 	{
-        dbg("Test");
         if (files->content == NULL)
+        {
+            files = files->next;
             continue ;
+        }
 		file = (t_redirection *)files->content;
+        if (file->type == INPUT_FILE && (access(file->specifier, F_OK) == -1 || access(file->specifier, R_OK) == -1))
+            return (EXIT_FAILURE);
         if (access(file->specifier, F_OK) != -1 && access(file->specifier, W_OK) == -1)
             break ;
 		if (file->type == OUTPUT_OVERRIDE)
@@ -42,4 +46,5 @@ void	create_files(t_list *files)
              break ;
 		files = files->next;
 	}
+    return (EXIT_SUCCESS);
 }
