@@ -3,35 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 19:03:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:13:31 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 #include "token.h"
+#include "env.h"
 
 static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
-static t_node	*parse_statement(t_token *tokens);
+static t_node	*parse_statement(t_token *tokens, t_env **env);
 
-t_list	*parse(t_token *tokens)
+t_list	*parse(t_token *tokens, t_env **env)
 {
 	t_node	*result;
 
 	if ((*tokens).type == PIPE_TOKEN)
 		result = NULL;
 	else
-		result = parse_statement(tokens);
+		result = parse_statement(tokens, env);
 	if (result == NULL)
 		printf("Parsing error.\n");
 	return (ft_lstnew(result));
 }
 
-static t_node	*parse_statement(t_token *tokens)
+static t_node	*parse_statement(t_token *tokens, t_env **env)
 {
 	t_token	*left_side_tokens;
 
@@ -39,16 +40,17 @@ static t_node	*parse_statement(t_token *tokens)
 	if (left_side_tokens == NULL)
 	{
 		free_tokens(tokens);
+		tokens = NULL;
 		return (NULL);
 	}
 	else if (tokens != NULL)
 	{
-		return (new_pipe_node(parse_cmd(left_side_tokens),
-				parse_statement(tokens)));
+		return (new_pipe_node(parse_cmd(left_side_tokens, env),
+				parse_statement(tokens, env)));
 	}
 	else
 	{
-		return (parse_cmd(left_side_tokens));
+		return (parse_cmd(left_side_tokens, env));
 	}
 }
 
@@ -69,6 +71,7 @@ t_token	*split_at_first(t_token **tokens, int type)
 	if (result == split)
 		result = NULL;
 	free_token(split);
+	split = NULL;
 	return (result);
 }
 

@@ -3,31 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/17 16:45:47 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/17 17:11:27 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/20 18:12:33 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include <errno.h>
+#include <sys/errno.h>
+#include <sys/stat.h>
+#include <sys/unistd.h>
+#include <unistd.h>
 
-static char	*get_absolute_cmd_path(char *cmd, t_env *env);
-static char	*find_in_path(char *cmd, t_env *env);
+static char	*get_simple_cmd_path(char *cmd, int *return_code);
+static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code);
+static char	*find_in_path(char *cmd, t_env *env, int *return_code);
 char		**get_split_path(t_env *env);
+static int	is_directory(char *path);
 
-char	*get_cmd_path(char *cmd, t_env *env)
+char	*get_cmd_path(char *cmd, t_env *env, int *return_code)
 {
 	if (cmd[0] == '/')
-		return (ft_strdup(cmd));
+		return (get_simple_cmd_path(cmd, return_code));
 	else if (ft_strchr(cmd, '/'))
-		return (get_absolute_cmd_path(cmd, env));
+		return (get_absolute_cmd_path(cmd, env, return_code));
 	else
-		return (find_in_path(cmd, env));
+		return (find_in_path(cmd, env, return_code));
 }
 
-static char	*get_absolute_cmd_path(char *cmd, t_env *env)
+static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code)
 {
 	char	*cur_dir;
 	char	*result;
@@ -38,16 +45,23 @@ static char	*get_absolute_cmd_path(char *cmd, t_env *env)
 	result = ft_strjoin(cur_dir, cmd);
 	free(cur_dir);
 	if (!result)
-		return (NULL);
+		return (error(ENOENT, cmd, 127, return_code));
+	if (access(result, F_OK) == -1)
+	{
+		free(result);
+		return (error(ENOENT, cmd, 127, return_code));
+	}
 	if (access(result, X_OK) == -1)
 	{
 		free(result);
-		return (NULL);
+		return (error(EACCES, cmd, 126, return_code));
 	}
+	if (is_directory(cmd))
+		return (error(EISDIR, cmd, 126, return_code));
 	return (result);
 }
 
-static char	*find_in_path(char *cmd, t_env *env)
+static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 {
 	char	*cur_path;
 	char	*cmd_path;
@@ -70,13 +84,38 @@ static char	*find_in_path(char *cmd, t_env *env)
 			return (cmd_path);
 		path++;
 	}
+	*return_code = 127;
+	command_not_found_error(cmd);
 	return (NULL);
 }
 
-char	**get_split_path(t_env *env)
+static char	*get_simple_cmd_path(char *cmd, int *return_code)
 {
-	char	*path;
+	char	*result;
 
-	path = env_get(env, "PATH");
-	return (ft_split(path, ':'));
+	result = ft_strdup(cmd);
+	if (access(result, F_OK) == -1)
+	{
+		free(result);
+		return (error(ENOENT, cmd, 127, return_code));
+	}
+	else if (access(result, X_OK) == -1)
+	{
+		free(result);
+		return (error(EACCES, cmd, 126, return_code));
+	}
+	if (is_directory(cmd))
+		return (error(EISDIR, cmd, 126, return_code));
+	return (result);
+}
+
+static int	is_directory(char *path)
+{
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	if ((path_stat.st_mode & S_IFMT) == S_IFDIR)
+		return (1);
+	else
+		return (0);
 }

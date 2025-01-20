@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_tools.c                                      :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 15:34:14 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 12:50:36 by chuhlig          ###   ########.fr       */
+/*   Created: 2024/12/18 19:03:14 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/14 14:09:59 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug_tools.h"
-#include <stdio.h>
-#include <stdarg.h>
+#include "libft.h"
 
-void	dbg(char *msg)
+int	ft_strcmp(char *s1, char *s2)
 {
-	if (DEBUG)
-	{
-		ft_putstr_fd("\e[33m[DEBUG] ", 0);
-		ft_putstr_fd(msg, 0);
-		ft_putendl_fd("\e[0m", 0);
-	}
-}
+	int	i;
 
-void	panic(char *msg)
-{
-	if (DEBUG)
-	{
-		ft_putstr_fd("\e[31m[PANIC] ", 1);
-		ft_putstr_fd(msg, 1);
-		ft_putendl_fd("\e[0m", 1);
-	}
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

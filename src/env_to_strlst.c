@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_to_strlst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 14:52:08 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/10/21 15:07:33 by dkaiser          ###   ########.fr       */
+/*   Created: 2024/12/17 19:22:28 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/18 18:50:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 #include "minishell.h"
 
 static char	*get_var_assign(t_env *cur);
+
+static int	getsize(t_env *env)
+{
+	int		size;
+	t_env	*cur;
+
+	size = 0;
+	cur = env;
+	while (cur)
+	{
+		if (!ft_strchr(cur->name, '?'))
+			size++;
+		cur = cur->next;
+	}
+	return (size);
+}
 
 char	**env_to_strlst(t_env *env)
 {
@@ -24,11 +40,7 @@ char	**env_to_strlst(t_env *env)
 
 	size = 0;
 	cur = env;
-	while (cur != NULL)
-	{
-		size++;
-		cur = cur->next;
-	}
+	size = getsize(env);
 	result = malloc(sizeof(char *) * (size + 1));
 	if (result == NULL)
 		return (NULL);
@@ -36,6 +48,8 @@ char	**env_to_strlst(t_env *env)
 	cur = env;
 	while (i < size)
 	{
+		if (ft_strchr(cur->name, '?'))
+			cur = cur->next;
 		result[i] = get_var_assign(cur);
 		cur = cur->next;
 		i++;

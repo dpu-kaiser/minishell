@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_tools.c                                      :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 15:34:14 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 12:50:36 by chuhlig          ###   ########.fr       */
+/*   Created: 2025/01/09 13:06:44 by chuhlig           #+#    #+#             */
+/*   Updated: 2025/01/14 14:09:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug_tools.h"
-#include <stdio.h>
-#include <stdarg.h>
-
-void	dbg(char *msg)
+char	*ft_strcat(char *dest, char *src)
 {
-	if (DEBUG)
-	{
-		ft_putstr_fd("\e[33m[DEBUG] ", 0);
-		ft_putstr_fd(msg, 0);
-		ft_putendl_fd("\e[0m", 0);
-	}
-}
+	int		i;
+	int		j;
 
-void	panic(char *msg)
-{
-	if (DEBUG)
+	j = 0;
+	i = 0;
+	while (dest[i])
+		i++;
+	while (src[j])
 	{
-		ft_putstr_fd("\e[31m[PANIC] ", 1);
-		ft_putstr_fd(msg, 1);
-		ft_putendl_fd("\e[0m", 1);
+		dest[i + j] = src[j];
+		j++;
 	}
+	dest[i + j] = '\0';
+	return (dest);
 }

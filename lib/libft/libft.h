@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:37:54 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 14:01:57 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/09 14:39:28 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int					ft_isalnum(int c);
 int					ft_isprint(int c);
 int					ft_isspace(char c);
 int					ft_isascii(int c);
+int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -59,6 +60,8 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 char				*ft_strncpy(char *s1, char *s2, int n);
+char				*ft_strcat(char *dest, char *src);
+char				*ft_strcpy(char *dest, char *src);
 
 typedef struct s_list
 {

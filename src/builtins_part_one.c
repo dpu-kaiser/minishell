@@ -6,118 +6,12 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/10/25 20:52:36 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:07:18 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
-
-int	echo(char **av)
-{
-	int	i;
-	int	f;
-
-	i = 1;
-	f = 1;
-	if (av[1][0] == '\0')
-	{
-		write(1, "\n", 1);
-		return (1);
-	}
-	if (ft_strcmp(av[1], "-n"))
-	{
-		i++;
-		f = 0;
-	}
-	while (av[i])
-	{
-		write(1, &av[1], ft_strlen(av[i]));
-		i++;
-	}
-	if (f)
-		write(1, "\n", 1);
-	return (0);
-}
-
-int	pwd(t_env **env, char *av)
-{
-	t_env	*current;
-	t_env	*prev;
-	char	*tmp;
-
-	current = env;
-	prev = NULL;
-	while (current)
-	{
-		if (ft_strcmp(current->name, av == 0))
-			break ;
-		prev = current;
-		current = current->next;
-	}
-	ft_printf("%s\n", current->value);
-	return (0);
-}
-
-int	env(t_env **env)
-{
-	t_env	*current;
-	t_env	*prev;
-
-	current = env;
-	prev = NULL;
-	while (current)
-	{
-		ft_printf("%s", current->name);
-		ft_printf("=%s\n", current->value);
-		prev = current;
-		current = current->next;
-	}
-	return (0);
-}
-
-int	exit(char *av)
-{
-	freenode free toke free sequence stop repl free env;
-	clear history;
-}
-
-int	export(char **av, t_env **env)
-{
-	char	*tmp;
-	t_env	*current;
-	int		i;
-
-	i = i;
-	while (av[i])
-	{
-		if (t_strchr(av[i], '='))
-		{
-			tmp = ft_strchr(av[i], '=');
-			tmp = '\0';
-			current = *env;
-			while (current)
-			{
-				if (ft_strcmp(current->name, tmp[i]) == 0)
-				{
-					free(current->value);
-					current->value = ft_strdup(tmp + 1);
-					break ;
-				}
-				current = current->next;
-			}
-			if (!current)
-			{
-				current = malloc(sizeof(t_env));
-				current->name = ft_strdup(av[i]);
-				current->value = ft_strdup(tmp + 1);
-				current->next = *env;
-				*env = current;
-			}
-		}
-		i++;
-	}
-	return (1);
-}
+#include <stdio.h>
 
 int	unset(char **av, t_env **env)
 {
@@ -126,27 +20,101 @@ int	unset(char **av, t_env **env)
 	int		i;
 
 	i = 0;
-	current = env;
-	prev = NULL;
-	while (av[i])
+	while (av[++i])
 	{
+		current = *env;
+		prev = NULL;
 		while (current)
 		{
-			if (ft_strcmp(current->name, av[i] == 0))
+			if (ft_strcmp(current->name, av[i]) == 0)
+			{
+				if (prev)
+					prev->next = current->next;
+				else
+					*env = current->next;
+				free_env_node(current);
 				break ;
+			}
 			prev = current;
 			current = current->next;
 		}
-		if (current)
-		{
-			if (prev)
-				prev->next = current->next;
-			else
-				*env = current->next;
-			free(current->value);
-			free(current);
-		}
-		i++;
 	}
 	return (0);
+}
+
+t_env	*check_existing(t_env *env, char *av)
+{
+	while (env)
+	{
+		if (ft_strcmp("$", av) == 0)
+			return (NULL);
+		if (ft_strcmp(env->name, av) == 0)
+			return (env);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+void	export_export(char *av, t_env **env)
+{
+	char	*tmp;
+	t_env	*current;
+
+	current = NULL;
+	tmp = ft_strchr(av, '=');
+	*tmp = '\0';
+	current = check_existing(*env, av);
+	if (current)
+		free(current->value);
+	else
+	{
+		current = env_new(ft_strdup(av));
+		current->next = *env;
+		*env = current;
+	}
+	current->value = ft_strdup(tmp + 1);
+}
+
+int	is_valid_identifier(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	export(char **av, t_env **env, int f)
+{
+	char	*equal_sign;
+	int		i;
+
+	i = 0;
+	while (av[++i])
+	{
+		equal_sign = ft_strchr(av[i], '=');
+		if (equal_sign)
+			*equal_sign = '\0';
+		if (!is_valid_identifier(av[i]))
+		{
+			write(1, "Minishell $ export: not a valid identifier\n", 43);
+			if (equal_sign)
+				*equal_sign = '=';
+			f++;
+			continue ;
+		}
+		if (equal_sign)
+		{
+			*equal_sign = '=';
+			export_export(av[i], env);
+		}
+	}
+	return (check_flag(f));
 }
