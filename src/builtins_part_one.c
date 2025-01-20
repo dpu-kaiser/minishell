@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 17:05:19 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:07:18 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,7 @@ int	unset(char **av, t_env **env)
 		prev = NULL;
 		while (current)
 		{
-			if ((!ft_strcmp(current->name, av[i])) && (!ft_strcmp("?", av[1])))
-			{
-				if (prev)
-					prev->next = current->next;
-				else
-					*env = current->next;
-				free_env_node(current);
-				break ;
-			}
+			if (ft_strcmp(current->name, av[i]) == 0)
 			{
 				if (prev)
 					prev->next = current->next;

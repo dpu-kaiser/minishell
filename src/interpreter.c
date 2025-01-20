@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 12:48:49 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:12:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,3 @@ int	eval(t_node *node, t_env **env)
 {
 	return (eval_rec(node, env, STDIN_FILENO));
 }
-

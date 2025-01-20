@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 18:41:11 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:12:03 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int				eval(t_node *node, t_env **env);
 char			*get_cmd_path(char *cmd, t_env *env, int *return_code);
 int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env, int is_literal);
-void				set_return_code(int return_code, t_env **env);
+void			set_return_code(int return_code, t_env **env);
 int				handle_redirections(t_redirection *redirs);
 void			*error(int err_code, char *err_text, int exit_code,
 					int *ret_code);

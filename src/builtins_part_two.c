@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:52:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/18 18:57:12 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:12:33 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	update_pwd(t_env **env)
 int	cd(t_env **env, char **av)
 {
 	t_env	*current;
-  
+
 	current = *env;
 	if (av[1] == NULL)
 	{

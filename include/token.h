@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 12:37:59 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:10:30 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ t_token						*new_str_token(char *str, t_token *previous,
 								t_token *next);
 t_token						*new_redir_token(int type, t_token *previous,
 								t_token *next);
-
+void						free_tokens(t_token *tokens);
 void						free_token(t_token *token);
-
+void						free_token_and_connect(t_token *token);
 void						tokenizer(char *s, t_token **token_list,
 								char quote_check);
 void						print_token(t_token *token);
