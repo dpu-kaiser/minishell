@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 13:00:04 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 13:03:47 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 			return ;
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
-		set_redir(&result[0], INPUT_FILE, str, env);
+		set_redir(&result[0], INPUT_FILE, format_string(str, env), env);
 	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
 		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_OVERRIDE, str, env)));
+					OUTPUT_OVERRIDE, format_string(str, env), env)));
 	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
 		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_APPEND, str, env)));
+					OUTPUT_APPEND, format_string(str, env), env)));
 	next_token = (*cur)->next;
 	// free_token_and_connect(*cur);
 	if (next_token)
