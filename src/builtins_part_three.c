@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:29:24 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/18 18:34:29 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:08:17 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	builtin_exit(char **av, t_env **env)
 {
 	int	exit_status;
 
-	if (av[1])
+	if (av[1] && !av[2])
 		exit_status = ft_atoi(av[1]);
+	else if (av[2])
+		exit_status = 1;
 	else
 		exit_status = 0;
 	exit_shell(env, exit_status);
@@ -72,5 +74,12 @@ int	echo(char **av)
 	}
 	if (f)
 		write(1, "\n", 1);
+	return (0);
+}
+
+int	check_flag(int f)
+{
+	if (f)
+		return (1);
 	return (0);
 }

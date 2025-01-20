@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 15:54:43 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:43:41 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_builtin(char *cmd)
 int	execute_builtin(char **args, t_env **env)
 {
 	if (ft_strcmp(args[0], "export") == 0)
-		return (export(args, env));
+		return (export(args, env, ft_atoi("0")));
 	else if (ft_strcmp(args[0], "unset") == 0)
 		return (unset(args, env));
 	else if (ft_strcmp(args[0], "cd") == 0)

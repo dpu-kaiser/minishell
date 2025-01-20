@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:31:07 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 14:44:34 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:05:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*env_get(t_env *env, char *name)
 {
 	while (env != NULL)
 	{
-		if (!ft_strncmp(env->name, name, ft_strlen(name)))
+		if (!ft_strncmp(env->name, name, ft_strlen(env->name)))
 			return (env->value);
 		env = env->next;
 	}

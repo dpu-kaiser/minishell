@@ -41,7 +41,7 @@ int				eval(t_node *node, t_env **env);
 char			*get_cmd_path(char *cmd, t_env *env, int *return_code);
 int				execute_cmd(t_cmd *cmd, t_env **env);
 char			*format_string(char *str, t_env *env, int is_literal);
-int				set_return_code(int return_code, t_env **env);
+void				set_return_code(int return_code, t_env **env);
 int				handle_redirections(t_redirection *redirs);
 void			*error(int err_code, char *err_text, int exit_code,
 					int *ret_code);
