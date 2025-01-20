@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/19 18:56:22 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 13:18:45 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 		path++;
 	}
 	*return_code = 127;
-	printf("%s:", cmd);
-	ft_putstr_fd(" command not found", 2);//output is shit even if its fine for tester
+	ft_printf("%s:", cmd);
+	ft_putstr_fd(" command not found", 2);
+	ft_printf("\n");
 	return (NULL);
 }
 
