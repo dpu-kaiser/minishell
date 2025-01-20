@@ -51,8 +51,8 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 
 	original_std[1] = dup(STDOUT_FILENO);
 	original_std[0] = dup(STDIN_FILENO);
-	create_files(cmd->create_files);
-	if (handle_redirections(cmd->redirs) == -1)
+	result = create_files(cmd->create_files);
+	if (result != EXIT_SUCCESS || handle_redirections(cmd->redirs) == -1)
 	{
 		establish_pipeline(original_std[0], original_std[1]);
 		return (EXIT_FAILURE);
@@ -63,6 +63,8 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 		establish_pipeline(original_std[0], original_std[1]);
 		return (result);
 	}
+	if (result != EXIT_SUCCESS)
+		return (result);
 	return (exec_cmd(cmd, env, original_std, EXIT_SUCCESS));
 }
 

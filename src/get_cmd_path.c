@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 12:52:00 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:12:33 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 		path++;
 	}
 	*return_code = 127;
-	ft_printf("%s:", cmd);
-	ft_putstr_fd(" command not found", 2);
-	ft_printf("\n");
+	command_not_found_error(cmd);
 	return (NULL);
 }
 

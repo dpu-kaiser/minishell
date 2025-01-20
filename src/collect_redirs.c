@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 13:03:47 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:39:24 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 #include <stdlib.h>
 
 static void				collect_and_check_redir(t_redirection *result,
-							t_token **cur, t_env *env, t_list **create_files);
+							t_token **cur, t_minidata *data, t_token **tokens);
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
 							t_env *env);
 static int				set_heredoc_data(t_token *cur, t_redirection *result,
 							t_env *env);
 
 t_redirection	*collect_redirs(t_token **tokens, t_env *env,
-	t_list **create_files)
+		t_list **create_files)
 {
 	t_redirection	*result;
 	t_token			*cur;
+	t_minidata		data;
 
 	cur = *tokens;
 	result = malloc(sizeof(t_redirection) * 2);
@@ -32,10 +33,12 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 		return (free_tokens(*tokens), NULL);
 	set_redir(&result[0], 0, NULL, env);
 	set_redir(&result[1], 0, NULL, env);
-	while (cur != NULL && cur->next != NULL)
+	data.create_files = create_files;
+	data.env = env;
+	while (cur != NULL)
 	{
 		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
-			collect_and_check_redir(result, &cur, env, create_files);
+			collect_and_check_redir(result, &cur, &data, tokens);
 		else if (cur->type == REDIR_TOKEN)
 			return (free(result), NULL);
 		else
@@ -47,35 +50,27 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 }
 
 static void	collect_and_check_redir(t_redirection *result, t_token **cur,
-		t_env *env, t_list **create_files)
+		t_minidata *data, t_token **tokens)
 {
-	t_token	*next_token;
 	char	*str;
 
 	if ((*cur)->content.redir_type != INPUT_LIMITER)
 		str = ft_strdup((*cur)->next->content.string);
 	if ((*cur)->content.redir_type == INPUT_LIMITER)
 	{
-		if (!set_heredoc_data(*cur, result, env))
+		if (!set_heredoc_data(*cur, result, data->env))
 			return ;
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
-		set_redir(&result[0], INPUT_FILE, format_string(str, env), env);
+		q4fc(data->create_files, set_redir(&result[0], INPUT_FILE,
+				format_string(str, data->env, 0), data->env));
 	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
-		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_OVERRIDE, format_string(str, env), env)));
+		q4fc(data->create_files, set_redir(&result[1], OUTPUT_OVERRIDE,
+				format_string(str, data->env, 0), data->env));
 	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
-		ft_lstadd_back(create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_APPEND, format_string(str, env), env)));
-	next_token = (*cur)->next;
-	// free_token_and_connect(*cur);
-	if (next_token)
-	{
-		*cur = next_token->next;
-		free_token_and_connect(next_token);
-	}
-	else
-		*cur = NULL;
+		q4fc(data->create_files, set_redir(&result[1], OUTPUT_APPEND,
+				format_string(str, data->env, 0), data->env));
+	i_love_the_norme(cur, tokens);
 }
 
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
@@ -88,7 +83,7 @@ static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
 		redir->specifier = format_string(spec, env, ft_atoi("0"));
 	else
 		redir->specifier = spec;
-	if (redir->type == OUTPUT_APPEND || redir->type == OUTPUT_OVERRIDE)
+	if (redir->type != INPUT_LIMITER)
 	{
 		result = malloc(sizeof(t_redirection));
 		if (!result)
@@ -99,8 +94,6 @@ static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
 	}
 	return (NULL);
 }
-
-
 
 static int	set_heredoc_data(t_token *cur, t_redirection *result, t_env *env)
 {

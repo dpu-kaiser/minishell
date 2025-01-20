@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 12:45:00 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:58:43 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	repl(const char *prompt, t_env **env, int *promptflag)
 	while (1)
 	{
 		input = readline(prompt);
-		if (input == NULL) 
+		if (input == NULL)
 		{
 			if (*promptflag > 1)
 				(*promptflag)--;
@@ -41,5 +41,3 @@ void	repl(const char *prompt, t_env **env, int *promptflag)
 		free(input);
 	}
 }
-
-//echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission
