@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 14:39:38 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:18:48 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,10 @@ int				handle_pipe_child(int p[2], t_node *node,
 int				open_file(char *path, int flags, int mode);
 int				eval_rec(t_node *node, t_env **env, int in_fd);
 int			create_files(t_list *files);
+
+typedef struct s_minidata {
+    t_env *env;
+    t_list **create_files;
+} t_minidata;
 
 #endif
