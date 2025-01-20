@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:38:57 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/02 14:23:56 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:49:48 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
+#include "debug_tools.h"
 
 void	free_token(t_token *token)
 {
@@ -19,6 +20,7 @@ void	free_token(t_token *token)
 	if (token->next != NULL)
 		token->next->previous = NULL;
 	free(token);
+	token = NULL;
 }
 
 void	free_token_and_connect(t_token *token)
@@ -28,6 +30,7 @@ void	free_token_and_connect(t_token *token)
 	if (token->next != NULL)
 		token->next->previous = token->previous;
 	free(token);
+	token = NULL;
 }
 
 void	free_tokens(t_token *tokens)

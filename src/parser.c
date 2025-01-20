@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/11 16:06:54 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/19 18:59:00 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static t_node	*parse_statement(t_token *tokens, t_env **env)
 	if (left_side_tokens == NULL)
 	{
 		free_tokens(tokens);
+		tokens = NULL;//1
 		return (NULL);
 	}
 	else if (tokens != NULL)
@@ -70,6 +71,7 @@ t_token	*split_at_first(t_token **tokens, int type)
 	if (result == split)
 		result = NULL;
 	free_token(split);
+	split = NULL;//1
 	return (result);
 }
 

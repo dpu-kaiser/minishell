@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/16 18:25:54 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/19 19:01:01 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2], t_list *create_files)
 		node->content.cmd.redirs[1] = redirs[1];
 		node->content.cmd.create_files = create_files;
 		free(redirs);
+		redirs = NULL;//1
 		return (node);
 	}
 	return (NULL);

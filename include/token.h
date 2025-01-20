@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/29 15:26:23 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:37:59 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ void						free_token_and_connect(t_token *token);
 void						free_tokens(t_token *tokens);
 void						tokenizer(char *s, t_token **token_list,
 								char quote_check);
+void						print_token(t_token *token);
 
 #endif

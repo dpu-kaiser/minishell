@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:22:28 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/14 19:34:10 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/18 18:50:49 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 #include "minishell.h"
 
 static char	*get_var_assign(t_env *cur);
+
+static int	getsize(t_env *env)
+{
+	int		size;
+	t_env	*cur;
+
+	size = 0;
+	cur = env;
+	while (cur)
+	{
+		if (!ft_strchr(cur->name, '?'))
+			size++;
+		cur = cur->next;
+	}
+	return (size);
+}
 
 char	**env_to_strlst(t_env *env)
 {
@@ -24,16 +40,7 @@ char	**env_to_strlst(t_env *env)
 
 	size = 0;
 	cur = env;
-	while (cur != NULL)
-	{
-		if (ft_strchr(cur->name, '?'))
-		{
-			cur = cur->next;
-			continue ;
-		}
-		size++;
-		cur = cur->next;
-	}
+	size = getsize(env);
 	result = malloc(sizeof(char *) * (size + 1));
 	if (result == NULL)
 		return (NULL);

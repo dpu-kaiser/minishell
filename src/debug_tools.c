@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   debug_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 15:34:14 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 15:04:43 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:50:36 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug_tools.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 void	dbg(char *msg)
 {
