@@ -45,8 +45,7 @@ t_token						*new_redir_token(int type, t_token *previous,
 								t_token *next);
 
 void						free_token(t_token *token);
-void						free_token_and_connect(t_token *token);
-void						free_tokens(t_token *tokens);
+
 void						tokenizer(char *s, t_token **token_list,
 								char quote_check);
 void						print_token(t_token *token);

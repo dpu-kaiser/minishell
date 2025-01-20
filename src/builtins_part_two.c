@@ -59,7 +59,7 @@ void	update_pwd(t_env **env)
 int	cd(t_env **env, char **av)
 {
 	t_env	*current;
-
+  
 	current = *env;
 	if (av[1] == NULL)
 	{

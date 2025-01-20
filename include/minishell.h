@@ -37,6 +37,7 @@ t_node			*parse_cmd(t_token *tokens, t_env **env);
 t_redirection	*collect_redirs(t_token **tokens, t_env *env, t_list **cf);
 
 void			print_ast(t_node *ast);
+
 int				eval(t_node *node, t_env **env);
 char			*get_cmd_path(char *cmd, t_env *env, int *return_code);
 int				execute_cmd(t_cmd *cmd, t_env **env);
