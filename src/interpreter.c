@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 19:12:49 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 20:07:11 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	open_file(char *path, int flags, int mode)
 
 	fd = open(path, flags, mode);
 	if (fd < 0)
-		perror("open");
+		perror(path);
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 15:43:41 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 20:04:31 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 
 	original_std[1] = dup(STDOUT_FILENO);
 	original_std[0] = dup(STDIN_FILENO);
-	result = create_files(cmd->create_files);
-	if (result != EXIT_SUCCESS || handle_redirections(cmd->redirs) == -1)
+	create_files(cmd->create_files);
+	if (handle_redirections(cmd->redirs) == -1)
 	{
 		establish_pipeline(original_std[0], original_std[1]);
 		return (EXIT_FAILURE);
@@ -63,8 +63,6 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 		establish_pipeline(original_std[0], original_std[1]);
 		return (result);
 	}
-	if (result != EXIT_SUCCESS)
-		return (result);
 	return (exec_cmd(cmd, env, original_std, EXIT_SUCCESS));
 }
 
@@ -102,5 +100,5 @@ static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
 	}
 	waitpid(pid, &status, 0);
 	establish_pipeline(original_std[0], original_std[1]);
-	return (WEXITSTATUS(status));
+	return ((status >> 8) & 255);
 }
