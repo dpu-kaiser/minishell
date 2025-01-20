@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 17:30:00 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:39:24 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		t_minidata *data, t_token **tokens)
 {
-	t_token	*next_token;
 	char	*str;
 
 	if ((*cur)->content.redir_type != INPUT_LIMITER)
@@ -63,28 +62,15 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 			return ;
 	}
 	else if ((*cur)->content.redir_type == INPUT_FILE)
-		ft_lstadd_back(data->create_files, ft_lstnew(set_redir(&result[0],
-					INPUT_FILE, format_string(str, data->env, 0), data->env)));
+		q4fc(data->create_files, set_redir(&result[0], INPUT_FILE,
+				format_string(str, data->env, 0), data->env));
 	else if ((*cur)->content.redir_type == OUTPUT_OVERRIDE)
-		ft_lstadd_back(data->create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_OVERRIDE, format_string(str, data->env, 0),
-					data->env)));
+		q4fc(data->create_files, set_redir(&result[1], OUTPUT_OVERRIDE,
+				format_string(str, data->env, 0), data->env));
 	else if ((*cur)->content.redir_type == OUTPUT_APPEND)
-		ft_lstadd_back(data->create_files, ft_lstnew(set_redir(&result[1],
-					OUTPUT_APPEND, format_string(str, data->env, 0),
-					data->env)));
-	next_token = (*cur)->next;
-	free_token_and_connect(*cur);
-	if (next_token)
-	{
-		if (next_token->previous == NULL)
-			*tokens = next_token->next;
-		// free_token_and_connect(*cur);
-		*cur = next_token->next;
-		free_token_and_connect(next_token);
-	}
-	else
-		*cur = NULL;
+		q4fc(data->create_files, set_redir(&result[1], OUTPUT_APPEND,
+				format_string(str, data->env, 0), data->env));
+	i_love_the_norme(cur, tokens);
 }
 
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,

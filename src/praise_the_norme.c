@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   praise_the_norme.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 16:35:53 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 18:12:40 by dkaiser          ###   ########.fr       */
+/*   Created: 2025/01/20 18:35:41 by dkaiser           #+#    #+#             */
+/*   Updated: 2025/01/20 18:39:31 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <errno.h>
 
-void	*error(int err_code, char *err_text, int exit_code, int *ret_code)
+void	i_love_the_norme(t_token **cur, t_token **tokens)
 {
-	errno = err_code;
-	perror(err_text);
-	if (ret_code != NULL)
-		*ret_code = exit_code;
-	return (NULL);
-}
+	t_token	*next_token;
 
-void	command_not_found_error(char *cmd)
-{
-	ft_printf("%s:", cmd);
-	ft_putstr_fd(" command not found", 2);
-	ft_printf("\n");
+	next_token = (*cur)->next;
+	free_token_and_connect(*cur);
+	if (next_token)
+	{
+		if (next_token->previous == NULL)
+			*tokens = next_token->next;
+		*cur = next_token->next;
+		free_token_and_connect(next_token);
+	}
+	else
+		*cur = NULL;
 }

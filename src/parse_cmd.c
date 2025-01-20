@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 17:30:06 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:57:50 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ t_node	*parse_cmd(t_token *tokens, t_env **env)
 
 static char	**collect_args(t_token **tokens, t_env **env)
 {
-	t_token *cur;
-	t_token *next; // 2
-	char **result;
-	int i;
+	t_token	*cur;
+	char	**result;
+	int		i;
+	t_token	*next;
 
 	cur = *tokens;
 	i = 0;
@@ -51,13 +51,12 @@ static char	**collect_args(t_token **tokens, t_env **env)
 	i = 0;
 	while (cur != NULL && cur->type == STRING_TOKEN)
 	{
-		next = cur->next; // 2
+		next = cur->next;
 		if (cur->previous)
 			free_token(cur->previous);
 		result[i] = format_string(cur->content.string, *env, ft_atoi("0"));
 		i++;
-		// cur = cur->next;
-		cur = next; // 2
+		cur = next;
 	}
 	result[i] = NULL;
 	return (result);
