@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:01:16 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/18 18:33:33 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:05:19 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,15 @@ int	unset(char **av, t_env **env)
 		prev = NULL;
 		while (current)
 		{
-			if (ft_strcmp(current->name, av[i]) == 0)
+			if ((!ft_strcmp(current->name, av[i])) && (!ft_strcmp("?", av[1])))
+			{
+				if (prev)
+					prev->next = current->next;
+				else
+					*env = current->next;
+				free_env_node(current);
+				break ;
+			}
 			{
 				if (prev)
 					prev->next = current->next;
@@ -91,7 +99,7 @@ int	is_valid_identifier(char *str)
 	return (1);
 }
 
-int	export(char **av, t_env **env)
+int	export(char **av, t_env **env, int f)
 {
 	char	*equal_sign;
 	int		i;
@@ -107,6 +115,7 @@ int	export(char **av, t_env **env)
 			write(1, "Minishell $ export: not a valid identifier\n", 43);
 			if (equal_sign)
 				*equal_sign = '=';
+			f++;
 			continue ;
 		}
 		if (equal_sign)
@@ -115,5 +124,5 @@ int	export(char **av, t_env **env)
 			export_export(av[i], env);
 		}
 	}
-	return (0);
+	return (check_flag(f));
 }
