@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 19:13:31 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:05:50 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_token	*find_token_by_type(t_token *tokens, int type);
 t_token			*split_at_first(t_token **tokens, int type);
 static t_node	*parse_statement(t_token *tokens, t_env **env);
 
-t_list	*parse(t_token *tokens, t_env **env)
+t_node	*parse(t_token *tokens, t_env **env)
 {
 	t_node	*result;
 
@@ -29,7 +29,7 @@ t_list	*parse(t_token *tokens, t_env **env)
 		result = parse_statement(tokens, env);
 	if (result == NULL)
 		printf("Parsing error.\n");
-	return (ft_lstnew(result));
+	return (result);
 }
 
 static t_node	*parse_statement(t_token *tokens, t_env **env)

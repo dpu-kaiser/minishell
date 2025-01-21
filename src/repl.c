@@ -6,35 +6,24 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/21 13:39:43 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:05:14 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include "token.h"
 
-void	free_ast(void *arg)
-{
-	t_node	*ast;
-
-	if (arg)
-	{
-		ast = (t_node *)arg;
-		free_node(ast);
-	}
-}
-
-void	free_repl(char *input, t_list **lines)
+void	free_repl(char *input, t_node *ast)
 {
 	free(input);
-	ft_lstclear(lines, free_ast);
+	free_node(ast);
 }
 
 void	repl(const char *prompt, t_env **env, int *promptflag)
 {
 	char	*input;
 	t_token	*token_list;
-	t_list	*lines;
+	t_node	*ast;
 
 	(*promptflag)++;
 	while (1)
@@ -52,9 +41,9 @@ void	repl(const char *prompt, t_env **env, int *promptflag)
 		add_history(input);
 		token_list = NULL;
 		tokenizer(input, &token_list, '\0');
-		lines = parse(token_list, env);
-		if (lines)
-			set_return_code(eval(lines->content, env), env);
-		free_repl(input, &lines);
+		ast = parse(token_list, env);
+		if (ast)
+			set_return_code(eval(ast, env), env);
+		free_repl(input, ast);
 	}
 }
