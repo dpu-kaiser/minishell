@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 19:09:21 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:48:35 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static char	**collect_args(t_token **tokens, t_env **env)
 			free_token(cur->previous);
 		result[i] = format_string(cur->content.string, *env, ft_atoi("0"));
 		i++;
+		if (cur->next == NULL)
+			free_token(cur);
 		cur = next;
 	}
 	result[i] = NULL;
