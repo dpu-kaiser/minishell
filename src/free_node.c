@@ -6,7 +6,7 @@
 /*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:41:46 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:26:20 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:39:17 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	free_pipe_node(t_node *node);
 static void	free_cmd_node(t_node *node);
+static void	free_file(void *arg);
 
 void	free_node(t_node *node)
 {
@@ -51,4 +52,15 @@ static void	free_cmd_node(t_node *node)
 	if (node->content.cmd.redirs[1].type != 0
 		&& node->content.cmd.redirs[0].specifier != NULL)
 		free(node->content.cmd.redirs[1].specifier);
+	if (node->content.cmd.create_files != NULL)
+		ft_lstclear(&node->content.cmd.create_files, free_file);
+}
+
+static void	free_file(void *arg)
+{
+	t_redirection	*file;
+
+	file = (t_redirection *)arg;
+	free(file->specifier);
+	free(file);
 }

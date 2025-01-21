@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:23:51 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 18:30:40 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:17:47 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ static int	cant_write(char *filename)
 
 static void	create_file(char *filename, int mode)
 {
-	close(open(filename, O_WRONLY | O_CREAT | mode, 0644));
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | mode, 0644);
+	if (fd != -1)
+		close(fd);
 }
 
 void	q4fc(t_list **queue, t_redirection *redir)

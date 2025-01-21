@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:34:37 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 17:56:01 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:38:02 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,5 @@
 
 void	dbg(char *str);
 void	panic(char *msg);
-
-void	dbg2(const char *format, ...);
 
 #endif
