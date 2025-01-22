@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 17:59:01 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:15:31 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2],
 		node->content.cmd.redirs[0] = redirs[0];
 		node->content.cmd.redirs[1] = redirs[1];
 		node->content.cmd.create_files = create_files;
-		free(redirs);
+		// free(redirs);
 		redirs = NULL;
 		return (node);
 	}

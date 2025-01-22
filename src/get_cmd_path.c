@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 00:01:48 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 16:17:27 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,92 +61,77 @@ static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code)
 	return (result);
 }
 
-void free_split_path(char **path)
-{
-    char **tmp = path;
-    while (*tmp)
-    {
-        free(*tmp);
-        tmp++;
-    }
-    free(path);
-}
-
-char **get_split_path(t_env *env)
-{
-    char *path_env;
-    char **split_path;
-
-    path_env = env_get(env, "PATH");
-    if (!path_env)
-        return (NULL);
-    split_path = ft_split(path_env, ':');
-    free(path_env);
-    return (split_path);
-}
-
 static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 {
-    char	*cur_path;
-    char	*cmd_path;
-    char	**path;
-    char	**path_start; // To keep track of the start of the path array
+	char	*cur_path;
+	char	*cmd_path;
+	char	**path;
 
-    path = get_split_path(env);
-    path_start = path; // Save the start of the path array
-    cmd_path = NULL;
-    while (*path)
-    {
-        if (cmd_path)
-            free(cmd_path);
-        cur_path = ft_strjoin(*path, "/");
-        if (!cur_path)
-        {
-            free_split_path(path_start); // Free the entire path array
-            return (NULL);
-        }
-        cmd_path = ft_strjoin(cur_path, cmd);
-        free(cur_path);
-        if (!cmd_path)
-        {
-            free_split_path(path_start); // Free the entire path array
-            return (NULL);
-        }
-        if (access(cmd_path, X_OK) != -1)
-        {
-            free_split_path(path_start); // Free the entire path array
-            return (cmd_path);
-        }
-        path++;
-    }
-    free_split_path(path_start); // Free the entire path array
-    *return_code = 127;
-    command_not_found_error(cmd);
-    return (NULL);
+
+	path = get_split_path(env);
+	cmd_path = NULL;
+	while (*path)
+	{
+		if (cmd_path)
+			free(cmd_path);
+		cur_path = ft_strjoin(*path, "/");
+		if (!cur_path)
+			return (NULL);
+		cmd_path = ft_strjoin(cur_path, cmd);
+		free(cur_path);
+		if (!cmd_path)
+			return (NULL);
+		if (access(cmd_path, X_OK) != -1)
+			return (cmd_path);
+		path++;
+	}
+	*return_code = 127;
+	free(cmd_path);
+	command_not_found_error(cmd);
+	return (NULL);
 }
 
+// static char	*get_simple_cmd_path(char *cmd, int *return_code)
+// {
+// 	char	*result;
+
+// 	result = ft_strdup(cmd);
+// 	if (!result)
+// 		return (NULL);
+// 	if (access(result, F_OK) == -1)
+// 	{
+// 		free(result);
+// 		return (error(ENOENT, cmd, 127, return_code));
+// 	}
+// 	if (access(result, X_OK) == -1)
+// 	{
+// 		free(result);
+// 		return (error(EACCES, cmd, 126, return_code));
+// 	}
+// 	if (is_directory(cmd))
+// 	{
+// 		free(result);
+// 		return (error(EISDIR, cmd, 126, return_code));
+// 	}
+// 	return (result);
+// }
 static char	*get_simple_cmd_path(char *cmd, int *return_code)
 {
 	char	*result;
 
 	result = ft_strdup(cmd);
-	if (!result)
-		return (NULL);
 	if (access(result, F_OK) == -1)
 	{
 		free(result);
 		return (error(ENOENT, cmd, 127, return_code));
 	}
-	if (access(result, X_OK) == -1)
+	else if (access(result, X_OK) == -1)
 	{
 		free(result);
 		return (error(EACCES, cmd, 126, return_code));
 	}
 	if (is_directory(cmd))
-	{
-		free(result);
 		return (error(EISDIR, cmd, 126, return_code));
-	}
 	return (result);
 }
 

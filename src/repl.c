@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/21 21:29:16 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:22:00 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 void	free_repl(char *input, t_node *ast)
 {
 	free(input);
-	free_node(ast);
+	if(ast)
+		free_node(ast);
 }
 
 void	repl(const char *prompt, t_env **env, int *promptflag)

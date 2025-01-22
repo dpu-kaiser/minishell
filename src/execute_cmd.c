@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/21 23:52:38 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 16:29:34 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,22 @@
 static void	establish_pipeline(int original_stdin, int original_stdout);
 static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result);
 
+int	invalid_input(char *cmd)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	return (127);
+}
+
 int	is_builtin(char *cmd)
 {
-	return ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
+	if ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
 		|| (ft_strcmp(cmd, "cd") == 0) || (ft_strcmp(cmd, "exit") == 0)
 		|| (ft_strcmp(cmd, "echo") == 0) || (ft_strcmp(cmd, "pwd") == 0)
-		|| (ft_strcmp(cmd, "env") == 0));
+		|| (ft_strcmp(cmd, "env") == 0))
+		return (1);
+	return(invalid_input(cmd));
 }
 
 int	execute_builtin(char **args, t_env **env)
@@ -96,7 +106,7 @@ static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
 		cmd_path = get_cmd_path(cmd->args[i], *env, &result);
 		if (cmd_path != NULL)
 			execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
-		free(cmd_path);
+		// free(cmd_path);
 		exit(result);
 	}
 	waitpid(pid, &status, 0);
