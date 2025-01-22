@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:48:27 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/08/11 12:20:56 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/18 19:28:51 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug_tools.h"
-#include "stdlib.h"
+#ifndef AST_H
+# define AST_H
+# include "debug_tools.h"
+# include "stdlib.h"
 
 enum						e_node_type
 {
@@ -44,6 +46,7 @@ typedef struct s_cmd
 {
 	char					**args;
 	struct s_redirection	redirs[2];
+	t_list					*create_files;
 }							t_cmd;
 
 union						u_node_content
@@ -61,7 +64,10 @@ typedef struct s_node
 
 t_node						*new_node(int type);
 t_node						*new_pipe_node(t_node *left, t_node *right);
-t_node						*new_cmd_node(char **args, t_redirection redirs[2]);
+t_node						*new_cmd_node(char **args, t_redirection redirs[2],
+								t_list *create_files);
 t_node						*new_string_node(char *string);
 
 void						free_node(t_node *node);
+
+#endif

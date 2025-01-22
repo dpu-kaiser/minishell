@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:29:44 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/06/28 14:59:34 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:41:47 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ t_token	*new_str_token(char *str, t_token *previous, t_token *next)
 
 	token = new_token(STRING_TOKEN, previous, next);
 	if (token == NULL)
+	{
+		free(str);
 		return (NULL);
+	}
 	token->content.string = str;
 	return (token);
 }

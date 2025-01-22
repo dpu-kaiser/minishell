@@ -6,72 +6,100 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/13 09:50:56 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/21 23:52:38 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <sys/_types/_pid_t.h>
-#include <sys/_types/_s_ifmt.h>
-#include <sys/fcntl.h>
-#include <unistd.h>
+
+static void	establish_pipeline(int original_stdin, int original_stdout);
+static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result);
+
+int	is_builtin(char *cmd)
+{
+	return ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
+		|| (ft_strcmp(cmd, "cd") == 0) || (ft_strcmp(cmd, "exit") == 0)
+		|| (ft_strcmp(cmd, "echo") == 0) || (ft_strcmp(cmd, "pwd") == 0)
+		|| (ft_strcmp(cmd, "env") == 0));
+}
+
+int	execute_builtin(char **args, t_env **env)
+{
+	if (ft_strcmp(args[0], "export") == 0)
+		return (export(args, env, ft_atoi("0")));
+	else if (ft_strcmp(args[0], "unset") == 0)
+		return (unset(args, env));
+	else if (ft_strcmp(args[0], "cd") == 0)
+		return (cd(env, args));
+	else if (ft_strcmp(args[0], "echo") == 0)
+		return (echo(args));
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		return (pwd(*env));
+	else if (ft_strcmp(args[0], "env") == 0)
+		return (ft_env(*env));
+	else if (ft_strcmp(args[0], "exit") == 0)
+		return (builtin_exit(args, env));
+	return (1);
+}
 
 int	execute_cmd(t_cmd *cmd, t_env **env)
 {
-	char	*cmd_path;
-	pid_t	pid;
-	int		status;
-	int		result;
-	int		original_stdout;
-	int		original_stdin;
+	int	original_std[2];
+	int	result;
 
-	original_stdout = dup(STDOUT_FILENO);
-	original_stdin = dup(STDIN_FILENO);
+	original_std[1] = dup(STDOUT_FILENO);
+	original_std[0] = dup(STDIN_FILENO);
+	create_files(cmd->create_files);
 	if (handle_redirections(cmd->redirs) == -1)
 	{
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
+		establish_pipeline(original_std[0], original_std[1]);
 		return (EXIT_FAILURE);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		result = execute_builtin(cmd->args, env);
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
+		establish_pipeline(original_std[0], original_std[1]);
 		return (result);
 	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		dup2(original_stdout, STDOUT_FILENO);
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdout);
-		close(original_stdin);
-		return (EXIT_FAILURE);
-	}
-	if (pid == 0)
-	{
-		cmd_path = get_cmd_path(cmd->args[0], *env);
-		if (!cmd_path)
-		{
-			printf("%s: command not found\n", cmd->args[0]);
-			exit(EXIT_FAILURE);
-		}
-		execve(cmd_path, cmd->args, env_to_strlst(*env));
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
+	return (exec_cmd(cmd, env, original_std, EXIT_SUCCESS));
+}
+
+static void	establish_pipeline(int original_stdin, int original_stdout)
+{
 	dup2(original_stdout, STDOUT_FILENO);
 	dup2(original_stdin, STDIN_FILENO);
 	close(original_stdout);
 	close(original_stdin);
-	return (WEXITSTATUS(status));
+}
+
+static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
+{
+	int		i;
+	int		status;
+	char	*cmd_path;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		establish_pipeline(original_std[0], original_std[1]);
+		return (EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		i = 0;
+		while (cmd->args[i][0] == '\0')
+			i++;
+		cmd_path = get_cmd_path(cmd->args[i], *env, &result);
+		if (cmd_path != NULL)
+			execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
+		free(cmd_path);
+		exit(result);
+	}
+	waitpid(pid, &status, 0);
+	establish_pipeline(original_std[0], original_std[1]);
+	return ((status >> 8) & 255);
 }

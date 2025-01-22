@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkaiser <dkaiser@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:21:03 by dkaiser           #+#    #+#             */
-/*   Updated: 2024/09/17 18:46:35 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:59:01 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ t_node	*new_pipe_node(t_node *left, t_node *right)
 	return (node);
 }
 
-t_node	*new_cmd_node(char **args, t_redirection redirs[2])
+t_node	*new_cmd_node(char **args, t_redirection redirs[2],
+		t_list *create_files)
 {
 	t_node	*node;
 
@@ -49,7 +50,9 @@ t_node	*new_cmd_node(char **args, t_redirection redirs[2])
 	{
 		node->content.cmd.redirs[0] = redirs[0];
 		node->content.cmd.redirs[1] = redirs[1];
+		node->content.cmd.create_files = create_files;
 		free(redirs);
+		redirs = NULL;
 		return (node);
 	}
 	return (NULL);
