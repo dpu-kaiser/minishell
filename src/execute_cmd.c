@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 16:29:34 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 16:53:04 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ int	invalid_input(char *cmd)
 
 int	is_builtin(char *cmd)
 {
-	if ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
+	return ((ft_strcmp(cmd, "export") == 0) || (ft_strcmp(cmd, "unset") == 0)
 		|| (ft_strcmp(cmd, "cd") == 0) || (ft_strcmp(cmd, "exit") == 0)
 		|| (ft_strcmp(cmd, "echo") == 0) || (ft_strcmp(cmd, "pwd") == 0)
-		|| (ft_strcmp(cmd, "env") == 0))
-		return (1);
-	return(invalid_input(cmd));
+		|| (ft_strcmp(cmd, "env") == 0));
 }
 
 int	execute_builtin(char **args, t_env **env)
