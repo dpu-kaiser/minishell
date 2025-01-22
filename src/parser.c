@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/21 21:27:15 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 17:13:50 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_token	*split_at_first(t_token **tokens, int type)
 	*tokens = split->next;
 	if (result == split)
 		result = NULL;
-	free_token(split);
+	free_token2(split);
 	split = NULL;
 	return (result);
 }
