@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:27:18 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/22 17:27:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/23 13:57:43 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,5 @@ void						print_token(t_token *token);
 
 void	free_token2(t_token *token);
 void	free_token_and_connect2(t_token *token);
+void	free_tokens2(t_token *tokens);
 #endif

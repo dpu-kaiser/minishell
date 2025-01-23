@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 15:06:25 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/22 17:26:14 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/23 18:00:50 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	**collect_args(t_token **tokens, t_env **env)
 		next = cur->next;
 		if (cur->previous)
 			free_token(cur->previous);
-		result[i] = format_string(cur->content.string, *env, ft_atoi("0"));
+		result[i] = cur->content.string;//format_string(cur->content.string, *env, ft_atoi("0"));
 		i++;
 		if (cur->next == NULL)
 			free_token(cur);

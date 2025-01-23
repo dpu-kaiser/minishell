@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:41:46 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/22 16:00:36 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/23 18:13:23 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void free_cmd_node(t_node *node)
     i = 0;
     while (node->content.cmd.args != NULL && node->content.cmd.args[i] != NULL)
     {
-        free(node->content.cmd.args[i]);
+        free(*(&node->content.cmd.args[i]));
         i++;
     }
     free(node->content.cmd.args);

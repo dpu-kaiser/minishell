@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 16:59:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/23 14:48:03 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ static char	*get_absolute_cmd_path(char *cmd, t_env *env, int *return_code)
 		return (error(ENOENT, cmd, 127, return_code));
 	if (access(result, F_OK) == -1)
 	{
-		free(result);
+		/* free(result); */
 		return (error(ENOENT, cmd, 127, return_code));
 	}
 	if (access(result, X_OK) == -1)
 	{
-		free(result);
+		/* free(result); */
 		return (error(EACCES, cmd, 126, return_code));
 	}
 	if (is_directory(cmd))
@@ -88,7 +88,7 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 		path++;
 	}
 	*return_code = 127;
-	free(cmd_path);
+	/* free(cmd_path); */
 	ft_free_split(path_start);
 	command_not_found_error(cmd);
 	return (NULL);
