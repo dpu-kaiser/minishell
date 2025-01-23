@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:07:04 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/23 12:42:57 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/23 17:42:33 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void	repl(const char *prompt, t_env **env, int *promptflag)
 		token_list = NULL;
 		tokenizer(input, &token_list, '\0');
 		tokens_copy = shallow_copy_tokens(token_list);
+		free_tokens(tokens_copy);
+		// print_token_list(token_list);
 		ast = parse(token_list, env);
 		if (ast)
 			set_return_code(eval(ast, env), env);
 		free_repl(input, ast);
-		free_tokens(tokens_copy);
+		print_token_list(tokens_copy);
 	}
 }

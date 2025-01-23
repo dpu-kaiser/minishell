@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:30:11 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 14:31:29 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/23 14:34:35 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static void	append_slice(char **dst, char *src, int start, int end)
 		i++;
 	}
 	result[len + i] = '\0';
-	if (*dst != NULL)
-		free(*dst);
+	// if (*dst != NULL)
+	// 	free(*dst);
 	*dst = result;
 	// free(src);
 	// src = *dst;
