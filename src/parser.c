@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 11:38:47 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:52:04 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ t_node	*parse(t_token *tokens, t_env **env)
 
 	if ((*tokens).type == PIPE_TOKEN
 		|| ((*tokens).type == REDIR_TOKEN && !(*tokens).next))
-	{
 		result = NULL;
-		free_tokens(tokens);
-	}
 	else
 		result = parse_statement(tokens, env);
 	if (result == NULL)
 	{
 		printf("Parsing error.\n");
-		free_tokens(tokens);
+		if (tokens != NULL)
+			free_tokens(tokens);
 	}
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 14:37:06 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:10:47 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 	data.env = env;
 	while (cur != NULL)
 	{
-		if (cur->type == REDIR_TOKEN && cur->next->type == STRING_TOKEN)
+		if (cur->type == REDIR_TOKEN && cur->next
+			&& cur->next->type == STRING_TOKEN)
 			collect_and_check_redir(result, &cur, &data, tokens);
 		else if (cur->type == REDIR_TOKEN)
-			return (free(result), NULL);
+			return (free_redirs(result, create_files));
 		else
 			cur = cur->next;
 	}

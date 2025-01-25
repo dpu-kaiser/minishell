@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 16:01:30 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:13:15 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int				eval_rec(t_node *node, t_env **env, int in_fd);
 int				create_files(t_list *files);
 void			q4fc(t_list **queue, t_redirection *redir);
 void			i_love_the_norme(t_token **cur, t_token **tokens);
+void			*free_redirs(t_redirection *redirs, t_list **create_files);
+void			free_file(void *arg);
 
 typedef struct s_minidata
 {

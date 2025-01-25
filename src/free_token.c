@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:38:57 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 11:36:59 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:21:09 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_token_and_connect2(t_token *token)
 
 void	free_tokens(t_token *tokens)
 {
-	while (tokens->next != NULL)
+	while (tokens != NULL && tokens->next != NULL)
 	{
 		tokens = tokens->next;
 		free_token2(tokens->previous);
