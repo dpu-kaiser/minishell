@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 17:10:47 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 20:08:57 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
 							t_env *env);
 static int				set_heredoc_data(t_token *cur, t_redirection *result,
 							t_env *env);
+static void				coll_n_check(t_token **tokens, t_token **cur,
+							t_minidata *data, t_redirection **redir);
 
 t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 		t_list **create_files)
@@ -39,7 +41,7 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 	{
 		if (cur->type == REDIR_TOKEN && cur->next
 			&& cur->next->type == STRING_TOKEN)
-			collect_and_check_redir(result, &cur, &data, tokens);
+			coll_n_check(tokens, &cur, &data, &result);
 		else if (cur->type == REDIR_TOKEN)
 			return (free_redirs(result, create_files));
 		else
@@ -70,7 +72,8 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		q4fc(data->create_files, set_redir(&result[1], OUTPUT_APPEND,
 				format_string(str, data->env, 0), data->env));
 	i_love_the_norme(cur, tokens);
-	free(str);
+	if (result[0].type != INPUT_LIMITER)
+		free(str);
 }
 
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
@@ -103,13 +106,22 @@ static int	set_heredoc_data(t_token *cur, t_redirection *result, t_env *env)
 	if (cur->content.redir_type == INPUT_LIMITER)
 	{
 		heredoc_data = read_heredoc(cur->next->content.string);
+		free(cur->next->content.string);
 		if (!heredoc_data)
 		{
 			perror("Heredoc allocation failed");
 			return (0);
 		}
-		set_redir(&result[0], INPUT_LIMITER, heredoc_data, env);
 	}
 	set_redir(&result[0], INPUT_LIMITER, heredoc_data, env);
+	free(heredoc_data);
 	return (1);
+}
+
+static void	coll_n_check(t_token **tokens, t_token **cur, t_minidata *data,
+		t_redirection **redir)
+{
+	collect_and_check_redir(*redir, cur, data, tokens);
+	if ((*tokens)->type == REDIR_TOKEN)
+		*tokens = *cur;
 }

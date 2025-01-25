@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:34:51 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 14:59:38 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:49:39 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_input_redirection(t_redirection *redir)
 	}
 	else if (redir->type == INPUT_LIMITER)
 	{
-		fd = open_file("/tmp/heredoc_tmp", O_WRONLY | O_TRUNC, 0644);
+		fd = open_file("/tmp/heredoc_tmp", O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (fd < 0)
 			return (-1);
 		write(fd, redir->specifier, ft_strlen(redir->specifier));
