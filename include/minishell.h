@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/23 23:17:00 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 15:41:33 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@
 int				init(void);
 int				init_signal_handling(void);
 
-void			repl(const char *prompt, t_env **env, int *promptflag);
+void			repl(const char *prompt, t_env **env);
 
 t_node			*parse(t_token *tokens, t_env **env);
 t_node			*parse_cmd(t_token *tokens, t_env **env);
-t_redirection	*collect_redirs(t_token **tokens, t_env *env, t_list **create_files);
+t_redirection	*collect_redirs(t_token **tokens, t_env *env,
+					t_list **create_files);
 
 void			print_ast(t_node *ast);
 
@@ -46,7 +47,8 @@ void			set_return_code(int return_code, t_env **env);
 int				handle_redirections(t_redirection *redirs);
 void			*error(int err_code, char *err_text, int exit_code,
 					int *ret_code);
-void			command_not_found_error(char *cmd);
+void			*command_not_found_error(char *cmd, int *return_code,
+					char *cmd_path, char **split_path);
 char			*read_heredoc(char *delimiter);
 int				handle_input_redirection(t_redirection *redir);
 int				handle_output_redirection(t_redirection *redir);

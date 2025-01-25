@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/25 11:36:28 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:58:45 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,7 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 			return (ft_free_split(path_start), cmd_path);
 		path++;
 	}
-	*return_code = 127;
-	free(cmd_path);
-	ft_free_split(path_start);
-	command_not_found_error(cmd);
-	return (NULL);
+	return (command_not_found_error(cmd, return_code, cmd_path, path_start));
 }
 
 static char	*get_simple_cmd_path(char *cmd, int *return_code)
