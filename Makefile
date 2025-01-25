@@ -9,7 +9,7 @@
 NAME    := minishell
 
 CC      =  cc
-CFLAGS  =  -Wall -Wextra -Werror
+CFLAGS  =  -Wall -Wextra -g
 LIB_DIR = lib
 LIBS    =  -L $(LIB_DIR)/libft -lft -lreadline
 HEADERS =  -I include -I $(LIB_DIR)/libft
@@ -32,18 +32,18 @@ OBJ     := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 all: libs $(NAME)
 
-$(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $^ -o $@
-	@echo "[$(NAME)] Created binary."
-
 libs:
 	@make -C $(LIB_DIR)/libft
+
+$(NAME): $(OBJ)
+	@$(CC) $(CFLAGS) $^ -o $@ $(HEADERS) $(LIBS) 
+	@echo "[$(NAME)] Created binary."
 
 $(OBJ_DIR)/%.o: %.c
 	@if [ ! -d "$(dir $@)" ]; then \
 		mkdir -p $(dir $@); \
 	fi
-	@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)
 	@echo "[$(NAME)] Compiled $<."
 
 clean:

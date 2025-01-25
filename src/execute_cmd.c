@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 20:04:31 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:42:39 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	execute_cmd(t_cmd *cmd, t_env **env)
 	int	original_std[2];
 	int	result;
 
+	if (cmd->args == NULL || cmd->args[0] == NULL)
+		return (EXIT_FAILURE);
 	original_std[1] = dup(STDOUT_FILENO);
 	original_std[0] = dup(STDIN_FILENO);
 	create_files(cmd->create_files);

@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 20:55:50 by chuhlig           #+#    #+#             */
-/*   Updated: 2024/10/17 14:21:26 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:30:58 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,15 @@ void	snap_string_token(char *string, int start_of_string, int i,
 	t_token **token_list)
 {
 	char	*line;
+	char	*original;
 	int		len;
 
+	line = NULL;
 	len = i - start_of_string + 1;
 	if (len > 0)
 	{
-		line = (char *)malloc(len + 1);
+		line = (char *)malloc((sizeof(char) * len + 1));
+		original = line;
 		if (!line)
 		{
 			exit(EXIT_FAILURE);
@@ -79,6 +82,7 @@ void	snap_string_token(char *string, int start_of_string, int i,
 			*token_list = new_str_token(line, *token_list, NULL);
 			print_token(*token_list);
 		}
+		free(original);
 	}
 }
 

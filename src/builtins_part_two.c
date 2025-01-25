@@ -15,17 +15,14 @@
 void	update_oldpwd(t_env **env)
 {
 	t_env	*current;
-	t_env	*prev;
 	char	cwd[1028];
 	char	*tmp;
 
-	prev = NULL;
 	current = *env;
 	while (current)
 	{
 		if (ft_strncmp(current->name, "OLDPWD", 6) == 0)
 			break ;
-		prev = current;
 		current = current->next;
 	}
 	getcwd(cwd, sizeof(cwd));
@@ -37,17 +34,14 @@ void	update_oldpwd(t_env **env)
 void	update_pwd(t_env **env)
 {
 	t_env	*current;
-	t_env	*prev;
 	char	cwd[1028];
 	char	*tmp;
 
-	prev = NULL;
 	current = *env;
 	while (current)
 	{
 		if (ft_strncmp(current->name, "PWD", 3) == 0)
 			break ;
-		prev = current;
 		current = current->next;
 	}
 	getcwd(cwd, sizeof(cwd));

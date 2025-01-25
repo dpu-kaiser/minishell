@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "token.h"
+#include "libft.h"
 
 t_token	*new_token(int type, t_token *previous, t_token *next)
 {
@@ -35,8 +36,11 @@ t_token	*new_str_token(char *str, t_token *previous, t_token *next)
 
 	token = new_token(STRING_TOKEN, previous, next);
 	if (token == NULL)
+	{
+		free(str);
 		return (NULL);
-	token->content.string = str;
+	}
+	token->content.string = ft_strdup(str);
 	return (token);
 }
 

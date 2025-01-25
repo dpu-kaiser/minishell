@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 18:12:33 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:58:45 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 	char	*cur_path;
 	char	*cmd_path;
 	char	**path;
+	char	**path_start;
 
 	path = get_split_path(env);
+	path_start = path;
 	cmd_path = NULL;
 	while (*path)
 	{
@@ -75,18 +77,16 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 			free(cmd_path);
 		cur_path = ft_strjoin(*path, "/");
 		if (!cur_path)
-			return (NULL);
+			return (ft_free_split(path_start), NULL);
 		cmd_path = ft_strjoin(cur_path, cmd);
 		free(cur_path);
 		if (!cmd_path)
-			return (NULL);
+			return (ft_free_split(path_start), NULL);
 		if (access(cmd_path, X_OK) != -1)
-			return (cmd_path);
+			return (ft_free_split(path_start), cmd_path);
 		path++;
 	}
-	*return_code = 127;
-	command_not_found_error(cmd);
-	return (NULL);
+	return (command_not_found_error(cmd, return_code, cmd_path, path_start));
 }
 
 static char	*get_simple_cmd_path(char *cmd, int *return_code)

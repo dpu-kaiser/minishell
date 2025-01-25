@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:15:49 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/20 20:07:11 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:20:18 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	eval_rec(t_node *node, t_env **env, int in_fd)
 	else if (node->type == CMD_NODE)
 		result = execute_cmd(&node->content.cmd, env);
 	else
+	{
 		result = EXIT_FAILURE;
+		free_node(node);
+	}
 	return (result);
 }
 

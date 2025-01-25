@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 18:39:24 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:37:06 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 	result = malloc(sizeof(t_redirection) * 2);
 	if (result == NULL)
 		return (free_tokens(*tokens), NULL);
-	set_redir(&result[0], 0, NULL, env);
-	set_redir(&result[1], 0, NULL, env);
+	free(set_redir(&result[0], 0, NULL, env));
+	free(set_redir(&result[1], 0, NULL, env));
 	data.create_files = create_files;
 	data.env = env;
 	while (cur != NULL)
@@ -44,8 +44,6 @@ t_redirection	*collect_redirs(t_token **tokens, t_env *env,
 		else
 			cur = cur->next;
 	}
-	if (cur && cur->type == REDIR_TOKEN)
-		return (free(result), NULL);
 	return (result);
 }
 
@@ -55,7 +53,7 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 	char	*str;
 
 	if ((*cur)->content.redir_type != INPUT_LIMITER)
-		str = ft_strdup((*cur)->next->content.string);
+		str = (*cur)->next->content.string;
 	if ((*cur)->content.redir_type == INPUT_LIMITER)
 	{
 		if (!set_heredoc_data(*cur, result, data->env))
@@ -71,6 +69,7 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		q4fc(data->create_files, set_redir(&result[1], OUTPUT_APPEND,
 				format_string(str, data->env, 0), data->env));
 	i_love_the_norme(cur, tokens);
+	free(str);
 }
 
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,

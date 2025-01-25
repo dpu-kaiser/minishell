@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:34:37 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/20 17:56:01 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/23 15:22:14 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define DEBUG_TOOLS_H
 # include "libft.h"
 # include <stdarg.h>
+# include "token.h"
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -23,6 +24,7 @@
 void	dbg(char *str);
 void	panic(char *msg);
 
-void	dbg2(const char *format, ...);
+void	print_token_list(t_token *token_list);
+
 
 #endif
