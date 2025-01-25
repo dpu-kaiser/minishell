@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 15:34:14 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/23 15:21:11 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:39:59 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,4 @@ void	panic(char *msg)
 		ft_putstr_fd(msg, 1);
 		ft_putendl_fd("\e[0m", 1);
 	}
-}
-
-
-
-void print_token_list(t_token *token_list) {
-    t_token *current = token_list;
-    while (current != NULL) {
-        if (current->type == STRING_TOKEN) {
-            printf("STRING_TOKEN: %s\n", current->content.string);
-        } else if (current->type == REDIR_TOKEN) {
-            printf("REDIR_TOKEN: %d\n", current->content.redir_type);
-        } else if (current->type == PIPE_TOKEN) {
-            printf("PIPE_TOKEN\n");
-        } else if (current->type == NEWLINE_TOKEN) {
-            printf("NEWLINE_TOKEN\n");
-        }
-        current = current->next;
-    }
 }

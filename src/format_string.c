@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:30:11 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/23 14:34:35 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:57:27 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,8 @@ static void	append_slice(char **dst, char *src, int start, int end)
 		i++;
 	}
 	result[len + i] = '\0';
-	// if (*dst != NULL)
-	// 	free(*dst);
+	free(*dst);
 	*dst = result;
-	// free(src);
-	// src = *dst;
 }
 
 static void	append_var(char **dst, char *src, int *pos, t_env *env)
@@ -73,6 +70,8 @@ static void	append_var(char **dst, char *src, int *pos, t_env *env)
 	value = env_get(env, var);
 	if (value)
 	{
+		while (*value == ' ')
+			value++;
 		result = ft_strjoin(*dst, value);
 		free(*dst);
 		*dst = result;
@@ -81,7 +80,8 @@ static void	append_var(char **dst, char *src, int *pos, t_env *env)
 	free(var);
 }
 
-static void	handle_dollar_sign(char **result, char *str, int *pos, t_env *env)
+static void	handle_dollar_sign(char **result, char *str, int *pos,
+	t_env *env)
 {
 	if (str[*pos + 1] == '?')
 	{

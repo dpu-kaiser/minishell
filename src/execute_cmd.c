@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:21:35 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 16:53:04 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:41:42 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
 
 static void	establish_pipeline(int original_stdin, int original_stdout);
 static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result);
-
-int	invalid_input(char *cmd)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	return (127);
-}
 
 int	is_builtin(char *cmd)
 {
@@ -104,7 +96,6 @@ static int	exec_cmd(t_cmd *cmd, t_env **env, int original_std[2], int result)
 		cmd_path = get_cmd_path(cmd->args[i], *env, &result);
 		if (cmd_path != NULL)
 			execve(cmd_path, &(cmd->args[i]), env_to_strlst(*env));
-		// free(cmd_path);
 		exit(result);
 	}
 	waitpid(pid, &status, 0);

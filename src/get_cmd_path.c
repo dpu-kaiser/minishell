@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:19:59 by chuhlig           #+#    #+#             */
-/*   Updated: 2025/01/22 16:59:48 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:36:28 by chuhlig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 	char	*cur_path;
 	char	*cmd_path;
 	char	**path;
-	char **path_start;
-
+	char	**path_start;
 
 	path = get_split_path(env);
 	path_start = path;
@@ -94,30 +93,6 @@ static char	*find_in_path(char *cmd, t_env *env, int *return_code)
 	return (NULL);
 }
 
-// static char	*get_simple_cmd_path(char *cmd, int *return_code)
-// {
-// 	char	*result;
-
-// 	result = ft_strdup(cmd);
-// 	if (!result)
-// 		return (NULL);
-// 	if (access(result, F_OK) == -1)
-// 	{
-// 		free(result);
-// 		return (error(ENOENT, cmd, 127, return_code));
-// 	}
-// 	if (access(result, X_OK) == -1)
-// 	{
-// 		free(result);
-// 		return (error(EACCES, cmd, 126, return_code));
-// 	}
-// 	if (is_directory(cmd))
-// 	{
-// 		free(result);
-// 		return (error(EISDIR, cmd, 126, return_code));
-// 	}
-// 	return (result);
-// }
 static char	*get_simple_cmd_path(char *cmd, int *return_code)
 {
 	char	*result;
