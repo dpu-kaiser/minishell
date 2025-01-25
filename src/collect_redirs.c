@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:49:31 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 11:40:52 by chuhlig          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:37:06 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 	char	*str;
 
 	if ((*cur)->content.redir_type != INPUT_LIMITER)
-		str = ft_strdup((*cur)->next->content.string);
+		str = (*cur)->next->content.string;
 	if ((*cur)->content.redir_type == INPUT_LIMITER)
 	{
 		if (!set_heredoc_data(*cur, result, data->env))
@@ -69,6 +69,7 @@ static void	collect_and_check_redir(t_redirection *result, t_token **cur,
 		q4fc(data->create_files, set_redir(&result[1], OUTPUT_APPEND,
 				format_string(str, data->env, 0), data->env));
 	i_love_the_norme(cur, tokens);
+	free(str);
 }
 
 static t_redirection	*set_redir(t_redirection *redir, int type, char *spec,
