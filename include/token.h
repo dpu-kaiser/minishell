@@ -49,7 +49,6 @@ void						free_token_and_connect(t_token *token);
 void						tokenizer(char *s, t_token **token_list,
 								char quote_check);
 void						print_token(t_token *token);
-
 void						free_token2(t_token *token);
 void						free_token_and_connect2(t_token *token);
 

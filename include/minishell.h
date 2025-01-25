@@ -30,7 +30,7 @@
 int				init(void);
 int				init_signal_handling(void);
 
-void			repl(const char *prompt, t_env **env);
+void			repl(const char *prompt, t_env **env, int *promptflag);
 
 t_node			*parse(t_token *tokens, t_env **env);
 t_node			*parse_cmd(t_token *tokens, t_env **env);

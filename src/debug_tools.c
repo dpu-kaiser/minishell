@@ -13,8 +13,6 @@
 #include "debug_tools.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include "token.h"
-#include <stdio.h>
 
 void	dbg(char *msg)
 {

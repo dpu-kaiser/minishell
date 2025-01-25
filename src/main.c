@@ -14,9 +14,11 @@
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_env	*env;
+	t_env		*env;
+	static int	promptflag;
 
 	env = NULL;
+	promptflag = 0;
 	if (!argc && !argv)
 		return (1);
 	if (init())

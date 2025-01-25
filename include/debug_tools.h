@@ -23,6 +23,8 @@
 
 void	dbg(char *str);
 void	panic(char *msg);
+
 void	print_token_list(t_token *token_list);
+
 
 #endif

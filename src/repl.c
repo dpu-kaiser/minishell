@@ -26,6 +26,7 @@ void	repl(const char *prompt, t_env **env)
 	t_token	*token_list;
 	t_node	*ast;
 
+	(*promptflag)++;
 	while (1)
 	{
 		input = readline(prompt);
