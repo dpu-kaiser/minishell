@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 17:14:49 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 15:41:33 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:01:30 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 int				init(void);
 int				init_signal_handling(void);
 
-void			repl(const char *prompt, t_env **env, int *promptflag);
+void			repl(const char *prompt, t_env **env);
 
 t_node			*parse(t_token *tokens, t_env **env);
 t_node			*parse_cmd(t_token *tokens, t_env **env);
