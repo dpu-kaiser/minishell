@@ -6,7 +6,7 @@
 /*   By: chuhlig <chuhlig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:53:29 by dkaiser           #+#    #+#             */
-/*   Updated: 2025/01/25 16:52:04 by dkaiser          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:26:08 by dkaiser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ static t_node	*parse_statement(t_token *tokens, t_env **env)
 
 	left_side_tokens = split_at_first(&tokens, PIPE_TOKEN);
 	if (left_side_tokens == NULL)
+	{
+		free_tokens(tokens);
+		tokens = NULL;
+		return (NULL);
+	}
+	else if (tokens != NULL && tokens->type == PIPE_TOKEN)
 	{
 		free_tokens(tokens);
 		tokens = NULL;
